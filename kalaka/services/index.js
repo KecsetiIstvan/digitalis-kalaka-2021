@@ -3,7 +3,7 @@ import { getToken, setToken } from '../repository';
 import Toast from 'react-native-toast-message';
 
 const apiClient = axios.create({
-    baseURL: 'http://192.168.1.192:3000'
+    baseURL: 'http://192.168.1.249:3000'
 });
 
 axios.interceptors.request.use(async(request) => {
