@@ -25,9 +25,9 @@ const linking: LinkingOptions<RootStackParamList> = {
               TabFollowScreen: 'follow',
             },
           },
-          TabContact: {
+          TabContacts: {
             screens: {
-              TabContactScreen: 'contact'
+              TabContactScreen: 'contacts'
             }
           },
           TabSettings: {
