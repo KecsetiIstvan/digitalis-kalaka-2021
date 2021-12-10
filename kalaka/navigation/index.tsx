@@ -52,6 +52,7 @@ function RootNavigator() {
     <Stack.Navigator>
       <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: "Oops!" }} />
+      <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
       {/* <Stack.Screen name="TabMap" component={TabMapScreen} options={{headerShown: false}}/>
       <Stack.Screen name="TabFollow" component={TabFollowScreen} options={{headerShown: false}}/>
       <Stack.Screen name="TabContacts" component={TabContactScreen} options={{headerShown: false}}/>

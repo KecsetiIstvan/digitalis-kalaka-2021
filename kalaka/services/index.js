@@ -2,8 +2,9 @@ import axios from 'axios';
 import { getToken, setToken } from '../repository';
 import Toast from 'react-native-toast-message';
 
-axios.defaults.baseURL = 'https://jsonplaceholder.typicode.com';
-axios.defaults.headers.post['Content-Type'] = 'application/json';
+const apiClient = axios.create({
+    baseURL: 'http://192.168.1.192:3000'
+});
 
 axios.interceptors.request.use(async(request) => {
     const token = await getToken();
@@ -13,14 +14,12 @@ axios.interceptors.request.use(async(request) => {
     return request;
 });
 
-axios.interceptors.response.use(async(response) => {
-    return response;
-}, error => {
-    showToast(error); return;
-});
-
-export const auth = () => {
-    return ('asd');
+export const auth = async (email, password) => {
+    const resp = await apiClient.post('/api/auth/login', { email: email, password: password}).catch(err => {showToast(err); return})
+    if(resp) {
+        return resp.data;
+    }
+    return undefined;
 }
 
 export const register = () => {
@@ -76,9 +75,9 @@ export const deleteContact = () => {
 }
 
 function showToast(error) {
-   console.log(error)
-   Toast.show({
-        type: 'error',
-        text1: error.message
-    });
+  console.log(error.response.data.message);
+  Toast.show({
+    type: 'error',
+    text1: error.response.data.message
+  });
 }
