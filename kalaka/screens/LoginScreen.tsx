@@ -3,11 +3,15 @@ import { StyleSheet } from 'react-native';
 import { FormControl, Image, View, Button, Input, WarningOutlineIcon} from 'native-base';
 
 export default function LoginScreen(props: any) {
+  const [password, setPassword] = React.useState(undefined);
+  const [email, setEmail] = React.useState(undefined);
+  const [dirty, setDirty] = React.useState(false);
+
   return (
     <View style={styles.container}>
       <Image source={{uri: "https://wallpaperaccess.com/full/317501.jpg",}} alt="Login page image" size="xl"/>
 
-      <FormControl isInvalid = {false} w={{ base: "75%", md: "25%",}}>
+      <FormControl isInvalid = {!password || !email} w={{ base: "75%", md: "25%",}}>
         <FormControl.Label>Email</FormControl.Label>
         <Input placeholder="Email address" type="email"/>
 
