@@ -22,8 +22,17 @@ export const auth = async (email, password) => {
     return undefined;
 }
 
-export const register = () => {
-    return ('asd');
+export const register = async (email, password, firstName, lastName) => {
+    const resp = await apiClient.post('/auth/register', { 
+        email: email, 
+        password: password,
+        firstName: firstName,
+        lastName: lastName
+    }).catch(err => {showToast(err); return})
+    if(resp) {
+        return resp.data;
+    }
+    return undefined;
 }
 
 export const me = async () => {

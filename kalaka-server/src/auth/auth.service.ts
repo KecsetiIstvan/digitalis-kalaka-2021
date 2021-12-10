@@ -33,7 +33,7 @@ export class AuthService {
     } catch (err) {
       status = {
         success: false,
-        message: err,
+        message: 'Ezzel az email címmel létezik már felhasználó!',
       };
     }
     return status;
