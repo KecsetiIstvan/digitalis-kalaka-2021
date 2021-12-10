@@ -19,7 +19,7 @@ export default function TabMapScreen() {
     longitudeDelta: 0.01,
   });
 
-  const { data } = useQuery("map", getMap, { refetchInterval: 2000 });
+  const { data } = useQuery("map", () => getMap(), { refetchInterval: 2000 });
 
   useEffect(() => {
     (async () => {
@@ -41,15 +41,22 @@ export default function TabMapScreen() {
   //});
 
   const handleLocationUpdate = async () => {
-    let location = await Location.getCurrentPositionAsync({});
-    setLocation(location);
-    if (location) await updateLocation(location.coords.longitude, location.coords.latitude);
+    let currentLocation = await Location.getCurrentPositionAsync({});
+    setLocation(currentLocation);
+    setRegion({
+      latitude: currentLocation?.coords.latitude,
+      longitude: currentLocation?.coords.longitude,
+      latitudeDelta: 0.004,
+      longitudeDelta: 0.004,
+    });
+    if (currentLocation)
+      await updateLocation(currentLocation?.coords.longitude + "", currentLocation?.coords.latitude + "");
   };
 
   return (
     <View style={styles.container}>
       <MapView style={styles.map} region={region}>
-        {location ? (
+        {/*location ? (
           <Marker
             coordinate={{ latitude: location?.coords.latitude, longitude: location.coords.longitude }}
             title="Look at mee"
@@ -57,9 +64,13 @@ export default function TabMapScreen() {
           ></Marker>
         ) : (
           <></>
-        )}
+        )*/}
         {data?.map((markerData: any, index: number) => (
-          <Marker key={index} coordinate={markerData.location} title={markerData.firstName} />
+          <Marker
+            key={index}
+            coordinate={{ latitude: +markerData.location.latitude, longitude: +markerData.location.longitude }}
+            title={markerData.firstName}
+          />
         ))}
       </MapView>
 
