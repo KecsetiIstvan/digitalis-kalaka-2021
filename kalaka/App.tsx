@@ -1,19 +1,17 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { StatusBar } from "expo-status-bar";
+import React from "react";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
-import useCachedResources from './hooks/useCachedResources';
-import useColorScheme from './hooks/useColorScheme';
-import Navigation from './navigation';
-import { QueryClient, QueryClientProvider } from 'react-query';
-import { NativeBaseProvider } from 'native-base';
-import Toast from 'react-native-toast-message';
+import useCachedResources from "./hooks/useCachedResources";
+import Navigation from "./navigation";
+import { QueryClient, QueryClientProvider } from "react-query";
+import { NativeBaseProvider } from "native-base";
+import Toast from "react-native-toast-message";
 
 export default function App() {
-  const queryClient = new QueryClient()
+  const queryClient = new QueryClient();
 
   const isLoadingComplete = useCachedResources();
-  const colorScheme = useColorScheme();
 
   if (!isLoadingComplete) {
     return null;
@@ -22,7 +20,7 @@ export default function App() {
       <QueryClientProvider client={queryClient}>
         <SafeAreaProvider>
           <NativeBaseProvider>
-            <Navigation colorScheme={colorScheme} />
+            <Navigation />
             <StatusBar />
             <Toast />
           </NativeBaseProvider>

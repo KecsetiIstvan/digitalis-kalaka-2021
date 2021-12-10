@@ -6,7 +6,7 @@ import Dimensions from '../constants/Layout';
 import * as Location from 'expo-location';
 import MapView, { Marker }  from 'react-native-maps';
 
-export default function TabTwoScreen() {
+export default function TabMapScreen() {
   const [location, setLocation] = useState<Location.LocationObject>();
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [region, setRegion] = useState<any>({
