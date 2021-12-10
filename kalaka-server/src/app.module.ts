@@ -10,6 +10,7 @@ import { join } from 'path';
 import { AuthModule } from './auth/auth.module';
 import { SeedsModule } from './seeders/seeds.module';
 import { CommandModule } from 'nestjs-command';
+import { MapModule } from './map/map.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { CommandModule } from 'nestjs-command';
     UserModule,
     AuthModule,
     SeedsModule,
+    MapModule,
     MongooseModule.forRootAsync(databaseConfig),
     CommandModule,
     ServeStaticModule.forRoot({

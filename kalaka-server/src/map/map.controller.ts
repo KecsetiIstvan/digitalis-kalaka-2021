@@ -1,30 +1,27 @@
 import { Controller, Post, Body, Get, UseGuards, Patch } from '@nestjs/common';
-import { UserService } from './user.service';
-import { CreateUserDto } from './dto/create-user.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { CurrentUser } from '@decorators';
 import { User } from '@types';
-import { AddContactDto } from './dto/add-contact.dto';
+import { UpdateCurrentLocationDto } from './dto/update-current-location.dto';
+import { MapService } from './map.service';
 
-@Controller('users')
-export class UserController {
-  public constructor(private readonly userService: UserService) {}
+@Controller('map')
+export class MapController {
+  public constructor(private readonly mapService: MapService) {}
 
-  @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.userService.create(createUserDto);
+  @UseGuards(AuthGuard())
+  @Patch('my-location')
+  updateLocation(
+    @CurrentUser() user: User,
+    @Body() updateCurrentLocationDto: UpdateCurrentLocationDto,
+  ) {
+    return this.mapService.updateLocation(user, updateCurrentLocationDto);
   }
 
   @UseGuards(AuthGuard())
-  @Get('me')
-  me(@CurrentUser() user: User) {
-    return user;
-  }
-
-  @UseGuards(AuthGuard())
-  @Post('me/add-contact')
-  addContact(@CurrentUser() user: User, @Body() addContactDto: AddContactDto) {
-    return this.userService.addContact(user, addContactDto);
+  @Get('')
+  getLocations(@CurrentUser() user: User) {
+    return this.mapService.getLocations(user);
   }
 
   /*

@@ -3,9 +3,8 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import * as argon2 from 'argon2';
 import { InjectModel } from '@nestjs/mongoose';
-import { DeepPartial, Model, Schema } from 'mongoose';
+import { Condition, DeepPartial, Model, Schema } from 'mongoose';
 import { User, CurrentLocation } from '@types';
-import { UpdateCurrentLocationDto } from './dto/update-current-location.dto';
 import { AddContactDto } from './dto/add-contact.dto';
 
 @Injectable()
@@ -21,17 +20,7 @@ export class UserService {
     return await this.userModel.findOne({ email });
   }
 
-  async updateLocation(
-    user: User,
-    updateLocationDto: UpdateCurrentLocationDto,
-  ) {
-    const location = {
-      longitude:
-        updateLocationDto.longitude as unknown as DeepPartial<Schema.Types.String>,
-      latitude:
-        updateLocationDto.latitude as unknown as DeepPartial<Schema.Types.String>,
-    };
-
+  async updateLocation(user: User, location: any) {
     return await this.userModel.updateOne(
       { email: user.email },
       {
@@ -41,15 +30,31 @@ export class UserService {
   }
 
   async addContact(user: User, addContactDto: AddContactDto) {
-    const contact = await this.userModel.findOne({ _id: addContactDto._id });
+    const contact = await this.userModel.findOne({
+      _id: addContactDto._id as Condition<string>,
+    });
 
     return await this.userModel.updateOne(
       {
         email: user.email,
       },
       {
-        $push: { contact: contact },
+        $push: { contacts: contact },
       },
     );
+  }
+
+  async getContactsLocations(user: User) {
+    return await (
+      await this.userModel
+        .findOne({ _id: user._id })
+        .populate('contacts', '', this.userModel as any)
+    ).contacts.map((contact) => {
+      return {
+        location: contact.location,
+        firstName: contact.firstName,
+        lastName: contact.lastName,
+      };
+    });
   }
 }
