@@ -42,10 +42,10 @@ function RootNavigator() {
     <Stack.Navigator>
       <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
-      <Stack.Screen name="TabMap" component={TabContactScreen} options={{headerShown: false}}/>
-      <Stack.Screen name="TabFollow" component={TabContactScreen} options={{headerShown: false}}/>
+      {/* <Stack.Screen name="TabMap" component={TabMapScreen} options={{headerShown: false}}/>
+      <Stack.Screen name="TabFollow" component={TabFollowScreen} options={{headerShown: false}}/>
       <Stack.Screen name="TabContacts" component={TabContactScreen} options={{headerShown: false}}/>
-      <Stack.Screen name="TabSettings" component={TabSettingsScreen} options={{headerShown: false}}/>
+      <Stack.Screen name="TabSettings" component={TabSettingsScreen} options={{headerShown: false}}/> */}
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
         <Stack.Screen name="Modal" component={ModalScreen} />
       </Stack.Group>
@@ -64,7 +64,7 @@ function BottomTabNavigator() {
 
   return (
     <BottomTab.Navigator
-      initialRouteName="TabMap"
+      initialRouteName="TabFollow"
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme].tint,
       }}>

@@ -32,7 +32,7 @@ const linking: LinkingOptions<RootStackParamList> = {
           },
           TabSettings: {
             screens: {
-              TabContactScreen: 'contact'
+              TabSettingsScreen: 'settings'
             }
           },
         },
