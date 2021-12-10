@@ -16,11 +16,26 @@ import ModalScreen from '../screens/ModalScreen';
 import NotFoundScreen from '../screens/NotFoundScreen';
 import TabOneScreen from '../screens/TabOneScreen';
 import TabTwoScreen from '../screens/TabMapScreen';
+import LoginScreen from '../screens/LoginScreen';
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
+import { useEffect, useState } from 'react';
+import { getToken } from '../repository';
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
+  const [loggedIn, setLoggedIn] = useState(false);
+  useEffect(() => {
+    (async () => {
+      const token = await getToken();
+      setLoggedIn(token ? true : false);
+    })();
+    
+  }, []);
+
   return (
+    loggedIn === false ? 
+    <LoginScreen callback={setLoggedIn}></LoginScreen> 
+    :
     <NavigationContainer
       linking={LinkingConfiguration}
       theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
