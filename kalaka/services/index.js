@@ -78,7 +78,7 @@ export const deleteContact = () => {
 function showToast(error) {
    console.log(error)
    Toast.show({
-    type: 'error',
-    text1: error.message
-  });
+        type: 'error',
+        text1: error.message
+    });
 }
