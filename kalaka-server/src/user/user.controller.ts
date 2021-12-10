@@ -3,7 +3,6 @@ import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { CurrentUser } from '@decorators';
-import { UpdateCurrentLocationDto } from './dto/update-current-location.dto';
 import { User } from '@types';
 import { AddContactDto } from './dto/add-contact.dto';
 
@@ -23,16 +22,7 @@ export class UserController {
   }
 
   @UseGuards(AuthGuard())
-  @Patch('me/location')
-  updateLocation(
-    @CurrentUser() user: User,
-    @Body() updateCurrentLocationDto: UpdateCurrentLocationDto,
-  ) {
-    return this.userService.updateLocation(user, updateCurrentLocationDto);
-  }
-
-  @UseGuards(AuthGuard())
-  @Patch('me/add-contact')
+  @Post('me/add-contact')
   addContact(@CurrentUser() user: User, @Body() addContactDto: AddContactDto) {
     return this.userService.addContact(user, addContactDto);
   }
