@@ -24,6 +24,8 @@ export type RootStackParamList = {
   Login: undefined;
   Chat: undefined;
   Danger: undefined;
+  AddContact: undefined;
+  ChangeContactModal: undefined;
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> = NativeStackScreenProps<

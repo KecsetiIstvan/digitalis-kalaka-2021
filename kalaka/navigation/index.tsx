@@ -24,6 +24,8 @@ import { useEffect, useState } from "react";
 import { getToken } from "../repository";
 import ChatScreen from "../screens/ChatScreen";
 import DangerScreen from "../screens/DangerScreen";
+import AddContactScreen from "../screens/AddContactScreen";
+import ChangeConatctModalScreen from "../screens/ChangeContactModalScreen";
 
 export default function Navigation() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -56,14 +58,15 @@ function RootNavigator() {
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: "Oops!" }} />
       <Stack.Screen name="TabMap" component={TabMapScreen} options={{headerShown: false}}/>
       <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
-      <Stack.Screen name="TabMap" component={TabMapScreen} options={{headerShown: false}}/>
       <Stack.Screen name="TabFollow" component={TabFollowScreen} options={{headerShown: false}}/>
       <Stack.Screen name="TabContacts" component={TabContactScreen} options={{headerShown: false}}/>
       <Stack.Screen name="TabSettings" component={TabSettingsScreen} options={{headerShown: false}}/>
       <Stack.Screen name="Chat" component={ChatScreen} options={{headerShown: false}}/>
       <Stack.Screen name="Danger" component={DangerScreen} options={{headerShown: false}}/>
+      <Stack.Screen name="AddContact" component={AddContactScreen} options={{headerShown: false}}/>
       <Stack.Group screenOptions={{ presentation: "modal" }}>
         <Stack.Screen name="Modal" component={ModalScreen} />
+        <Stack.Screen name="ChangeContactModal" component={ChangeConatctModalScreen} />
       </Stack.Group>
     </Stack.Navigator>
   );

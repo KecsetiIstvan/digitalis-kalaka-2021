@@ -9,7 +9,9 @@ export default function TabContactScreen({ navigation }: RootTabScreenProps<'Tab
     return (
       <View style={styles.container}>
         <Text style={styles.title}>Contacts</Text>
-        
+      
+        <Button onPress={() => navigation.navigate("AddContact")}>Add contact</Button>
+        <Button onPress={() => navigation.navigate("ChangeContactModal")}>Change contact</Button>
         <Button onPress={() => navigation.navigate("Chat")}>Chat</Button>
       </View>
     );
