@@ -11,7 +11,7 @@ export default function TabFollowScreen({ navigation }: RootTabScreenProps<'TabF
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{query.data}</Text>
-      <Button onPress={() => console.log("hello world")}>Primary</Button>
+      <Button onPress={() => me()}>Primary</Button>
     </View>
   );
 }

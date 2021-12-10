@@ -18,11 +18,26 @@ import TabFollowScreen from '../screens/TabFollowScreen';
 import TabMapScreen from '../screens/TabMapScreen';
 import TabContactScreen from '../screens/TabContactsScreen';
 import TabSettingsScreen from '../screens/TabSettingsScreen';
+import LoginScreen from '../screens/LoginScreen';
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
+import { useEffect, useState } from 'react';
+import { getToken } from '../repository';
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
+  const [loggedIn, setLoggedIn] = useState(false);
+  useEffect(() => {
+    (async () => {
+      const token = await getToken();
+      setLoggedIn(token ? true : false);
+    })();
+    
+  }, []);
+
   return (
+    loggedIn === false ? 
+    <LoginScreen callback={setLoggedIn}></LoginScreen> 
+    :
     <NavigationContainer
       linking={LinkingConfiguration}
       theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
