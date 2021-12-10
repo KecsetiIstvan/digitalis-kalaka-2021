@@ -4,8 +4,9 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import * as argon2 from 'argon2';
 import { InjectModel } from '@nestjs/mongoose';
 import { Condition, DeepPartial, Model, Schema } from 'mongoose';
-import { User, CurrentLocation } from '@types';
+import { User, CurrentLocation, EmergencyContact } from '@types';
 import { AddContactDto } from './dto/add-contact.dto';
+import { AddEmergencyContactDto } from './dto/add-emergency-contact-dto';
 
 @Injectable()
 export class UserService {
@@ -56,5 +57,39 @@ export class UserService {
         lastName: contact.lastName,
       };
     });
+  }
+
+  async getContact(id: string) {
+    const contact = await this.userModel.findOne({ _id: id });
+    const { password, ...retCont } = contact;
+    return retCont;
+  }
+
+  async deleteContact(user: User, id: string) {
+    const contact = user.contacts.filter((contact) => contact._id !== id);
+    return await this.userModel.updateOne(
+      {
+        email: user.email,
+      },
+      {
+        $set: { contacts: contact },
+      },
+    );
+  }
+
+  async addEmergencyContact(user: User, emergencyContact: AddEmergencyContactDto) {
+    return 'asd';
+  }
+
+  async deleteEmergencyContact(user: User, emergencyContact: AddEmergencyContactDto) {
+    return 'asd';
+  }
+
+  async getEmergencyContact(user: User, emergencyContact: AddEmergencyContactDto) {
+    return 'asd';
+  }
+
+  async updateEmergencyContact(user: User, emergencyContact: AddEmergencyContactDto) {
+    return 'asd';
   }
 }

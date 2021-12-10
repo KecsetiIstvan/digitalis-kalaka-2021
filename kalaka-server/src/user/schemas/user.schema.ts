@@ -2,6 +2,7 @@ import * as mongoose from 'mongoose';
 import * as argon2 from 'argon2';
 import { CurrentLocation } from '@types';
 import { LocationSchema } from './location.schema';
+import { EmergencyContactSchema } from './emergencyContact.schema';
 
 export const UserSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
@@ -10,6 +11,11 @@ export const UserSchema = new mongoose.Schema({
   lastName: { type: String, required: true, unique: false },
   location: { type: LocationSchema, required: false, unique: false },
   contacts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+  emergencyContacts: {
+    type: EmergencyContactSchema,
+    required: false,
+    unique: false,
+  },
 });
 
 UserSchema.pre('save', async function (next) {

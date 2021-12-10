@@ -8,4 +8,12 @@ export interface User {
   lastName: string;
   location: CurrentLocation;
   contacts: User[];
+  emergencyContacts: EmergencyContact[];
+}
+
+export interface EmergencyContact {
+  uuid: string;
+  name: string;
+  emergencyInfo: string;
+  settings: string;
 }
