@@ -8,7 +8,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer, DefaultTheme, DarkTheme } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as React from "react";
-import { ColorSchemeName, Pressable } from "react-native";
+import { Pressable } from "react-native";
 
 import Colors from "../constants/Colors";
 import ModalScreen from "../screens/ModalScreen";
@@ -22,6 +22,8 @@ import { RootStackParamList, RootTabParamList, RootTabScreenProps } from "../typ
 import LinkingConfiguration from "./LinkingConfiguration";
 import { useEffect, useState } from "react";
 import { getToken } from "../repository";
+import ChatScreen from "../screens/ChatScreen";
+import DangerScreen from "../screens/DangerScreen";
 
 export default function Navigation() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -52,10 +54,12 @@ function RootNavigator() {
     <Stack.Navigator>
       <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: "Oops!" }} />
-      {/* <Stack.Screen name="TabMap" component={TabMapScreen} options={{headerShown: false}}/>
+      <Stack.Screen name="TabMap" component={TabMapScreen} options={{headerShown: false}}/>
       <Stack.Screen name="TabFollow" component={TabFollowScreen} options={{headerShown: false}}/>
       <Stack.Screen name="TabContacts" component={TabContactScreen} options={{headerShown: false}}/>
-      <Stack.Screen name="TabSettings" component={TabSettingsScreen} options={{headerShown: false}}/> */}
+      <Stack.Screen name="TabSettings" component={TabSettingsScreen} options={{headerShown: false}}/>
+      <Stack.Screen name="Chat" component={ChatScreen} options={{headerShown: false}}/>
+      <Stack.Screen name="Danger" component={DangerScreen} options={{headerShown: false}}/>
       <Stack.Group screenOptions={{ presentation: "modal" }}>
         <Stack.Screen name="Modal" component={ModalScreen} />
       </Stack.Group>

@@ -1,19 +1,19 @@
 import * as React from 'react';
 import { StyleSheet } from 'react-native';
-import { FormControl, Image, View, Input, Text} from 'native-base';
+import { FormControl, Image, View, Text, Button} from 'native-base';
 
-export default function ChatScreen(props: any) {
+export default function DangerScreen() {
     return (
         <View style={styles.container}>
           <Image source={{uri: "https://wallpaperaccess.com/full/317501.jpg",}} alt="Login page image" size="xl"/>
     
           <FormControl isInvalid = {false} w={{ base: "75%", md: "25%",}} alignItems={"center"}>
-            <Text fontSize={"lg"} > Tar Béla {"\n"}</Text>
-            <Text fontSize={"xl"} bold> SAFE {"\n"}</Text>
-    
-            
-            <Input placeholder="Chat message" type="text"  w={{base: "100%", md: "25%",}}/>
+            <Text fontSize={"lg"} > I'm in danger {"\n"}</Text>
 
+            <Button >I'm in danger</Button>
+            <Button >Call me</Button>
+            <Button >I'm home</Button>
+            <Button >Pause</Button>
           </FormControl>
         </View>
       );
