@@ -9,5 +9,5 @@ export const getToken = async () => {
 }
 
 export const deleteToken = async () => {
-    return await AsyncStorage.deleteItem('@kalaka_jwt_token');
+    return await AsyncStorage.removeItem('@kalaka_jwt_token');
 }

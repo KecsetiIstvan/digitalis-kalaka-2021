@@ -46,12 +46,12 @@ export class AuthService {
       const isMatch = await argon2.verify(user.password, loginUserDto.password);
       if (!isMatch)
         throw new HttpException(
-          'Unauthorized exception',
+          'Hibás bejelentkezési adatok',
           HttpStatus.UNAUTHORIZED,
         );
     } catch {
       throw new HttpException(
-        'Unauthorized exception',
+        'Hibás bejelentkezési adatok',
         HttpStatus.UNAUTHORIZED,
       );
     }
