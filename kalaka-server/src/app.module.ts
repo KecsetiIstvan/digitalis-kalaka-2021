@@ -8,13 +8,17 @@ import { ConfigModule } from '@nestjs/config';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { AuthModule } from './auth/auth.module';
+import { SeedsModule } from './seeders/seeds.module';
+import { CommandModule } from 'nestjs-command';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
     UserModule,
     AuthModule,
+    SeedsModule,
     MongooseModule.forRootAsync(databaseConfig),
+    CommandModule,
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'public'),
       exclude: ['/api*'],

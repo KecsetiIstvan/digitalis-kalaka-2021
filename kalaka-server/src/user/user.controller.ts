@@ -1,9 +1,11 @@
-import { Controller, Post, Body, Get, UseGuards } from '@nestjs/common';
+import { Controller, Post, Body, Get, UseGuards, Patch } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { CurrentUser } from '@decorators';
-import { User } from './user.interface';
+import { UpdateCurrentLocationDto } from './dto/update-current-location.dto';
+import { User } from '@types';
+import { AddContactDto } from './dto/add-contact.dto';
 
 @Controller('users')
 export class UserController {
@@ -19,6 +21,22 @@ export class UserController {
   me(@CurrentUser() user: User) {
     return user;
   }
+
+  @UseGuards(AuthGuard())
+  @Patch('me/location')
+  updateLocation(
+    @CurrentUser() user: User,
+    @Body() updateCurrentLocationDto: UpdateCurrentLocationDto,
+  ) {
+    return this.userService.updateLocation(user, updateCurrentLocationDto);
+  }
+
+  @UseGuards(AuthGuard())
+  @Patch('me/add-contact')
+  addContact(@CurrentUser() user: User, @Body() addContactDto: AddContactDto) {
+    return this.userService.addContact(user, addContactDto);
+  }
+
   /*
   @Get(':id')
   findOne(@Param('id', ParseIntPipe) id: number) {
