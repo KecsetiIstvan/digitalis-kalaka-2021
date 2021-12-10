@@ -3,7 +3,7 @@ import { getToken, setToken } from '../repository';
 import Toast from 'react-native-toast-message';
 
 const apiClient = axios.create({
-    baseURL: 'http://192.168.1.192:3000'
+    baseURL: 'http://192.168.1.192:3000/api'
 });
 
 axios.interceptors.request.use(async(request) => {
@@ -15,7 +15,7 @@ axios.interceptors.request.use(async(request) => {
 });
 
 export const auth = async (email, password) => {
-    const resp = await apiClient.post('/api/auth/login', { email: email, password: password}).catch(err => {showToast(err); return})
+    const resp = await apiClient.post('/auth/login', { email: email, password: password}).catch(err => {showToast(err); return})
     if(resp) {
         return resp.data;
     }

@@ -10,7 +10,7 @@ export default function LoginScreen(props: any) {
   const [password, setPassword] = React.useState<string>('');
   const [email, setEmail] = React.useState<string>('');
   const [invalid, setInvalid] = React.useState(false);
-  const [errorMessage, setErrorMessage] = React.useState('Az email cím és a jelszó nem egyezik!');
+  const [errorMessage, setErrorMessage] = React.useState('Létező email cím!');
 
   const handleEmailChange = (event: any) => {
     setEmail(event)
@@ -44,11 +44,13 @@ export default function LoginScreen(props: any) {
         <FormControl.Label>Jelszó</FormControl.Label>
         <Input value={password} onChangeText={handlePasswordChange} placeholder="Jelszó" type="password"/>
 
+        <FormControl.Label>Jelszó megerősítése</FormControl.Label>
+        <Input value={password} onChangeText={handlePasswordChange} placeholder="Jelszó megerősítése" type="password"/>
+
         <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>{errorMessage}</FormControl.ErrorMessage>
 
-        <Button onPress={handleLogin} disabled={!password || !email}>Bejelentkezés</Button>
-        <Button onPress={() => props.callback(true)}>Bejelentkezés google használatával</Button>
-        <Button onPress={() => props.callback(true)}>Regisztráció</Button>
+        <Button onPress={handleLogin} disabled={!password || !email}>Regisztrálás</Button>
+        <Button onPress={() => props.callback(true)}>Van már felhasználód? Jelentkezz be!</Button>
 
       </FormControl>
     </View>
