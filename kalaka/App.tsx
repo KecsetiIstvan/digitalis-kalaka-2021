@@ -7,6 +7,7 @@ import useColorScheme from './hooks/useColorScheme';
 import Navigation from './navigation';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { NativeBaseProvider } from 'native-base';
+import Toast from 'react-native-toast-message';
 
 export default function App() {
   const queryClient = new QueryClient()
@@ -23,6 +24,7 @@ export default function App() {
           <NativeBaseProvider>
             <Navigation colorScheme={colorScheme} />
             <StatusBar />
+            <Toast />
           </NativeBaseProvider>
         </SafeAreaProvider>
       </QueryClientProvider>

@@ -7,12 +7,12 @@ import { useQuery } from 'react-query';
 import { me } from '../services';
 
 export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
-  const query = useQuery('me', me);
+  const query = useQuery('me', () => { me(); });
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{query.data}</Text>
-      <Button onPress={() => console.log("hello world")}>Primary</Button>
+      <Button onPress={() => me()}>Primary</Button>
     </View>
   );
 }
