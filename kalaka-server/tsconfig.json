@@ -1,5 +1,14 @@
 {
   "compilerOptions": {
+    "paths": {
+      "@config": ["./src/config"],
+      "@utils": ["./src/utils"],
+      "@seeders": ["./src/seeders"],
+      "@interceptors": ["./src/interceptors"],
+      "@guards": ["./src/guards"],
+      "@decorators": ["./src/decorators"],
+      "@types": ["./src/types"]
+    },
     "module": "commonjs",
     "declaration": true,
     "removeComments": true,
