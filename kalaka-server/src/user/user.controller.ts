@@ -1,11 +1,11 @@
-import { Controller, Post, Body, Get, UseGuards, Patch } from '@nestjs/common';
+import { Controller, Post, Body, Get, UseGuards, Patch, Param, HttpStatus, HttpException } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { CurrentUser } from '@decorators';
-import { UpdateCurrentLocationDto } from './dto/update-current-location.dto';
 import { User } from '@types';
 import { AddContactDto } from './dto/add-contact.dto';
+import { AddEmergencyContactDto } from './dto/add-emergency-contact-dto';
 
 @Controller('users')
 export class UserController {
@@ -23,26 +23,45 @@ export class UserController {
   }
 
   @UseGuards(AuthGuard())
-  @Patch('me/location')
-  updateLocation(
-    @CurrentUser() user: User,
-    @Body() updateCurrentLocationDto: UpdateCurrentLocationDto,
-  ) {
-    return this.userService.updateLocation(user, updateCurrentLocationDto);
-  }
-
-  @UseGuards(AuthGuard())
-  @Patch('me/add-contact')
+  @Post('me/add-contact')
   addContact(@CurrentUser() user: User, @Body() addContactDto: AddContactDto) {
     return this.userService.addContact(user, addContactDto);
   }
 
-  /*
-  @Get(':id')
-  findOne(@Param('id', ParseIntPipe) id: number) {
-    return this.usersService.findOne(id);
+  @UseGuards(AuthGuard())
+  @Post('me/add-emergency-contact')
+  addEmergencyContact(
+    @CurrentUser() user: User,
+    @Body() addEmergencyContactDto: AddEmergencyContactDto,
+  ) {
+    return this.userService.addEmergencyContact(user, addEmergencyContactDto);
   }
 
+  @UseGuards(AuthGuard())
+  @Get(':id')
+  findOneContact(@CurrentUser() user: User, @Param('id') id: string) {
+    if (user.contacts.includes(id as unknown as User)) {
+      return this.userService.getContact(id);
+    }
+    return new HttpException(
+      'A kért felhasználó nem az ismerősöd',
+      HttpStatus.UNAUTHORIZED,
+    );
+  }
+
+  @UseGuards(AuthGuard())
+  @Get(':id')
+  deleteContact(@CurrentUser() user: User, @Param('id') id: string) {
+    if (user.contacts.filter((contact) => contact._id === id).length > 0) {
+      return this.userService.deleteContact(user, id);
+    }
+    return new HttpException(
+      'A kért felhasználó nem az ismerősöd',
+      HttpStatus.UNAUTHORIZED,
+    );
+  }
+
+  /*
   @Patch(':id')
   update(
     @Param('id', ParseIntPipe) id: number,
