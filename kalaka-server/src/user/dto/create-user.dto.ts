@@ -15,7 +15,7 @@ export class CreateUserDto {
   @IsNotEmpty({
     message: 'Hiba: Keresztnév kötelező!',
   })
-  public readonly fistName: Schema.Types.String;
+  public readonly firstName: Schema.Types.String;
 
   @IsNotEmpty({
     message: 'Hiba: Vezetéknév kötelező!',

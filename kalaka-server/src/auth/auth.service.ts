@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
-import { User } from 'src/user/user.interface';
+
 import { UserService } from 'src/user/user.service';
 //import { UserTokensService } from 'src/user/user-tokens/user-tokens.service';
 import { CreateUserDto } from '../user/dto/create-user.dto';
@@ -11,6 +11,7 @@ import { JwtPayload } from './jwt.payload';
 import { LoginStatus } from './login.status';
 import { RegistrationStatus } from './registration.status';
 import * as argon2 from 'argon2';
+import { User } from '@types';
 
 @Injectable()
 export class AuthService {
