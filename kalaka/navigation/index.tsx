@@ -11,7 +11,7 @@ import * as React from "react";
 import { Pressable } from "react-native";
 
 import Colors from "../constants/Colors";
-import ModalScreen from "../screens/ModalScreen";
+import ModalScreen from "../screens/modal/ModalScreen";
 import NotFoundScreen from "../screens/NotFoundScreen";
 import TabFollowScreen from "../screens/TabFollowScreen";
 import TabMapScreen from "../screens/TabMapScreen";
@@ -25,7 +25,11 @@ import { getToken } from "../repository";
 import ChatScreen from "../screens/ChatScreen";
 import DangerScreen from "../screens/DangerScreen";
 import AddContactScreen from "../screens/AddContactScreen";
-import ChangeConatctModalScreen from "../screens/ChangeContactModalScreen";
+import ChangeConatctModalScreen from "../screens/modal/ChangeContactModalScreen";
+import PersonalDataModalScreen from "../screens/modal/PersonalDataModalScreen";
+import SafetyFeaturesModalScreen from "../screens/modal/SafetyFeaturesModalScreen";
+import NotificationsModalScreen from "../screens/modal/NotificationsModalScreen";
+import TermdModalScreen from "../screens/modal/TermsModalScreen";
 
 export default function Navigation() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -67,6 +71,10 @@ function RootNavigator() {
       <Stack.Group screenOptions={{ presentation: "modal" }}>
         <Stack.Screen name="Modal" component={ModalScreen} />
         <Stack.Screen name="ChangeContactModal" component={ChangeConatctModalScreen} />
+        <Stack.Screen name="PersonalDataModal" component={PersonalDataModalScreen} />
+        <Stack.Screen name="SafetyFeaturesModal" component={SafetyFeaturesModalScreen}/>
+        <Stack.Screen name="NotificationsModal" component={NotificationsModalScreen}/>
+        <Stack.Screen name="TermsModal" component={TermdModalScreen}/>
       </Stack.Group>
     </Stack.Navigator>
   );
@@ -90,7 +98,7 @@ function BottomTabNavigator() {
         name="TabMap"
         component={TabMapScreen}
         options={{
-          title: "Map",
+          title: "Térkép",
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
         }}
       />
@@ -98,7 +106,7 @@ function BottomTabNavigator() {
         name="TabFollow"
         component={TabFollowScreen}
         options={({ navigation }: RootTabScreenProps<"TabFollow">) => ({
-          title: "Follow",
+          title: "Követés",
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
           headerRight: () => (
             <Pressable
@@ -116,7 +124,7 @@ function BottomTabNavigator() {
         name="TabContacts"
         component={TabContactScreen}
         options={{
-          title: "Contacts",
+          title: "Kontaktok",
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
         }}
       />
@@ -124,7 +132,7 @@ function BottomTabNavigator() {
         name="TabSettings"
         component={TabSettingsScreen}
         options={{
-          title: "Settings",
+          title: "Beállítások",
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
         }}
       />

@@ -2,12 +2,12 @@ import { StatusBar } from 'expo-status-bar';
 import * as React from 'react';
 import { Platform, StyleSheet } from 'react-native';
 
-import { Text, View } from '../components/Themed';
+import { Text, View } from '../../components/Themed';
 
-export default function ChangeConatctModalScreen() {
+export default function NotificationsModalScreen() {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Pop over modal</Text>
+      <Text style={styles.title}>Notifications Modal</Text>
       {/* Use a light status bar on iOS to account for the black space above the modal */}
       <StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />
     </View>
