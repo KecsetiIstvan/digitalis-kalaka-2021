@@ -14,6 +14,7 @@ export const CurrentUser = createParamDecorator(
       email: userData.email,
       firstName: userData.firstName,
       lastName: userData.lastName,
+      contacts: userData.contacts,
     };
   },
 );
