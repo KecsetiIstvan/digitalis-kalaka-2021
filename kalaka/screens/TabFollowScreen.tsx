@@ -14,7 +14,7 @@ export default function TabFollowScreen({ navigation }: RootTabScreenProps<"TabF
   const [selectedOption, setSelectedOption] = React.useState("none");
   return (
     <View style={styles.container}>
-      <FormControl.Label>Hova kísérjünk?</FormControl.Label>
+      <FormControl.Label color={Colors.text}>Hova kísérjünk?</FormControl.Label>
       <Input value={whereYouGO} onChangeText={setWhereYouGo} placeholder="" type="text" marginBottom={4} />
 
       <HStack alignItems="center" marginBottom={48}>
@@ -22,7 +22,7 @@ export default function TabFollowScreen({ navigation }: RootTabScreenProps<"TabF
         <Switch size="sm" offTrackColor={Colors.secondaryTransparent} trackColor={{ true: Colors.primary }} />
       </HStack>
 
-      <Box>
+      <Box style={{ alignSelf: "center" }}>
         <SimpleGrid columns={2}>
           <Button
             onPress={() => (selectedOption !== "watchme" ? setSelectedOption("watchme") : setSelectedOption("none"))}
