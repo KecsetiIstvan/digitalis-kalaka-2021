@@ -6,6 +6,15 @@ export interface User {
   password: string;
   firstName: string;
   lastName: string;
+  phone: string;
   location: CurrentLocation;
   contacts: User[];
+  emergencyContacts: EmergencyContact[];
+}
+
+export interface EmergencyContact {
+  _id: string;
+  name: string;
+  emergencyInfo: string;
+  settings: string;
 }

@@ -4,8 +4,9 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import * as argon2 from 'argon2';
 import { InjectModel } from '@nestjs/mongoose';
 import { Condition, DeepPartial, Model, Schema } from 'mongoose';
-import { User, CurrentLocation } from '@types';
+import { User, CurrentLocation, EmergencyContact } from '@types';
 import { AddContactDto } from './dto/add-contact.dto';
+import { AddEmergencyContactDto } from './dto/add-emergency-contact-dto';
 
 @Injectable()
 export class UserService {
@@ -56,5 +57,74 @@ export class UserService {
         lastName: contact.lastName,
       };
     });
+  }
+
+  async getContact(id: string) {
+    const contact = await this.userModel.findOne({ _id: id });
+    return {
+      firstName: contact.firstName,
+      lastName: contact.lastName,
+      email: contact.email,
+      location: contact.location,
+    };
+  }
+
+  async deleteContact(user: User, id: string) {
+    const userToDelete = await this.userModel.findOne({ _id: id });
+    const userToDeleteFrom = await this.userModel
+      .findOne({ _id: user._id })
+      .populate('contacts', '', this.userModel as any);
+    const contact = userToDeleteFrom.contacts.filter(
+      (contact) => contact.email !== userToDelete.email,
+    );
+
+    return await this.userModel.updateOne(
+      {
+        email: user.email,
+      },
+      {
+        contacts: contact,
+      },
+    );
+  }
+
+  async addEmergencyContact(
+    user: User,
+    emergencyContact: AddEmergencyContactDto,
+  ) {
+    return await this.userModel.updateOne(
+      {
+        email: user.email,
+      },
+      {
+        $push: { emergencyContacts: emergencyContact },
+      },
+    );
+  }
+
+  async deleteEmergencyContact(user: User, id: string) {
+    const emergencyContact = user.emergencyContacts.filter(
+      (emergencyContact) => emergencyContact._id.toString() !== id,
+    );
+
+    return await this.userModel.updateOne(
+      {
+        email: user.email,
+      },
+      {
+        emergencyContacts: emergencyContact,
+      },
+    );
+  }
+
+  async getEmergencyContact(user: User, id: string) {
+    const contact = user.emergencyContacts.find(
+      (item) => item._id.toString() === id,
+    );
+    return contact;
+  }
+
+  async updateEmergencyContact(user: User, id: string) {
+    return 'asd';
   }
 }

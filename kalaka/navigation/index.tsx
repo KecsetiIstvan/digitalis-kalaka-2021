@@ -83,6 +83,7 @@ function BottomTabNavigator() {
         component={TabMapScreen}
         options={{
           title: "Map",
+          headerShown: false,
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
         }}
       />
@@ -91,6 +92,7 @@ function BottomTabNavigator() {
         component={TabFollowScreen}
         options={({ navigation }: RootTabScreenProps<"TabFollow">) => ({
           title: "Follow",
+          headerShown: false,
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
           headerRight: () => (
             <Pressable
@@ -109,6 +111,7 @@ function BottomTabNavigator() {
         component={TabContactScreen}
         options={{
           title: "Contacts",
+          headerShown: false,
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
         }}
       />
@@ -117,6 +120,7 @@ function BottomTabNavigator() {
         component={TabSettingsScreen}
         options={{
           title: "Settings",
+          headerShown: false,
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
         }}
       />
