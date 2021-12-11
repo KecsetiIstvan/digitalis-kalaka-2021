@@ -4,6 +4,7 @@ import { User } from '@types';
 
 import { UserService } from '../user/user.service';
 import { UpdateCurrentLocationDto } from './dto/update-current-location.dto';
+import { UpdateStatusDto } from './dto/update-status.dto';
 
 @Injectable()
 export class MapService {
@@ -25,10 +26,13 @@ export class MapService {
 
   async getLocations(user: User) {
     return await this.userService.getContactsLocations(user);
-    //return await this.userService.find({ email: user.email });
-    /*.contacts.map((contact) => {
-      console.log(contact);
-      return contact.location;
-    });*/
+  }
+
+  async updateStatus(user: User, updateStatusDto: UpdateStatusDto) {
+    return await this.userService.updateStatus(
+      user,
+      updateStatusDto.status,
+      updateStatusDto.isLocationShared as unknown as boolean,
+    );
   }
 }

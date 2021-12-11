@@ -78,6 +78,16 @@ export const updateLocation = async (longitude, latitude) => {
   }
 };
 
+export const updateStatus = async (status, isLocationShared) => {
+  const resp = await apiClient.patch("/map/my-status", { status, isLocationShared }).catch((err) => {
+    showToast(err);
+    return;
+  });
+  if (resp) {
+    return resp.data;
+  }
+};
+
 export const getMap = async () => {
   const resp = await apiClient.get("/map").catch((err) => {
     showToast(err);

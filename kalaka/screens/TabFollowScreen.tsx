@@ -1,145 +1,186 @@
 import * as React from "react";
-import { StyleSheet } from "react-native";
+import { Animated, SafeAreaView, StyleSheet } from "react-native";
 import { Box, Button, FormControl, HStack, Input, SimpleGrid, Switch } from "native-base";
 import { Text, View } from "../components/Themed";
 import { RootTabScreenProps } from "../types";
 import { useQuery } from "react-query";
-import { me } from "../services";
+import { me, updateStatus } from "../services";
 import Colors from "../constants/Colors";
 import { FontAwesome5 } from "@expo/vector-icons";
+import * as Animatable from "react-native-animatable";
 
 export default function TabFollowScreen({ navigation }: RootTabScreenProps<"TabFollow">) {
   const [whereYouGO, setWhereYouGo] = React.useState<string>("");
-
   const [selectedOption, setSelectedOption] = React.useState("none");
+  const [isLocationEnabled, setIsLocationEnabled] = React.useState<boolean>(false);
+
+  const [error, setError] = React.useState(false);
+
+  const handleStart = async () => {
+    if (selectedOption === "none") {
+      setError(true);
+      setTimeout(() => setError(false), 500);
+    } else {
+      await handleOnTripBegin();
+      navigation.navigate("Danger", { isLocationEnabled });
+    }
+  };
+
+  const handleOnTripBegin = async () => {
+    await updateStatus("WALKING", isLocationEnabled);
+  };
+
   return (
-    <View style={styles.container}>
-      <FormControl.Label color={Colors.text}>Hova kísérjünk?</FormControl.Label>
-      <Input value={whereYouGO} onChangeText={setWhereYouGo} placeholder="" type="text" marginBottom={4} />
+    // @ts-ignore
+    <SafeAreaView flex={1}>
+      <View style={styles.container}>
+        <FormControl.Label color={Colors.text}>Hova kísérjünk?</FormControl.Label>
+        <Input value={whereYouGO} onChangeText={setWhereYouGo} placeholder="" type="text" marginBottom={4} />
 
-      <HStack alignItems="center" marginBottom={48}>
-        <Text style={{ ...styles.text, marginRight: "auto" }}>Helymegosztás bekapcsolása</Text>
-        <Switch size="sm" offTrackColor={Colors.secondaryTransparent} trackColor={{ true: Colors.primary }} />
-      </HStack>
+        <HStack alignItems="center" marginBottom={48}>
+          <Text
+            onPress={() => setIsLocationEnabled(!isLocationEnabled)}
+            style={{ ...styles.text, marginRight: "auto" }}
+          >
+            Helymegosztás bekapcsolása
+          </Text>
+          <Switch
+            size="sm"
+            offTrackColor={Colors.secondaryTransparent}
+            trackColor={{ true: Colors.primary }}
+            isChecked={isLocationEnabled}
+            onToggle={() => setIsLocationEnabled(!isLocationEnabled)}
+          />
+        </HStack>
 
-      <Box style={{ alignSelf: "center" }}>
-        <SimpleGrid columns={2}>
-          <Button
-            onPress={() => (selectedOption !== "watchme" ? setSelectedOption("watchme") : setSelectedOption("none"))}
-            backgroundColor={Colors.textTransparent}
-            h={140}
-            w={140}
-            style={{
-              borderTopLeftRadius: 1000,
-              borderTopRightRadius: 0,
-              borderBottomRightRadius: 0,
-              borderBottomLeftRadius: 0,
-              overflow: "hidden",
-            }}
-          >
-            <FontAwesome5
-              name="microphone"
-              size={32}
-              color={selectedOption === "watchme" ? Colors.text : Colors.background}
-              style={{ marginRight: 0 }}
-            />
-          </Button>
-          <Button
-            onPress={() =>
-              selectedOption !== "comewithme" ? setSelectedOption("comewithme") : setSelectedOption("none")
-            }
-            backgroundColor={Colors.locationButton}
-            h={140}
-            w={140}
-            style={{
-              borderTopLeftRadius: 0,
-              borderTopRightRadius: 1000,
-              borderBottomRightRadius: 60,
-              borderBottomLeftRadius: 0,
-              overflow: "hidden",
-            }}
-          >
-            <FontAwesome5
-              name="map-marker"
-              size={32}
-              color={selectedOption === "comewithme" ? Colors.text : Colors.background}
-              style={{ marginRight: 0 }}
-            />
-            <FontAwesome5
-              solid
-              name="circle"
-              size={12}
-              color={Colors.locationButton}
-              style={{ position: "absolute", marginLeft: 6, marginTop: 6 }}
-            />
-          </Button>
-          <Button
-            onPress={() => (selectedOption !== "holdme" ? setSelectedOption("holdme") : setSelectedOption("none"))}
-            backgroundColor={Colors.primary}
-            h={137}
-            w={140}
-            style={{
-              borderTopLeftRadius: 0,
-              borderTopRightRadius: 0,
-              borderBottomRightRadius: 0,
-              borderBottomLeftRadius: 1000,
-              overflow: "hidden",
-            }}
-          >
-            <FontAwesome5
-              solid
-              name="hand-paper"
-              size={32}
-              color={selectedOption === "holdme" ? Colors.text : Colors.background}
-              style={{ marginRight: 0 }}
-            />
-          </Button>
-          <Box marginTop={1}>
+        <Box style={{ alignSelf: "center" }}>
+          <SimpleGrid columns={2}>
             <Button
-              backgroundColor={Colors.dangerTransparet}
-              h={79}
+              onPress={() => (selectedOption !== "watchme" ? setSelectedOption("watchme") : setSelectedOption("none"))}
+              backgroundColor={Colors.textTransparent}
+              h={140}
               w={140}
-              marginTop={60}
               style={{
-                borderTopLeftRadius: 0,
-                borderTopRightRadius: 8,
-                borderBottomRightRadius: 8,
+                borderTopLeftRadius: 1000,
+                borderTopRightRadius: 0,
+                borderBottomRightRadius: 0,
                 borderBottomLeftRadius: 0,
+                overflow: "hidden",
               }}
             >
-              <Text style={{ color: Colors.background, fontSize: 20, fontWeight: "bold" }}>Indulhatunk!</Text>
+              <Animatable.Text animation={error ? "flash" : ""} delay={400}>
+                <FontAwesome5
+                  name="microphone"
+                  size={32}
+                  color={selectedOption === "watchme" ? Colors.text : Colors.background}
+                  style={{ marginRight: 0 }}
+                />
+              </Animatable.Text>
             </Button>
-          </Box>
-        </SimpleGrid>
-        <Box
-          width={140}
-          height={138}
-          backgroundColor={"#fff"}
-          style={{
-            position: "absolute",
-            left: "50%",
-            marginLeft: -74,
-            top: "50%",
-            marginTop: -73,
-            borderRadius: 100000,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <Box marginTop="1">
-            <FontAwesome5 solid name="circle" size={40} color={Colors.text} />
-            <FontAwesome5
-              style={{ position: "absolute", marginLeft: 16, marginTop: 8 }}
-              solid
-              name="info"
-              size={22}
-              color={Colors.background}
-            />
+            <Button
+              onPress={() =>
+                selectedOption !== "comewithme" ? setSelectedOption("comewithme") : setSelectedOption("none")
+              }
+              backgroundColor={Colors.locationButton}
+              h={140}
+              w={140}
+              style={{
+                borderTopLeftRadius: 0,
+                borderTopRightRadius: 1000,
+                borderBottomRightRadius: 60,
+                borderBottomLeftRadius: 0,
+                overflow: "hidden",
+              }}
+            >
+              <Animatable.Text animation={error ? "flash" : ""} delay={400}>
+                <Box style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  <FontAwesome5
+                    name="map-marker"
+                    size={32}
+                    color={selectedOption === "comewithme" ? Colors.text : Colors.background}
+                    style={{ marginRight: 0 }}
+                  />
+                  <FontAwesome5
+                    solid
+                    name="circle"
+                    size={12}
+                    color={Colors.locationButton}
+                    style={{ position: "absolute", marginLeft: 0, paddingBottom: 6 }}
+                  />
+                </Box>
+              </Animatable.Text>
+            </Button>
+            <Button
+              onPress={() => (selectedOption !== "holdme" ? setSelectedOption("holdme") : setSelectedOption("none"))}
+              backgroundColor={Colors.primary}
+              h={137}
+              w={140}
+              style={{
+                borderTopLeftRadius: 0,
+                borderTopRightRadius: 0,
+                borderBottomRightRadius: 0,
+                borderBottomLeftRadius: 1000,
+                overflow: "hidden",
+              }}
+            >
+              <Animatable.Text animation={error ? "flash" : ""} delay={400}>
+                <FontAwesome5
+                  solid
+                  name="hand-paper"
+                  size={32}
+                  color={selectedOption === "holdme" ? Colors.text : Colors.background}
+                  style={{ marginRight: 0 }}
+                />
+              </Animatable.Text>
+            </Button>
+            <Box marginTop={1}>
+              <Button
+                onPress={() => handleStart()}
+                backgroundColor={Colors.dangerTransparet}
+                h={79}
+                w={140}
+                marginTop={60}
+                style={{
+                  borderTopLeftRadius: 0,
+                  borderTopRightRadius: 8,
+                  borderBottomRightRadius: 8,
+                  borderBottomLeftRadius: 0,
+                }}
+              >
+                <Text style={{ color: Colors.background, fontSize: 20, fontWeight: "bold" }}>Indulhatunk!</Text>
+              </Button>
+            </Box>
+          </SimpleGrid>
+          <Box
+            width={140}
+            height={138}
+            backgroundColor={"#fff"}
+            style={{
+              position: "absolute",
+              left: "50%",
+              marginLeft: -74,
+              top: "50%",
+              marginTop: -73,
+              borderRadius: 100000,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Box marginTop="1">
+              <FontAwesome5 solid name="circle" size={40} color={Colors.text} />
+              <FontAwesome5
+                style={{ position: "absolute", marginLeft: 16, marginTop: 8 }}
+                solid
+                name="info"
+                size={22}
+                color={Colors.background}
+              />
+            </Box>
           </Box>
         </Box>
-      </Box>
-    </View>
+      </View>
+    </SafeAreaView>
   );
 }
 
@@ -148,7 +189,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     padding: 32,
-    marginTop: 80,
   },
   title: {
     fontSize: 20,

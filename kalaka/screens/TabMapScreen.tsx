@@ -8,11 +8,10 @@ import MapView, { Marker } from "react-native-maps";
 import { useQuery } from "react-query";
 import { getMap, updateLocation } from "../services";
 import { Box, Button } from "native-base";
-import uuid from "react-native-uuid";
+import * as Animatable from "react-native-animatable";
+import Colors from "../constants/Colors";
 
 export default function TabMapScreen() {
-  const [location, setLocation] = useState<Location.LocationObject>();
-  const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [region, setRegion] = useState<any>({
     latitude: 0,
     longitude: 0,
@@ -21,65 +20,51 @@ export default function TabMapScreen() {
   });
   const [elRefMutants, setElRefMutants] = React.useState<any>([]);
 
+  const [danger, setDanger] = React.useState(false);
+
   const animate = (markerData: any) => {
     markerData.map((m: any, index: any) => {
-      if (false) {
-        if (
-          elRefMutants[index] &&
-          elRefMutants[index].ref &&
-          elRefMutants[index].ref.current &&
-          elRefMutants[index].ref.current
-        ) {
-          elRefMutants[index]?.ref.current._component.animateMarkerToCoordinate(
-            {
-              longitude: parseFloat(elRefMutants[index].info.location.longitude),
-              latitude: parseFloat(elRefMutants[index].info.location.latitude),
-            },
-            500
-          );
-        }
-      } else {
-        // `useNativeDriver` defaults to false if not passed explicitly
-        if (
-          elRefMutants[index] &&
-          elRefMutants[index].ref &&
-          elRefMutants[index].ref.current &&
-          elRefMutants[index].ref.current.timing
-        ) {
-          elRefMutants[index]?.ref.current
-            .timing({ ...elRefMutants[index].info.location, useNativeDriver: true })
-            .start();
-        }
+      if (
+        elRefMutants[index] &&
+        elRefMutants[index].ref &&
+        elRefMutants[index].ref.current &&
+        elRefMutants[index].ref.current.timing
+      ) {
+        elRefMutants[index]?.ref.current
+          .timing({ ...elRefMutants[index].info.location, useNativeDriver: true })
+          .start();
       }
     });
   };
 
   const { data } = useQuery(
     "map",
+
     () => {
       return getMap();
     },
-    { refetchInterval: 500 }
+    { refetchInterval: 1000, cacheTime: 0 }
   );
 
-  useEffect(() => {
+  React.useEffect(() => {
     (async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== "granted") {
-        setErrorMsg("Permission to access location was denied");
+        alert("Engedélyezned kell a helymeghatározást!");
         return;
       }
     })();
   }, []);
 
-  let text = "Waiting..";
-  if (errorMsg) {
-    text = errorMsg;
-  }
-
   React.useEffect(() => {
     // add or remove refs
-    if (data?.length > 0)
+    if (data?.length > 0) {
+      let dangerStatus = false;
+      data.map((d: any) => {
+        if (d.status === "DANGER") dangerStatus = true;
+      });
+      setDanger(dangerStatus);
+
       setElRefMutants((elRefs: any[]) =>
         Array(data.length)
           .fill(null)
@@ -90,9 +75,9 @@ export default function TabMapScreen() {
             };
           })
       );
+    }
     if (data) {
       animate(data);
-      handleLocationUpdate();
     }
   }, [data]);
 
@@ -100,7 +85,7 @@ export default function TabMapScreen() {
   //  setLocation(location);
   //});
 
-  const handleLocationUpdate = async () => {
+  const handleSetRegion = async () => {
     let currentLocation = await Location.getCurrentPositionAsync({});
     if (region.latitude === 0) {
       setRegion({
@@ -110,9 +95,11 @@ export default function TabMapScreen() {
         longitudeDelta: 0.001,
       });
     }
-    if (currentLocation)
-      await updateLocation(currentLocation?.coords.longitude + "", currentLocation?.coords.latitude + "");
   };
+
+  React.useEffect(() => {
+    handleSetRegion();
+  }, []);
 
   const getNameInitials = (firstName: string, lastName: string) =>
     firstName && lastName ? `${firstName.charAt(0).toUpperCase()}${lastName.charAt(0).toUpperCase()}` : "";
@@ -124,64 +111,92 @@ export default function TabMapScreen() {
   return (
     <View style={styles.container}>
       {region.latitude !== 0 && (
-        <MapView style={styles.map} initialRegion={region} showsUserLocation={true}>
-          {/*location ? (
-          <Marker
-            coordinate={{ latitude: location?.coords.latitude, longitude: location.coords.longitude }}
-            title="Look at mee"
-            description="Im mister meeseeks"
-          ></Marker>
-        ) : (
-          <></>
-        )*/}
-          {data?.map((markerData: any, index: number) =>
-            elRefMutants[index]?.ref ? (
-              <Marker.Animated
-                ref={elRefMutants[index]?.ref}
-                coordinate={{
-                  latitude: +elRefMutants[index]?.info.location.latitude,
-                  longitude: +elRefMutants[index]?.info.location.longitude,
-                }}
+        <>
+          <MapView style={styles.map} initialRegion={region} showsCompass={false} loadingEnabled={true}>
+            {data?.map((markerData: any, index: number) =>
+              elRefMutants[index]?.ref &&
+              elRefMutants[index]?.info?.isLocationShared &&
+              elRefMutants[index]?.info?.status !== "IDLE" ? (
+                // @ts-ignore
+                <Marker.Animated
+                  ref={elRefMutants[index]?.ref}
+                  key={elRefMutants[index]?.ref?.info?._id}
+                  coordinate={{
+                    latitude: +elRefMutants[index]?.info.location.latitude,
+                    longitude: +elRefMutants[index]?.info.location.longitude,
+                  }}
+                >
+                  {elRefMutants[index]?.info?.profileImageUrl &&
+                  !isObject(elRefMutants[index]?.info?.profileImageUrl) ? (
+                    <Animatable.View
+                      animation={elRefMutants[index]?.info.status === "DANGER" ? "flash" : ""}
+                      duration={2000}
+                      delay={1000}
+                      iterationCount="infinite"
+                    >
+                      <Image
+                        style={{
+                          width: 60,
+                          height: 60,
+                          borderColor: elRefMutants[index]?.info.status === "DANGER" ? Colors.danger : Colors.primary,
+                          borderWidth: 5,
+                          borderRadius: 75,
+                        }}
+                        source={{ uri: elRefMutants[index]?.info?.profileImageUrl }}
+                        resizeMode={"cover"}
+                      />
+                    </Animatable.View>
+                  ) : (
+                    <Animatable.View
+                      animation={elRefMutants[index]?.info.status === "DANGER" ? "flash" : ""}
+                      duration={2000}
+                      delay={1000}
+                      iterationCount="infinite"
+                    >
+                      <Box
+                        style={{
+                          borderRadius: 100,
+                          backgroundColor:
+                            elRefMutants[index]?.info.status === "DANGER" ? Colors.danger : Colors.primary,
+                          width: 60,
+                          height: 60,
+                        }}
+                      >
+                        <Text style={styles.initial}>
+                          {elRefMutants[index]?.info
+                            ? getNameInitials(elRefMutants[index]?.info.firstName, elRefMutants[index]?.info.lastName)
+                            : "-"}
+                        </Text>
+                      </Box>
+                    </Animatable.View>
+                  )}
+                  {/* @ts-ignore */}
+                </Marker.Animated>
+              ) : (
+                <></>
+              )
+            )}
+          </MapView>
+          {danger && (
+            <Box position={"absolute"} width={"100%"} height={"100%"} pointerEvents="none">
+              <Animatable.View
+                animation={danger ? "fadeOut" : ""}
+                duration={2000}
+                delay={2000}
+                iterationCount="infinite"
               >
-                {elRefMutants[index]?.info?.profileImageUrl && !isObject(elRefMutants[index]?.info?.profileImageUrl) ? (
-                  <Image
-                    style={{
-                      width: 70,
-                      height: 70,
-                      borderColor: "#6165F3",
-                      borderWidth: 5,
-                      borderRadius: 75,
-                    }}
-                    source={{ uri: elRefMutants[index]?.info?.profileImageUrl }}
-                    resizeMode={"cover"}
-                  />
-                ) : (
-                  <Box
-                    style={{
-                      borderRadius: 100,
-                      backgroundColor: "#6165F3",
-                      width: 60,
-                      height: 60,
-                    }}
-                  >
-                    <Text style={styles.initial}>
-                      {elRefMutants[index]?.info
-                        ? getNameInitials(elRefMutants[index]?.info.firstName, elRefMutants[index]?.info.lastName)
-                        : "-"}
-                    </Text>
-                  </Box>
-                )}
-              </Marker.Animated>
-            ) : (
-              <></>
-            )
+                <Box
+                  width={"100%"}
+                  height={"100%"}
+                  backgroundColor={Colors.danger}
+                  bg={Colors.danger}
+                  opacity={0.5}
+                ></Box>
+              </Animatable.View>
+            </Box>
           )}
-        </MapView>
+        </>
       )}
-
-      {/*<View style={styles.informations}>
-        <Button onPress={() => handleLocationUpdate()}>Update location</Button>
-      </View>*/}
     </View>
   );
 }

@@ -4,7 +4,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import * as argon2 from 'argon2';
 import { InjectModel } from '@nestjs/mongoose';
 import { Condition, DeepPartial, Model, Schema, UpdateQuery } from 'mongoose';
-import { User, CurrentLocation, EmergencyContact } from '@types';
+import { User, CurrentLocation, EmergencyContact, Status } from '@types';
 import { AddContactDto } from './dto/add-contact.dto';
 import { AddEmergencyContactDto } from './dto/add-emergency-contact-dto';
 
@@ -40,6 +40,16 @@ export class UserService {
     );
   }
 
+  async updateStatus(user: User, status: Status, isLocationShared: boolean) {
+    return await this.userModel.updateOne(
+      { email: user.email },
+      {
+        status,
+        isLocationShared,
+      },
+    );
+  }
+
   async addContact(user: User, addContactDto: AddContactDto) {
     const contact = await this.userModel.findOne({
       _id: addContactDto._id as Condition<string>,
@@ -66,6 +76,8 @@ export class UserService {
         firstName: contact.firstName,
         lastName: contact.lastName,
         profileImageUrl: contact.profileImageUrl,
+        status: contact.status,
+        isLocationShared: contact.status,
       };
     });
   }

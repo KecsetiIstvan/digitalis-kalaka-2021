@@ -4,6 +4,7 @@ import { CurrentUser } from '@decorators';
 import { User } from '@types';
 import { UpdateCurrentLocationDto } from './dto/update-current-location.dto';
 import { MapService } from './map.service';
+import { UpdateStatusDto } from './dto/update-status.dto';
 
 @Controller('map')
 export class MapController {
@@ -16,6 +17,15 @@ export class MapController {
     @Body() updateCurrentLocationDto: UpdateCurrentLocationDto,
   ) {
     return this.mapService.updateLocation(user, updateCurrentLocationDto);
+  }
+
+  @UseGuards(AuthGuard())
+  @Patch('my-status')
+  updateStatus(
+    @CurrentUser() user: User,
+    @Body() updateStatusDto: UpdateStatusDto,
+  ) {
+    return this.mapService.updateStatus(user, updateStatusDto);
   }
 
   @UseGuards(AuthGuard())

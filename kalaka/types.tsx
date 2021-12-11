@@ -3,9 +3,9 @@
  * https://reactnavigation.org/docs/typescript/
  */
 
-import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
-import { CompositeScreenProps, NavigatorScreenParams } from '@react-navigation/native';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
+import { CompositeScreenProps, NavigatorScreenParams } from "@react-navigation/native";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
 declare global {
   namespace ReactNavigation {
@@ -19,11 +19,11 @@ export type RootStackParamList = {
   NotFound: undefined;
   TabMap: undefined;
   TabFollow: undefined;
-  TabContacts : undefined;
-  TabSettings : undefined;
+  TabContacts: undefined;
+  TabSettings: undefined;
   Login: undefined;
   Chat: undefined;
-  Danger: undefined;
+  Danger: { isLocationEnabled: boolean };
   AddContact: undefined;
   ChangeContactModal: undefined;
   PersonalDataModal: undefined;
@@ -40,8 +40,9 @@ export type RootStackScreenProps<Screen extends keyof RootStackParamList> = Nati
 export type RootTabParamList = {
   TabMap: undefined;
   TabFollow: undefined;
-  TabContacts : undefined;
-  TabSettings : undefined;
+  TabContacts: undefined;
+  TabSettings: undefined;
+  Danger: { isLocationEnabled: boolean };
 };
 
 export type RootTabScreenProps<Screen extends keyof RootTabParamList> = CompositeScreenProps<
