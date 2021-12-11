@@ -47,6 +47,8 @@
         </dict>
       </dict>
     </dict>
+    <key>NSCameraUsageDescription</key>
+    <string>Allow $(PRODUCT_NAME) to access your camera</string>
     <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
     <string>Allow $(PRODUCT_NAME) to access your location</string>
     <key>NSLocationAlwaysUsageDescription</key>
@@ -55,6 +57,8 @@
     <string>Allow $(PRODUCT_NAME) to access your location</string>
     <key>NSMicrophoneUsageDescription</key>
     <string>CUSTOM: Allow $(PRODUCT_NAME) to access the microphone</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>Allow $(PRODUCT_NAME) to access your photos</string>
     <key>NSSpeechRecognitionUsageDescription</key>
     <string>CUSTOM: Allow $(PRODUCT_NAME) to securely recognize user speech</string>
     <key>UILaunchStoryboardName</key>
