@@ -152,9 +152,9 @@ const styles = StyleSheet.create({
     fontSize: 16
   },
   addContactButton: {
+    alignSelf: 'center',
     position: 'absolute',
     bottom: 0,
-    width: '100%',
   },
   activeBadge: {
     width: '40%',
