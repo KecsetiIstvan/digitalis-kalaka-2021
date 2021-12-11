@@ -7,7 +7,7 @@ import * as Location from "expo-location";
 import MapView, { Marker } from "react-native-maps";
 import { useQuery } from "react-query";
 import { getMap, updateLocation } from "../services";
-import { Button } from "native-base";
+import { Box, Button } from "native-base";
 import uuid from "react-native-uuid";
 
 export default function TabMapScreen() {
@@ -115,6 +115,9 @@ export default function TabMapScreen() {
       await updateLocation(currentLocation?.coords.longitude + "", currentLocation?.coords.latitude + "");
   };
 
+  const getNameInitials = (firstName: string, lastName: string) =>
+    firstName && lastName ? `${firstName.charAt(0).toUpperCase()}${lastName.charAt(0).toUpperCase()}` : "";
+
   return (
     <View style={styles.container}>
       {region.latitude !== 0 && (
@@ -137,6 +140,21 @@ export default function TabMapScreen() {
                   longitude: +elRefMutants[index]?.info.location.longitude,
                 }}
               >
+                <Box
+                  style={{
+                    borderRadius: 100,
+                    backgroundColor: "#6165F3",
+                    width: 60,
+                    height: 60,
+                  }}
+                >
+                  <Text style={styles.initial}>
+                    {elRefMutants[index]?.info
+                      ? getNameInitials(elRefMutants[index]?.info.firstName, elRefMutants[index]?.info.lastName)
+                      : "-"}
+                  </Text>
+                </Box>
+                {/**
                 <Image
                   style={{
                     width: 70,
@@ -147,7 +165,7 @@ export default function TabMapScreen() {
                   }}
                   source={{ uri: "https://picsum.photos/70/70.jpg" }}
                   resizeMode={"cover"}
-                />
+                /> */}
               </Marker.Animated>
             ) : (
               <></>
@@ -177,5 +195,11 @@ const styles = StyleSheet.create({
   map: {
     width: Dimensions.window.width,
     height: Dimensions.window.height,
+  },
+  initial: {
+    fontSize: 26,
+    lineHeight: 72,
+    color: "#ffffff",
+    textAlign: "center",
   },
 });

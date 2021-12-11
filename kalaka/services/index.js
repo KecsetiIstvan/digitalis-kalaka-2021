@@ -3,15 +3,15 @@ import { getToken, setToken } from "../repository";
 import Toast from "react-native-toast-message";
 
 const apiClient = axios.create({
-    baseURL: 'http://192.168.1.249:3000/api'
+  baseURL: "http://192.168.1.231:3000/api",
 });
 
-apiClient.interceptors.request.use(async(request) => {
-    const token = await getToken();
-    if (token) {
-        request.headers.common.Authorization = `Bearer ${account.token}`;
-    }
-    return request;
+apiClient.interceptors.request.use(async (request) => {
+  const token = await getToken();
+  if (token) {
+    request.headers.Authorization = `Bearer ${token}`;
+  }
+  return request;
 });
 
 export const auth = async (email, password) => {
@@ -44,13 +44,15 @@ export const register = async (email, password, firstName, lastName) => {
 };
 
 export const me = async () => {
-  const answer = await axios.get("/me");
+  const answer = await apiClient.get("/users/me").catch((err) => {
+    showToast(err);
+    return;
+  });
   if (answer) {
-    return "asd";
-  } else {
-    return "aaa";
+    return answer.data;
   }
 };
+
 export const updateSettings = () => {
   return "asd";
 };
@@ -63,7 +65,6 @@ export const updateLocation = async (longitude, latitude) => {
   if (resp) {
     return resp.data;
   }
-  return undefined;
 };
 
 export const getMap = async () => {
