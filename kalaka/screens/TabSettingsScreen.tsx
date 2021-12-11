@@ -67,7 +67,6 @@ export default function TabFollowScreen({ navigation }: RootTabScreenProps<"TabS
         <List width="100%" borderBottomWidth="0">
           <List.Item marginBottom={16} marginLeft={2} marginTop={4} display={"flex"}>
             <TouchableOpacity onPress={() => handleImageUpload()}>
-              {console.log(meData)}
               {meData?.profileImageUrl && !isLoadingImage ? (
                 <Image
                   style={{
