@@ -66,30 +66,6 @@ export default function TabFollowScreen({ navigation }: RootTabScreenProps<"TabS
       <Box w="100%">
         <List width="100%" borderBottomWidth="0">
           <List.Item marginBottom={16} marginLeft={2} marginTop={4} display={"flex"}>
-<<<<<<< HEAD
-            {meData?.profileImageUrl ? (
-              <Image
-                style={{
-                  width: 60,
-                  height: 60,
-                  borderRadius: 75,
-                }}
-                source={{ uri: "https://picsum.photos/60/60.jpg" }}
-                resizeMode={"cover"}
-              />
-            ) : (
-              <Box
-                style={{
-                  borderRadius: 100,
-                  backgroundColor: "#6165F3",
-                  width: 60,
-                  height: 60,
-                }}
-              >
-                <Text style={styles.initial}>{meData ? getNameInitials(meData.firstName, meData.lastName) : "-"}</Text>
-              </Box>
-            )}
-=======
             <TouchableOpacity onPress={() => handleImageUpload()}>
               {console.log(meData)}
               {meData?.profileImageUrl && !isLoadingImage ? (
@@ -124,7 +100,6 @@ export default function TabFollowScreen({ navigation }: RootTabScreenProps<"TabS
                 </Box>
               )}
             </TouchableOpacity>
->>>>>>> dev-miketm
             <Text style={styles.text}>{`${meData?.firstName} ${meData?.lastName}`}</Text>
           </List.Item>
           <List.Item onPress={() => navigation.navigate("PersonalDataModal")}>
