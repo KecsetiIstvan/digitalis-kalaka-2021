@@ -3,12 +3,13 @@
  * https://reactnavigation.org/docs/getting-started
  *
  */
-import { FontAwesome } from "@expo/vector-icons";
+import { FontAwesome, FontAwesome5 } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer, DefaultTheme, DarkTheme } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as React from "react";
 import { Pressable } from "react-native";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import Colors from "../constants/Colors";
 import ModalScreen from "../screens/modal/ModalScreen";
@@ -97,21 +98,12 @@ function BottomTabNavigator() {
       }}
     >
       <BottomTab.Screen
-        name="TabMap"
-        component={TabMapScreen}
-        options={{
-          title: "Térkép",
-          headerShown: false,
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
-        }}
-      />
-      <BottomTab.Screen
         name="TabFollow"
         component={TabFollowScreen}
         options={({ navigation }: RootTabScreenProps<"TabFollow">) => ({
           title: "Követés",
           headerShown: false,
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          tabBarIcon: () => <FontAwesome5 name="shoe-prints" color={Colors.danger} size={25} />,
           headerRight: () => (
             <Pressable
               onPress={() => navigation.navigate("Modal")}
@@ -125,12 +117,21 @@ function BottomTabNavigator() {
         })}
       />
       <BottomTab.Screen
+        name="TabMap"
+        component={TabMapScreen}
+        options={{
+          title: "Térkép",
+          headerShown: false,
+          tabBarIcon: () => <FontAwesome5 name="map-marked-alt" color={Colors.secondary} size={25} />,
+        }}
+      />
+      <BottomTab.Screen
         name="TabContacts"
         component={TabContactScreen}
         options={{
           title: "Kontaktok",
           headerShown: false,
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          tabBarIcon: () => <FontAwesome5 name="address-book" color={Colors.secondary} size={25} />,
         }}
       />
       <BottomTab.Screen
@@ -139,7 +140,7 @@ function BottomTabNavigator() {
         options={{
           title: "Beállítások",
           headerShown: false,
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          tabBarIcon: () => <FontAwesome5 name="cog" color={Colors.secondary} size={25} />,
         }}
       />
     </BottomTab.Navigator>
