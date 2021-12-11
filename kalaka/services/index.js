@@ -111,8 +111,11 @@ export const getContacts = async () => {
   }
 }
 
-export const getContact = async () => {
-
+export const getContact = async (id) => {
+  const answer = await apiClient.get(`/users/${id}`).catch((err) => {showToast(err);})
+  if (answer) {
+    return answer.data;
+  }
 }
 
 export const getEmergencyContacts = async () => {
