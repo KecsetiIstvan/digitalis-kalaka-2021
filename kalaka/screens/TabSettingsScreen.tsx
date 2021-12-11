@@ -1,14 +1,17 @@
 import * as React from "react";
-import { StyleSheet, Image } from "react-native";
-import { Box, List, Text, Icon } from "native-base";
+import { StyleSheet, Image, TouchableOpacity } from "react-native";
+import { Box, List, Text, Icon, Spinner } from "native-base";
 import { RootTabScreenProps } from "../types";
 import { deleteToken } from "../repository";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useQuery } from "react-query";
-import { me } from "../services";
+import { me, updateMe, uploadImage } from "../services";
+import * as ImagePicker from "expo-image-picker";
+import Colors from "../constants/Colors";
 
 export default function TabFollowScreen({ navigation }: RootTabScreenProps<"TabSettings">) {
   const { data: meData, refetch } = useQuery("me", () => me());
+  const [isLoadingImage, setIsLoadingImage] = React.useState(false);
 
   React.useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
@@ -26,6 +29,35 @@ export default function TabFollowScreen({ navigation }: RootTabScreenProps<"TabS
     });
   };
 
+  const handleImageUpload = async () => {
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (status !== "granted") {
+      alert("Sorry, we need camera roll permissions to make this work!");
+    }
+
+    setIsLoadingImage(true);
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+      base64: true,
+    });
+
+    if (!result.cancelled) {
+      const uploadedImage = await uploadImage(`data:image/jpeg;base64,${result.base64}`);
+      try {
+        await updateMe({ profileImageUrl: uploadedImage.data.image.url });
+        await refetch();
+        setIsLoadingImage(false);
+      } catch {
+        console.log("error");
+        setIsLoadingImage(false);
+      }
+    }
+    setIsLoadingImage(false);
+  };
+
   const getNameInitials = (firstName: string, lastName: string) =>
     firstName && lastName ? `${firstName.charAt(0).toUpperCase()}${lastName.charAt(0).toUpperCase()}` : "";
 
@@ -34,28 +66,40 @@ export default function TabFollowScreen({ navigation }: RootTabScreenProps<"TabS
       <Box w="100%">
         <List width="100%" borderBottomWidth="0">
           <List.Item marginBottom={16} marginLeft={2} marginTop={4} display={"flex"}>
-            {meData?.profileImageUrl ? (
-              <Image
-                style={{
-                  width: 60,
-                  height: 60,
-                  borderRadius: 75,
-                }}
-                source={{ uri: "https://picsum.photos/60/60.jpg" }}
-                resizeMode={"cover"}
-              />
-            ) : (
-              <Box
-                style={{
-                  borderRadius: "100px",
-                  backgroundColor: "#6165F3",
-                  width: 60,
-                  height: 60,
-                }}
-              >
-                <Text style={styles.initial}>{meData ? getNameInitials(meData.firstName, meData.lastName) : "-"}</Text>
-              </Box>
-            )}
+            <TouchableOpacity onPress={() => handleImageUpload()}>
+              {console.log(meData)}
+              {meData?.profileImageUrl && !isLoadingImage ? (
+                <Image
+                  style={{
+                    width: 60,
+                    height: 60,
+                    borderRadius: 75,
+                  }}
+                  source={{ uri: meData?.profileImageUrl }}
+                  resizeMode={"cover"}
+                />
+              ) : (
+                <Box
+                  style={{
+                    borderRadius: 100,
+                    backgroundColor: "#6165F3",
+                    width: 60,
+                    height: 60,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  {isLoadingImage ? (
+                    <Spinner color={Colors.secondary} />
+                  ) : (
+                    <Text style={styles.initial}>
+                      {meData ? getNameInitials(meData.firstName, meData.lastName) : "-"}
+                    </Text>
+                  )}
+                </Box>
+              )}
+            </TouchableOpacity>
             <Text style={styles.text}>{`${meData?.firstName} ${meData?.lastName}`}</Text>
           </List.Item>
           <List.Item onPress={() => navigation.navigate("PersonalDataModal")}>

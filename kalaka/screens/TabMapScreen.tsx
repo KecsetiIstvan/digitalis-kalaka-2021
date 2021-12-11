@@ -90,7 +90,6 @@ export default function TabMapScreen() {
             };
           })
       );
-    console.log(elRefMutants);
     if (data) {
       animate(data);
       handleLocationUpdate();
@@ -118,6 +117,10 @@ export default function TabMapScreen() {
   const getNameInitials = (firstName: string, lastName: string) =>
     firstName && lastName ? `${firstName.charAt(0).toUpperCase()}${lastName.charAt(0).toUpperCase()}` : "";
 
+  function isObject(obj: any) {
+    return obj != null && obj.constructor.name === "Object";
+  }
+
   return (
     <View style={styles.container}>
       {region.latitude !== 0 && (
@@ -140,32 +143,34 @@ export default function TabMapScreen() {
                   longitude: +elRefMutants[index]?.info.location.longitude,
                 }}
               >
-                <Box
-                  style={{
-                    borderRadius: 100,
-                    backgroundColor: "#6165F3",
-                    width: 60,
-                    height: 60,
-                  }}
-                >
-                  <Text style={styles.initial}>
-                    {elRefMutants[index]?.info
-                      ? getNameInitials(elRefMutants[index]?.info.firstName, elRefMutants[index]?.info.lastName)
-                      : "-"}
-                  </Text>
-                </Box>
-                {/**
-                <Image
-                  style={{
-                    width: 70,
-                    height: 70,
-                    borderColor: "#6165F3",
-                    borderWidth: 5,
-                    borderRadius: 75,
-                  }}
-                  source={{ uri: "https://picsum.photos/70/70.jpg" }}
-                  resizeMode={"cover"}
-                /> */}
+                {elRefMutants[index]?.info?.profileImageUrl && !isObject(elRefMutants[index]?.info?.profileImageUrl) ? (
+                  <Image
+                    style={{
+                      width: 70,
+                      height: 70,
+                      borderColor: "#6165F3",
+                      borderWidth: 5,
+                      borderRadius: 75,
+                    }}
+                    source={{ uri: elRefMutants[index]?.info?.profileImageUrl }}
+                    resizeMode={"cover"}
+                  />
+                ) : (
+                  <Box
+                    style={{
+                      borderRadius: 100,
+                      backgroundColor: "#6165F3",
+                      width: 60,
+                      height: 60,
+                    }}
+                  >
+                    <Text style={styles.initial}>
+                      {elRefMutants[index]?.info
+                        ? getNameInitials(elRefMutants[index]?.info.firstName, elRefMutants[index]?.info.lastName)
+                        : "-"}
+                    </Text>
+                  </Box>
+                )}
               </Marker.Animated>
             ) : (
               <></>
