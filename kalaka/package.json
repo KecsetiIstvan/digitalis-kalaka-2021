@@ -39,8 +39,10 @@
     "react-native-screens": "~3.8.0",
     "react-native-svg": "12.1.1",
     "react-native-toast-message": "^2.1.0",
+    "react-native-uuid": "^2.0.1",
     "react-native-web": "0.17.1",
-    "react-query": "^3.34.1"
+    "react-query": "^3.34.1",
+    "uuidv4": "^6.2.12"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
