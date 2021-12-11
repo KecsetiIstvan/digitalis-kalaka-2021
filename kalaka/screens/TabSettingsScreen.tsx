@@ -1,6 +1,6 @@
 import * as React from "react";
-import { StyleSheet, Image, TouchableOpacity } from "react-native";
-import { Box, List, Text, Icon, Spinner } from "native-base";
+import { StyleSheet, Image, TouchableOpacity, View } from "react-native";
+import { Box, List, Text, Spinner, Button } from "native-base";
 import { RootTabScreenProps } from "../types";
 import { deleteToken } from "../repository";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -8,6 +8,7 @@ import Colors from '../constants/Colors';
 import { useQuery } from "react-query";
 import { me, updateMe, uploadImage } from "../services";
 import * as ImagePicker from "expo-image-picker";
+import { FontAwesome5 } from "@expo/vector-icons";
 
 export default function TabFollowScreen({ navigation }: RootTabScreenProps<"TabSettings">) {
   const { data: meData, refetch } = useQuery("me", () => me());
@@ -61,14 +62,20 @@ export default function TabFollowScreen({ navigation }: RootTabScreenProps<"TabS
   const getNameInitials = (firstName: string, lastName: string) =>
     firstName && lastName ? `${firstName.charAt(0).toUpperCase()}${lastName.charAt(0).toUpperCase()}` : "";
 
+  function isObject(obj: any) {
+    return obj != null && obj.constructor.name === "Object";
+  }
+
   return (
-    <SafeAreaView>
+    <SafeAreaView >
+      <View style={styles.headerContainer}>
+        <Text style={styles.headerText}>Beállítások</Text>
+      </View>
       <Box w="100%">
-        <List width="100%" borderBottomWidth="0">
-          <List.Item marginBottom={16} marginLeft={2} marginTop={4} display={"flex"}>
+          <List.Item marginBottom={8} marginLeft={2} marginTop={4} display={"flex"}>
             <TouchableOpacity onPress={() => handleImageUpload()}>
               {console.log(meData)}
-              {meData?.profileImageUrl && !isLoadingImage ? (
+              {meData?.profileImageUrl && !isObject(meData?.profileImageUrl) ? (
                 <Image
                   style={{
                     width: 60,
@@ -100,26 +107,28 @@ export default function TabFollowScreen({ navigation }: RootTabScreenProps<"TabS
                 </Box>
               )}
             </TouchableOpacity>
-            <Text style={styles.text}>{`${meData?.firstName} ${meData?.lastName}`}</Text>
+            <Text style={styles.name}>{`${meData?.firstName} ${meData?.lastName}`}</Text>
           </List.Item>
-          <List.Item onPress={() => navigation.navigate("PersonalDataModal")}>
-            <Text style={styles.text}>Személyes adatok modósítása</Text>
-          </List.Item>
-          <List.Item onPress={() => navigation.navigate("SafetyFeaturesModal")}>
-            <Text style={styles.text}>Biztonsági beállítások</Text>
-          </List.Item>
-          <List.Item onPress={() => navigation.navigate("NotificationsModal")}>
-            <Text style={styles.text}>Értesítések</Text>
-          </List.Item>
-          <List.Item onPress={() => navigation.navigate("TermsModal")}>
-            <Text style={styles.text}>Felhasználói feltételek</Text>
-          </List.Item>
-          <List.Item onPress={handleLogOut}>
-            <Text style={styles.text} color="red.500">
+            <Button variant="outline" onPress={() => navigation.navigate("PersonalDataModal")}>
+              Személyes adatok modósítása
+              <FontAwesome5 style={{color: Colors.primary}} name="chevron-right"/>
+            </Button>
+            <Button display='flex' flexDirection='row' variant="outline" onPress={() => navigation.navigate("SafetyFeaturesModal")}>
+              <Text style={{marginRight: 'auto'}}>Biztonsági beállítások</Text>
+              <FontAwesome5 style={{color: Colors.primary}} name="chevron-right"/>
+            </Button>
+            <Button variant="outline" onPress={() => navigation.navigate("NotificationsModal")}>
+              Értesítések
+              <FontAwesome5 style={{color: Colors.primary}} name="chevron-right"/>
+            </Button>
+            <Button variant="outline" onPress={() => navigation.navigate("TermsModal")}>
+              Felhasználói feltételek
+              <FontAwesome5 style={{color: Colors.primary}} name="chevron-right"/>
+            </Button>
+            <Button variant="logout" onPress={handleLogOut}>
               Kijelentkezés
-            </Text>
-          </List.Item>
-        </List>
+              <FontAwesome5 style={{color: Colors.danger}} name="chevron-right"/>
+            </Button>
       </Box>
     </SafeAreaView>
   );
@@ -130,9 +139,13 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
   },
+  name: {
+    padding: 15,
+    fontSize: 16,
+  },
   text: {
     padding: 15,
-    fontSize: 15,
+    fontSize: 14,
   },
   initial: {
     fontSize: 26,
@@ -143,8 +156,8 @@ const styles = StyleSheet.create({
   headerContainer: {
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: Colors.secondaryTransparent,
-    paddingTop: 20,
+    alignSelf: 'flex-start',
+    backgroundColor: Colors.secondaryTransparent, 
     height: 60,
     width: '50%',
     borderBottomRightRadius: 25,
@@ -152,6 +165,14 @@ const styles = StyleSheet.create({
   headerText: {
     color: Colors.text,
     fontWeight: 'bold',
-    fontSize:20
+    fontSize:20,
+  },
+  listItem: {
+    alignSelf: 'center',
+    borderColor: Colors.primary,
+    borderWidth: 1,
+    borderRadius: 100,
+    width: "90%",
+    marginTop: 15,
   },
 });

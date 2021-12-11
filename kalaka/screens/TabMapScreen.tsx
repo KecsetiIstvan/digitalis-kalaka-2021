@@ -8,7 +8,6 @@ import MapView, { Marker } from "react-native-maps";
 import { useQuery } from "react-query";
 import { getMap, updateLocation } from "../services";
 import { Box, Button } from "native-base";
-import uuid from "react-native-uuid";
 
 export default function TabMapScreen() {
   const [location, setLocation] = useState<Location.LocationObject>();

@@ -85,7 +85,9 @@ export default function LoginScreen(props: any) {
 
 
   const loginScreen = (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
+      <ScrollView _contentContainerStyle={{w: "100%", flexDirection: "row"}}>
+      <View style={{width: "100%", alignItems: 'center'}}>
       <Image style={styles.image} source={require('../assets/images/icon.png')} alt="Login page image"/>
 
       <FormControl style={styles.containerForm} isInvalid = {invalid} w={{ base: "75%", md: "25%",}}>
@@ -106,7 +108,9 @@ export default function LoginScreen(props: any) {
         
 
       </FormControl>
-    </View>
+      </View>
+      </ScrollView>
+    </SafeAreaView>
   ); 
 
   const registerScreen = (
