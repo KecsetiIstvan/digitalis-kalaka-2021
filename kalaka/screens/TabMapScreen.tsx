@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { StyleSheet, Image } from "react-native";
+import React, { useState, useEffect, createRef } from "react";
+import { StyleSheet, Image, Platform } from "react-native";
 
 import { Text, View } from "../components/Themed";
 import Dimensions from "../constants/Layout";
@@ -8,6 +8,7 @@ import MapView, { Marker } from "react-native-maps";
 import { useQuery } from "react-query";
 import { getMap, updateLocation } from "../services";
 import { Button } from "native-base";
+import uuid from "react-native-uuid";
 
 export default function TabMapScreen() {
   const [location, setLocation] = useState<Location.LocationObject>();
@@ -18,8 +19,45 @@ export default function TabMapScreen() {
     latitudeDelta: 0.01,
     longitudeDelta: 0.01,
   });
+  const [elRefMutants, setElRefMutants] = React.useState<any>([]);
 
-  const { data } = useQuery("map", () => getMap(), { refetchInterval: 2000 });
+  const animate = (markerData: any) => {
+    const newCoordinate = {};
+
+    markerData.map((m: any, index: any) => {
+      if (Platform.OS === "android") {
+        if (
+          elRefMutants[index] &&
+          elRefMutants[index].ref &&
+          elRefMutants[index].ref.current &&
+          elRefMutants[index].ref.current._component
+        ) {
+          elRefMutants[index]?.ref.current._component.animateMarkerToCoordinate(newCoordinate, 500);
+        }
+      } else {
+        // `useNativeDriver` defaults to false if not passed explicitly
+        if (
+          elRefMutants[index] &&
+          elRefMutants[index].ref &&
+          elRefMutants[index].ref.current &&
+          elRefMutants[index].ref.current.timing
+        ) {
+          elRefMutants[index]?.ref.current
+            .timing({ ...elRefMutants[index].info.location, useNativeDriver: true })
+            .start();
+        }
+      }
+    });
+    handleLocationUpdate();
+  };
+
+  const { data } = useQuery(
+    "map",
+    () => {
+      return getMap();
+    },
+    { refetchInterval: 500 }
+  );
 
   useEffect(() => {
     (async () => {
@@ -36,27 +74,46 @@ export default function TabMapScreen() {
     text = errorMsg;
   }
 
+  React.useEffect(() => {
+    // add or remove refs
+    if (data?.length > 0)
+      setElRefMutants((elRefs: any[]) =>
+        Array(data.length)
+          .fill(null)
+          .map((_, i) => {
+            return {
+              ref: elRefs[i] || createRef(),
+              info: data[i],
+            };
+          })
+      );
+    console.log(elRefMutants);
+    if (data) animate(data);
+  }, [data]);
+
   //Location.watchPositionAsync({  }, (location) => {
   //  setLocation(location);
   //});
 
   const handleLocationUpdate = async () => {
     let currentLocation = await Location.getCurrentPositionAsync({});
-    setLocation(currentLocation);
-    setRegion({
-      latitude: currentLocation?.coords.latitude,
-      longitude: currentLocation?.coords.longitude,
-      latitudeDelta: 0.004,
-      longitudeDelta: 0.004,
-    });
+    if (region.latitude === 0) {
+      setRegion({
+        latitude: currentLocation?.coords.latitude,
+        longitude: currentLocation?.coords.longitude,
+        latitudeDelta: 0.001,
+        longitudeDelta: 0.001,
+      });
+    }
     if (currentLocation)
       await updateLocation(currentLocation?.coords.longitude + "", currentLocation?.coords.latitude + "");
   };
 
   return (
     <View style={styles.container}>
-      <MapView style={styles.map} region={region}>
-        {/*location ? (
+      {region.latitude !== 0 && (
+        <MapView style={styles.map} initialRegion={region} showsUserLocation={true}>
+          {/*location ? (
           <Marker
             coordinate={{ latitude: location?.coords.latitude, longitude: location.coords.longitude }}
             title="Look at mee"
@@ -65,18 +122,28 @@ export default function TabMapScreen() {
         ) : (
           <></>
         )*/}
-        {data?.map((markerData: any, index: number) => (
-          <Marker
-            key={index}
-            coordinate={{ latitude: +markerData.location.latitude, longitude: +markerData.location.longitude }}
-            title={markerData.firstName}
-          />
-        ))}
-      </MapView>
+          {data?.map((markerData: any, index: number) => (
+            <Marker.Animated ref={elRefMutants[index]?.ref} coordinate={elRefMutants[index]?.info.location}>
+              {console.log(elRefMutants[index]?.info)}
+              <Image
+                style={{
+                  width: 70,
+                  height: 70,
+                  borderColor: "#6165F3",
+                  borderWidth: 5,
+                  borderRadius: 75,
+                }}
+                source={{ uri: "https://picsum.photos/70/70.jpg" }}
+                resizeMode={"cover"}
+              />
+            </Marker.Animated>
+          ))}
+        </MapView>
+      )}
 
-      <View style={styles.informations}>
+      {/*<View style={styles.informations}>
         <Button onPress={() => handleLocationUpdate()}>Update location</Button>
-      </View>
+      </View>*/}
     </View>
   );
 }
