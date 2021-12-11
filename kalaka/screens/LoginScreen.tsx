@@ -86,16 +86,14 @@ export default function LoginScreen(props: any) {
       <Image source={{uri: "https://wallpaperaccess.com/full/317501.jpg",}} alt="Login page image" size="xl"/>
 
       <FormControl isInvalid = {invalid} w={{ base: "75%", md: "25%",}}>
-        <FormControl.Label>Email cím</FormControl.Label>
-        <Input value={email} onChangeText={handleEmailChange} placeholder="Email cím" type="email"/>
+        <Input value={email} onChangeText={handleEmailChange} placeholder="E-mail cím" type="email"/>
 
-        <FormControl.Label>Jelszó</FormControl.Label>
         <Input value={password} onChangeText={handlePasswordChange} placeholder="Jelszó" type="password"/>
 
         <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>Az email cím és a jelszó nem egyezik!</FormControl.ErrorMessage>
 
         <Button onPress={handleLogin} disabled={!password || !email}>Bejelentkezés</Button>
-        <Button onPress={() => props.callback(true)}>Bejelentkezés google használatával</Button>
+        <Button onPress={() => props.callback(true)}>Bejelentkezés Google-al</Button>
         <Button onPress={() => setFormState('registrant')}>Regisztráció</Button>
         
 

@@ -4,6 +4,7 @@ import { Box, List, Text, Icon } from "native-base";
 import { RootTabScreenProps } from "../types";
 import { deleteToken } from "../repository";
 import { SafeAreaView } from "react-native-safe-area-context";
+import Colors from '../constants/Colors';
 import { useQuery } from "react-query";
 import { me } from "../services";
 
@@ -47,7 +48,7 @@ export default function TabFollowScreen({ navigation }: RootTabScreenProps<"TabS
             ) : (
               <Box
                 style={{
-                  borderRadius: "100px",
+                  borderRadius: 100,
                   backgroundColor: "#6165F3",
                   width: 60,
                   height: 60,
@@ -95,5 +96,19 @@ const styles = StyleSheet.create({
     lineHeight: 72,
     color: "#ffffff",
     textAlign: "center",
+  },
+  headerContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: Colors.secondaryTransparent,
+    paddingTop: 20,
+    height: 60,
+    width: '50%',
+    borderBottomRightRadius: 25,
+  },
+  headerText: {
+    color: Colors.text,
+    fontWeight: 'bold',
+    fontSize:20
   },
 });

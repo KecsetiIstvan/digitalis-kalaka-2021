@@ -3,6 +3,7 @@ import { StyleSheet } from 'react-native';
 import { Text, View, Image, ScrollView, Button } from 'native-base';
 import { RootTabScreenProps } from '../types';
 import Colors from '../constants/Colors';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 function ContactListItem(params: {imageUrl: string, lastName: string, contactType: string}): React.ReactElement {
   return (
@@ -17,7 +18,7 @@ function ContactListItem(params: {imageUrl: string, lastName: string, contactTyp
 
 export default function TabContactScreen({ navigation }: RootTabScreenProps<'TabContacts'>) {
     return (
-      <>
+      <SafeAreaView style={{flex: 1}}>
         <View style={styles.headerContainer}>
           <Text style={styles.headerText}>Kontaktok</Text>
         </View>
@@ -32,7 +33,7 @@ export default function TabContactScreen({ navigation }: RootTabScreenProps<'Tab
           <ContactListItem imageUrl='https://wallpaperaccess.com/full/317501.jpg' lastName='Laura' contactType='contact'></ContactListItem>
         </ScrollView>
         <Button>Kontakt hozzáadása</Button>
-      </>
+      </SafeAreaView>
     );
   }
 
