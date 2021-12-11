@@ -4,37 +4,55 @@ import { Text, View, Image, ScrollView, Button } from 'native-base';
 import { RootTabScreenProps } from '../types';
 import Colors from '../constants/Colors';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useQuery } from 'react-query';
 
-function ContactListItem(params: {imageUrl: string, lastName: string, contactType: string}): React.ReactElement {
+function ContactListItem(params: {imageUrl: string, lastName: string, active: boolean}): React.ReactElement {
   return (
     <View style={styles.contactContainer }>
-      <Image style={params.contactType === 'emergency' ? styles.emergencyImage : styles.contactImage } source={{uri: params.imageUrl}} size={"xl"}/>
-      <View style={params.contactType === 'emergency' ? styles.emergencyNameContainer : styles.contactNameContainer}>
-        <Text style={styles.contactName}>{params.lastName}</Text>
+      <Image style={params.active === true ? styles.activeImage : styles.passiveContactImage } source={{uri: params.imageUrl}} size={"xl"}/>
+      <View style={params.active === true ? styles.activeNameContainer : styles.passiveContactNameContainer}>
+        <Text style={params.active === true ? styles.activeName : styles.passiveContactName}>{params.lastName}</Text>
       </View>
     </View>
   );
 }
 
 export default function TabContactScreen({ navigation }: RootTabScreenProps<'TabContacts'>) {
-    return (
-      <SafeAreaView style={{flex: 1}}>
-        <View style={styles.headerContainer}>
-          <Text style={styles.headerText}>Kontaktok</Text>
+  const contacts = useQuery('contacts', () => {
+    
+  });
+
+  return (
+    <SafeAreaView style={{flex: 1, paddingBottom: 50}}>
+      <View style={styles.headerContainer}>
+        <Text style={styles.headerText}>Kontaktok</Text>
+      </View>
+      <ScrollView _contentContainerStyle={{w: "100%", flexDirection: "row", flexWrap: "wrap", justifyContent: "center"}}>
+        <View style={styles.subHeaderTextContainer}>
+          <Text style={styles.subHeaderText}>Ismerőseid az app-ban</Text>
         </View>
-        <ScrollView _contentContainerStyle={{w: "100%", flexDirection: "row", flexWrap: "wrap", justifyContent: "center"}}>
-          <ContactListItem imageUrl='https://wallpaperaccess.com/full/317501.jpg' lastName='Laura' contactType='contact'></ContactListItem>
-          <ContactListItem imageUrl='https://wallpaperaccess.com/full/317501.jpg' lastName='Laura' contactType='contact'></ContactListItem>
-          <ContactListItem imageUrl='https://wallpaperaccess.com/full/317501.jpg' lastName='Laura' contactType='emergency'></ContactListItem>
-          <ContactListItem imageUrl='https://wallpaperaccess.com/full/317501.jpg' lastName='Laura' contactType='contact'></ContactListItem>
-          <ContactListItem imageUrl='https://wallpaperaccess.com/full/317501.jpg' lastName='Laura' contactType='contact'></ContactListItem>
-          <ContactListItem imageUrl='https://wallpaperaccess.com/full/317501.jpg' lastName='Laura' contactType='contact'></ContactListItem>
-          <ContactListItem imageUrl='https://wallpaperaccess.com/full/317501.jpg' lastName='Laura' contactType='emergency'></ContactListItem>
-          <ContactListItem imageUrl='https://wallpaperaccess.com/full/317501.jpg' lastName='Laura' contactType='contact'></ContactListItem>
-        </ScrollView>
-        <Button>Kontakt hozzáadása</Button>
-      </SafeAreaView>
-    );
+        <ContactListItem imageUrl='https://wallpaperaccess.com/full/317501.jpg' lastName='Laura' active={true}></ContactListItem>
+        <ContactListItem imageUrl='https://wallpaperaccess.com/full/317501.jpg' lastName='Laura' active={false}></ContactListItem>
+        <ContactListItem imageUrl='https://wallpaperaccess.com/full/317501.jpg' lastName='Laura' active={true}></ContactListItem>
+        <ContactListItem imageUrl='https://wallpaperaccess.com/full/317501.jpg' lastName='Laura' active={true}></ContactListItem>
+        <ContactListItem imageUrl='https://wallpaperaccess.com/full/317501.jpg' lastName='Laura' active={true}></ContactListItem>
+        <ContactListItem imageUrl='https://wallpaperaccess.com/full/317501.jpg' lastName='Laura' active={true}></ContactListItem>
+        <ContactListItem imageUrl='https://wallpaperaccess.com/full/317501.jpg' lastName='Laura' active={true}></ContactListItem>
+        <ContactListItem imageUrl='https://wallpaperaccess.com/full/317501.jpg' lastName='Laura' active={true}></ContactListItem>
+
+        <View style={{...styles.subHeaderTextContainer, ...{marginBottom: 15}}}>
+          <Text style={styles.subHeaderText}>Ismerőseid az app-ban</Text>
+        </View>
+
+        <Button style={styles.activeBadge}>Édesanyám</Button>
+        <Button style={styles.passiveBadge} _text={{color: Colors.text,}}>Tesókám</Button>
+        <Button style={styles.activeBadge}>Édesapám</Button>
+        <Button style={styles.activeBadge}>Kicsikutyám</Button>
+
+      </ScrollView>
+      <Button style={styles.addContactButton}>Biztonsági kontaktok</Button>
+    </SafeAreaView>
+  );
   }
 
 const styles = StyleSheet.create({
@@ -51,7 +69,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: Colors.secondaryTransparent,
-    paddingTop: 20,
     height: 60,
     width: '50%',
     borderBottomRightRadius: 25,
@@ -61,24 +78,41 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize:20
   },
+  subHeaderTextContainer: {
+    width: '90%',
+    paddingVertical: 10,
+    borderBottomColor: Colors.secondary,
+    borderBottomWidth: 1
+  },
+  subHeaderText: {
+    color: Colors.secondary,
+    fontSize:16,
+  },
   contactContainer: {
-    width: 160,
-    height: 160,
-    marginHorizontal:10,
-    marginVertical: 10,
+    width: 140,
+    height: 140,
+    marginHorizontal: 25,
+    marginVertical: 20,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
     position: 'relative',
   },
-  contactImage: {
-    width: 160,
-    height: 160,
+  passiveContactImage: {
+    width: 140,
+    height: 140,
+    borderRadius:80,
+    borderWidth: 5,
+    borderColor: Colors.secondaryTransparent
+  },
+  activeImage: {
+    width: 140,
+    height: 140,
     borderRadius:80,
     borderWidth: 5,
     borderColor: Colors.primary
   },
-  contactNameContainer: {
+  activeNameContainer: {
     backgroundColor: Colors.primary,
     width: '100%',
     display: 'flex',
@@ -89,15 +123,15 @@ const styles = StyleSheet.create({
     bottom: 0,
     padding: 5
   },
-  emergencyImage: {
-    width: 160,
-    height: 160,
+  passiveImage: {
+    width: 140,
+    height: 140,
     borderRadius:80,
     borderWidth: 5,
-    borderColor: Colors.danger
+    borderColor: Colors.secondaryTransparent
   },
-  emergencyNameContainer: {
-    backgroundColor: Colors.danger,
+  passiveContactNameContainer: {
+    backgroundColor: Colors.secondaryTransparent,
     width: '100%',
     display: 'flex',
     alignItems: 'center',
@@ -107,10 +141,35 @@ const styles = StyleSheet.create({
     bottom: 0,
     padding: 5
   },
-  contactName: {
+  activeName: {
     color: 'white',
     fontWeight: 'bold',
     fontSize: 16
+  },
+  passiveContactName: {
+    color: Colors.text,
+    fontWeight: 'bold',
+    fontSize: 16
+  },
+  addContactButton: {
+    position: 'absolute',
+    bottom: 0,
+    width: '100%',
+  },
+  activeBadge: {
+    width: '40%',
+    padding: 10,
+    margin: 5,
+    borderRadius: 10,
+    backgroundColor: Colors.primary
+  },
+  passiveBadge: {
+    width: '40%',
+    padding: 10,
+    margin: 5,
+    borderRadius: 10,
+    backgroundColor: Colors.secondaryTransparent,
+    color: Colors.text
   }
 });
   

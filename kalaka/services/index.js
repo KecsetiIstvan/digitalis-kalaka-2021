@@ -78,31 +78,27 @@ export const getMap = async () => {
   return undefined;
 };
 
-export const getFriends = () => {
+export const getContacts = () => {
   return "asd";
 };
 
-export const addFriend = () => {
-  return "asd";
-};
+export const getContact = async () => {
 
-export const addContact = () => {
-  return "asd";
-};
+}
 
-export const updateFriend = () => {
-  return "asd";
-};
+export const getEmergencyContacts = async () => {
 
-export const updateContact = () => {
-  return "asd";
-};
+}
 
-export const deleteFriend = () => {
-  return "asd";
-};
+export const getEmergencyContact = async () => {
+
+}
 
 export const deleteContact = () => {
+  return "asd";
+};
+
+export const deleteEmergencyContact = () => {
   return "asd";
 };
 
