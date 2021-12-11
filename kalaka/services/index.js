@@ -51,6 +51,7 @@ export const me = async () => {
     return;
   });
   if (answer) {
+    console.log(answer.data);
     return answer.data;
   }
 };

@@ -223,14 +223,8 @@ export default function TabFollowScreen({ navigation }: RootTabScreenProps<"TabF
             </Box>
           </Box>
         </Box>
-<<<<<<< HEAD
-      </Box>
->>>>>>> dev_Zsolt
-    </View>
-=======
       </View>
     </SafeAreaView>
->>>>>>> dev-miketm
   );
 }
 

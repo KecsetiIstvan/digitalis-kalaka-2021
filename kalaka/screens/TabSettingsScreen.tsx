@@ -61,13 +61,17 @@ export default function TabFollowScreen({ navigation }: RootTabScreenProps<"TabS
   const getNameInitials = (firstName: string, lastName: string) =>
     firstName && lastName ? `${firstName.charAt(0).toUpperCase()}${lastName.charAt(0).toUpperCase()}` : "";
 
+    function isObject(obj: any) {
+      return obj != null && obj.constructor.name === "Object";
+    }
+
   return (
     <SafeAreaView>
       <Box w="100%">
         <List width="100%" borderBottomWidth="0">
           <List.Item marginBottom={16} marginLeft={2} marginTop={4} display={"flex"}>
             <TouchableOpacity onPress={() => handleImageUpload()}>
-              {meData?.profileImageUrl && !isLoadingImage ? (
+              {meData?.profileImageUrl && !isObject(meData?.profileImageUrl) && !isLoadingImage ? (
                 <Image
                   style={{
                     width: 60,
