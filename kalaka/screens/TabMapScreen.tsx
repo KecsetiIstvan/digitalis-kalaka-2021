@@ -22,17 +22,21 @@ export default function TabMapScreen() {
   const [elRefMutants, setElRefMutants] = React.useState<any>([]);
 
   const animate = (markerData: any) => {
-    const newCoordinate = {};
-
     markerData.map((m: any, index: any) => {
-      if (Platform.OS === "android") {
+      if (false) {
         if (
           elRefMutants[index] &&
           elRefMutants[index].ref &&
           elRefMutants[index].ref.current &&
-          elRefMutants[index].ref.current._component
+          elRefMutants[index].ref.current
         ) {
-          elRefMutants[index]?.ref.current._component.animateMarkerToCoordinate(newCoordinate, 500);
+          elRefMutants[index]?.ref.current._component.animateMarkerToCoordinate(
+            {
+              longitude: parseFloat(elRefMutants[index].info.location.longitude),
+              latitude: parseFloat(elRefMutants[index].info.location.latitude),
+            },
+            500
+          );
         }
       } else {
         // `useNativeDriver` defaults to false if not passed explicitly
@@ -48,7 +52,6 @@ export default function TabMapScreen() {
         }
       }
     });
-    handleLocationUpdate();
   };
 
   const { data } = useQuery(
@@ -88,7 +91,10 @@ export default function TabMapScreen() {
           })
       );
     console.log(elRefMutants);
-    if (data) animate(data);
+    if (data) {
+      animate(data);
+      handleLocationUpdate();
+    }
   }, [data]);
 
   //Location.watchPositionAsync({  }, (location) => {
@@ -122,22 +128,31 @@ export default function TabMapScreen() {
         ) : (
           <></>
         )*/}
-          {data?.map((markerData: any, index: number) => (
-            <Marker.Animated ref={elRefMutants[index]?.ref} coordinate={elRefMutants[index]?.info.location}>
-              {console.log(elRefMutants[index]?.info)}
-              <Image
-                style={{
-                  width: 70,
-                  height: 70,
-                  borderColor: "#6165F3",
-                  borderWidth: 5,
-                  borderRadius: 75,
+          {data?.map((markerData: any, index: number) =>
+            elRefMutants[index]?.ref ? (
+              <Marker.Animated
+                ref={elRefMutants[index]?.ref}
+                coordinate={{
+                  latitude: +elRefMutants[index]?.info.location.latitude,
+                  longitude: +elRefMutants[index]?.info.location.longitude,
                 }}
-                source={{ uri: "https://picsum.photos/70/70.jpg" }}
-                resizeMode={"cover"}
-              />
-            </Marker.Animated>
-          ))}
+              >
+                <Image
+                  style={{
+                    width: 70,
+                    height: 70,
+                    borderColor: "#6165F3",
+                    borderWidth: 5,
+                    borderRadius: 75,
+                  }}
+                  source={{ uri: "https://picsum.photos/70/70.jpg" }}
+                  resizeMode={"cover"}
+                />
+              </Marker.Animated>
+            ) : (
+              <></>
+            )
+          )}
         </MapView>
       )}
 
