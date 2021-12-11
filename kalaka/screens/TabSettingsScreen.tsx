@@ -8,7 +8,6 @@ import Colors from '../constants/Colors';
 import { useQuery } from "react-query";
 import { me, updateMe, uploadImage } from "../services";
 import * as ImagePicker from "expo-image-picker";
-import Colors from "../constants/Colors";
 
 export default function TabFollowScreen({ navigation }: RootTabScreenProps<"TabSettings">) {
   const { data: meData, refetch } = useQuery("me", () => me());
