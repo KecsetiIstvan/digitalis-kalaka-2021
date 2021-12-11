@@ -25,4 +25,6 @@ export class CreateUserDto {
     message: 'Hiba: Telefonszám kötelező!',
   })
   public readonly phone: Schema.Types.String;
+
+  public readonly profileImageUrl?: Schema.Types.String;
 }

@@ -3,7 +3,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import * as argon2 from 'argon2';
 import { InjectModel } from '@nestjs/mongoose';
-import { Condition, DeepPartial, Model, Schema } from 'mongoose';
+import { Condition, DeepPartial, Model, Schema, UpdateQuery } from 'mongoose';
 import { User, CurrentLocation, EmergencyContact } from '@types';
 import { AddContactDto } from './dto/add-contact.dto';
 import { AddEmergencyContactDto } from './dto/add-emergency-contact-dto';
@@ -15,6 +15,16 @@ export class UserService {
   async create(createUserDto: CreateUserDto) {
     let createdUser = new this.userModel(createUserDto);
     return await createdUser.save();
+  }
+
+  async update(_id: string, updateUserDto: UpdateUserDto) {
+    await this.userModel.findByIdAndUpdate(
+      _id,
+      updateUserDto as unknown as User,
+      { new: true },
+    );
+
+    return 'updated';
   }
 
   async findOneByEmail(email: string): Promise<User> {
@@ -55,6 +65,7 @@ export class UserService {
         location: contact.location,
         firstName: contact.firstName,
         lastName: contact.lastName,
+        profileImageUrl: contact.profileImageUrl,
       };
     });
   }

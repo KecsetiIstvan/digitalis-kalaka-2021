@@ -10,6 +10,7 @@ export interface User {
   location: CurrentLocation;
   contacts: User[];
   emergencyContacts: EmergencyContact[];
+  profileImageUrl: string;
 }
 
 export interface EmergencyContact {
