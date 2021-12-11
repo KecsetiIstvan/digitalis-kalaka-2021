@@ -3,15 +3,16 @@
  * https://reactnavigation.org/docs/getting-started
  *
  */
-import { FontAwesome } from "@expo/vector-icons";
+import { FontAwesome, FontAwesome5 } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer, DefaultTheme, DarkTheme } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as React from "react";
-import { ColorSchemeName, Pressable } from "react-native";
+import { Pressable } from "react-native";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import Colors from "../constants/Colors";
-import ModalScreen from "../screens/ModalScreen";
+import ModalScreen from "../screens/modal/ModalScreen";
 import NotFoundScreen from "../screens/NotFoundScreen";
 import TabFollowScreen from "../screens/TabFollowScreen";
 import TabMapScreen from "../screens/TabMapScreen";
@@ -22,6 +23,16 @@ import { RootStackParamList, RootTabParamList, RootTabScreenProps } from "../typ
 import LinkingConfiguration from "./LinkingConfiguration";
 import { useEffect, useState } from "react";
 import { getToken } from "../repository";
+import ChatScreen from "../screens/ChatScreen";
+import DangerScreen from "../screens/DangerScreen";
+import AddContactScreen from "../screens/AddContactScreen";
+import ChangeConatctModalScreen from "../screens/modal/ChangeContactModalScreen";
+import PersonalDataModalScreen from "../screens/modal/PersonalDataModalScreen";
+import SafetyFeaturesModalScreen from "../screens/modal/SafetyFeaturesModalScreen";
+import NotificationsModalScreen from "../screens/modal/NotificationsModalScreen";
+import TermdModalScreen from "../screens/modal/TermsModalScreen";
+
+
 
 export default function Navigation() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -52,13 +63,21 @@ function RootNavigator() {
     <Stack.Navigator>
       <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: "Oops!" }} />
+      <Stack.Screen name="TabMap" component={TabMapScreen} options={{headerShown: false}}/>
       <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
-      {/* <Stack.Screen name="TabMap" component={TabMapScreen} options={{headerShown: false}}/>
       <Stack.Screen name="TabFollow" component={TabFollowScreen} options={{headerShown: false}}/>
       <Stack.Screen name="TabContacts" component={TabContactScreen} options={{headerShown: false}}/>
-      <Stack.Screen name="TabSettings" component={TabSettingsScreen} options={{headerShown: false}}/> */}
+      <Stack.Screen name="TabSettings" component={TabSettingsScreen} options={{headerShown: false}}/>
+      <Stack.Screen name="Chat" component={ChatScreen} options={{headerShown: false}}/>
+      <Stack.Screen name="Danger" component={DangerScreen} options={{headerShown: false}}/>
+      <Stack.Screen name="AddContact" component={AddContactScreen} options={{headerShown: false}}/>
       <Stack.Group screenOptions={{ presentation: "modal" }}>
         <Stack.Screen name="Modal" component={ModalScreen} />
+        <Stack.Screen name="ChangeContactModal" component={ChangeConatctModalScreen} />
+        <Stack.Screen name="PersonalDataModal" component={PersonalDataModalScreen} />
+        <Stack.Screen name="SafetyFeaturesModal" component={SafetyFeaturesModalScreen}/>
+        <Stack.Screen name="NotificationsModal" component={NotificationsModalScreen}/>
+        <Stack.Screen name="TermsModal" component={TermdModalScreen}/>
       </Stack.Group>
     </Stack.Navigator>
   );
@@ -79,21 +98,12 @@ function BottomTabNavigator() {
       }}
     >
       <BottomTab.Screen
-        name="TabMap"
-        component={TabMapScreen}
-        options={{
-          title: "Map",
-          headerShown: false,
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
-        }}
-      />
-      <BottomTab.Screen
         name="TabFollow"
         component={TabFollowScreen}
         options={({ navigation }: RootTabScreenProps<"TabFollow">) => ({
-          title: "Follow",
+          title: "Követés",
           headerShown: false,
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          tabBarIcon: () => <FontAwesome5 name="shoe-prints" color={Colors.danger} size={25} />,
           headerRight: () => (
             <Pressable
               onPress={() => navigation.navigate("Modal")}
@@ -107,21 +117,30 @@ function BottomTabNavigator() {
         })}
       />
       <BottomTab.Screen
+        name="TabMap"
+        component={TabMapScreen}
+        options={{
+          title: "Térkép",
+          headerShown: false,
+          tabBarIcon: () => <FontAwesome5 name="map-marked-alt" color={Colors.secondary} size={25} />,
+        }}
+      />
+      <BottomTab.Screen
         name="TabContacts"
         component={TabContactScreen}
         options={{
-          title: "Contacts",
+          title: "Kontaktok",
           headerShown: false,
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          tabBarIcon: () => <FontAwesome5 name="address-book" color={Colors.secondary} size={25} />,
         }}
       />
       <BottomTab.Screen
         name="TabSettings"
         component={TabSettingsScreen}
         options={{
-          title: "Settings",
+          title: "Beállítások",
           headerShown: false,
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          tabBarIcon: () => <FontAwesome5 name="cog" color={Colors.secondary} size={25} />,
         }}
       />
     </BottomTab.Navigator>

@@ -22,7 +22,14 @@ export type RootStackParamList = {
   TabContacts : undefined;
   TabSettings : undefined;
   Login: undefined;
-  Register: undefined;
+  Chat: undefined;
+  Danger: undefined;
+  AddContact: undefined;
+  ChangeContactModal: undefined;
+  PersonalDataModal: undefined;
+  SafetyFeaturesModal: undefined;
+  NotificationsModal: undefined;
+  TermsModal: undefined;
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> = NativeStackScreenProps<

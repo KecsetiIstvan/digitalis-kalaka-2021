@@ -1,4 +1,3 @@
-
 export default {
     text: '#26044d',
     background: '#fff',

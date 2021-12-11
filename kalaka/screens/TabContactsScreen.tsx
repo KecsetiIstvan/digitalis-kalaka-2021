@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { StyleSheet } from 'react-native';
-
 import { Text, View, Image, ScrollView, Button } from 'native-base';
 import { RootTabScreenProps } from '../types';
 import Colors from '../constants/Colors';
