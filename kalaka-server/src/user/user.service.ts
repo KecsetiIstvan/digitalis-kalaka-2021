@@ -61,35 +61,70 @@ export class UserService {
 
   async getContact(id: string) {
     const contact = await this.userModel.findOne({ _id: id });
-    const { password, ...retCont } = contact;
-    return retCont;
+    return {
+      firstName: contact.firstName,
+      lastName: contact.lastName,
+      email: contact.email,
+      location: contact.location,
+    };
   }
 
   async deleteContact(user: User, id: string) {
-    const contact = user.contacts.filter((contact) => contact._id !== id);
+    const userToDelete = await this.userModel.findOne({ _id: id });
+    const userToDeleteFrom = await this.userModel
+      .findOne({ _id: user._id })
+      .populate('contacts', '', this.userModel as any);
+    const contact = userToDeleteFrom.contacts.filter(
+      (contact) => contact.email !== userToDelete.email,
+    );
+
     return await this.userModel.updateOne(
       {
         email: user.email,
       },
       {
-        $set: { contacts: contact },
+        contacts: contact,
       },
     );
   }
 
-  async addEmergencyContact(user: User, emergencyContact: AddEmergencyContactDto) {
-    return 'asd';
+  async addEmergencyContact(
+    user: User,
+    emergencyContact: AddEmergencyContactDto,
+  ) {
+    return await this.userModel.updateOne(
+      {
+        email: user.email,
+      },
+      {
+        $push: { emergencyContacts: emergencyContact },
+      },
+    );
   }
 
-  async deleteEmergencyContact(user: User, emergencyContact: AddEmergencyContactDto) {
-    return 'asd';
+  async deleteEmergencyContact(user: User, id: string) {
+    const emergencyContact = user.emergencyContacts.filter(
+      (emergencyContact) => emergencyContact._id.toString() !== id,
+    );
+
+    return await this.userModel.updateOne(
+      {
+        email: user.email,
+      },
+      {
+        emergencyContacts: emergencyContact,
+      },
+    );
   }
 
-  async getEmergencyContact(user: User, emergencyContact: AddEmergencyContactDto) {
-    return 'asd';
+  async getEmergencyContact(user: User, id: string) {
+    const contact = user.emergencyContacts.find(
+      (item) => item._id.toString() === id,
+    );
+    return contact;
   }
 
-  async updateEmergencyContact(user: User, emergencyContact: AddEmergencyContactDto) {
+  async updateEmergencyContact(user: User, id: string) {
     return 'asd';
   }
 }
