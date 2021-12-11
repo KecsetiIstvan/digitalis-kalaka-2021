@@ -3,7 +3,6 @@ import { StyleSheet } from 'react-native';
 import { Box, List, Text, Icon } from 'native-base'
 import { RootTabScreenProps } from '../types';
 import { deleteToken } from '../repository';
-import PersonalDataModalScreen from './modal/PersonalDataModalScreen';
 
 export default function TabFollowScreen({ navigation }: RootTabScreenProps<'TabSettings'>) {
   const handleLogOut = async () => {

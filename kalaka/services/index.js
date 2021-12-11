@@ -3,11 +3,10 @@ import { getToken, setToken } from '../repository';
 import Toast from 'react-native-toast-message';
 
 const apiClient = axios.create({
-    baseURL: 'http://192.168.1.249:3000'
-
+    baseURL: 'http://192.168.1.249:3000/api'
 });
 
-axios.interceptors.request.use(async(request) => {
+apiClient.interceptors.request.use(async(request) => {
     const token = await getToken();
     if (token) {
         request.headers.common.Authorization = `Bearer ${account.token}`;

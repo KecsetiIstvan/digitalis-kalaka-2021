@@ -97,6 +97,7 @@ export default function LoginScreen(props: any) {
         <Button onPress={handleLogin} disabled={!password || !email}>Bejelentkezés</Button>
         <Button onPress={() => props.callback(true)}>Bejelentkezés google használatával</Button>
         <Button onPress={() => setFormState('registrant')}>Regisztráció</Button>
+        
 
       </FormControl>
     </View>

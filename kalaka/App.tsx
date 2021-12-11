@@ -5,13 +5,16 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import useCachedResources from "./hooks/useCachedResources";
 import Navigation from "./navigation";
 import { QueryClient, QueryClientProvider } from "react-query";
-import { NativeBaseProvider } from "native-base";
+import { extendTheme, NativeBaseProvider } from "native-base";
 import Toast from "react-native-toast-message";
+import ComponentsTheme from "./constants/ComponentsTheme";
 
 export default function App() {
   const queryClient = new QueryClient();
 
   const isLoadingComplete = useCachedResources();
+
+  const theme = extendTheme(ComponentsTheme);
 
   if (!isLoadingComplete) {
     return null;
@@ -19,7 +22,7 @@ export default function App() {
     return (
       <QueryClientProvider client={queryClient}>
         <SafeAreaProvider>
-          <NativeBaseProvider>
+          <NativeBaseProvider theme = {theme}>
             <Navigation />
             <StatusBar />
             <Toast />

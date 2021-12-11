@@ -31,6 +31,8 @@ import SafetyFeaturesModalScreen from "../screens/modal/SafetyFeaturesModalScree
 import NotificationsModalScreen from "../screens/modal/NotificationsModalScreen";
 import TermdModalScreen from "../screens/modal/TermsModalScreen";
 
+
+
 export default function Navigation() {
   const [loggedIn, setLoggedIn] = useState(false);
   useEffect(() => {
@@ -99,7 +101,6 @@ function BottomTabNavigator() {
         component={TabMapScreen}
         options={{
           title: "Térkép",
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
         }}
       />
       <BottomTab.Screen
