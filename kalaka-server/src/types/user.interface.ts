@@ -11,6 +11,8 @@ export interface User {
   contacts: User[];
   emergencyContacts: EmergencyContact[];
   profileImageUrl: string;
+  status: Status;
+  isLocationShared: boolean;
 }
 
 export interface EmergencyContact {
@@ -18,4 +20,10 @@ export interface EmergencyContact {
   name: string;
   emergencyInfo: string;
   settings: string;
+}
+
+export enum Status {
+  IDLE = 'IDLE',
+  ACTIVE = 'ACTIVE',
+  DANGER = 'DANGER',
 }

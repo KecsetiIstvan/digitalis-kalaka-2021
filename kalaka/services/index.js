@@ -4,7 +4,7 @@ import Toast from "react-native-toast-message";
 import FormFormData, { getHeaders } from "form-data";
 
 const apiClient = axios.create({
-  baseURL: "http://192.168.1.249:3000/api",
+  baseURL: "http://192.168.1.192:3000/api",
 });
 
 apiClient.interceptors.request.use(async (request) => {
@@ -51,6 +51,7 @@ export const me = async () => {
     return;
   });
   if (answer) {
+    console.log(answer.data);
     return answer.data;
   }
 };
@@ -71,6 +72,16 @@ export const updateSettings = () => {
 
 export const updateLocation = async (longitude, latitude) => {
   const resp = await apiClient.patch("/map/my-location", { longitude, latitude }).catch((err) => {
+    showToast(err);
+    return;
+  });
+  if (resp) {
+    return resp.data;
+  }
+};
+
+export const updateStatus = async (status, isLocationShared) => {
+  const resp = await apiClient.patch("/map/my-status", { status, isLocationShared }).catch((err) => {
     showToast(err);
     return;
   });

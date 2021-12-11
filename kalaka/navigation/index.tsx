@@ -31,8 +31,7 @@ import PersonalDataModalScreen from "../screens/modal/PersonalDataModalScreen";
 import SafetyFeaturesModalScreen from "../screens/modal/SafetyFeaturesModalScreen";
 import NotificationsModalScreen from "../screens/modal/NotificationsModalScreen";
 import TermdModalScreen from "../screens/modal/TermsModalScreen";
-
-
+import { Box } from "native-base";
 
 export default function Navigation() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -63,21 +62,26 @@ function RootNavigator() {
     <Stack.Navigator>
       <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: "Oops!" }} />
-      <Stack.Screen name="TabMap" component={TabMapScreen} options={{headerShown: false}}/>
+      <Stack.Screen name="TabMap" component={TabMapScreen} options={{ headerShown: false }} />
       <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
-      <Stack.Screen name="TabFollow" component={TabFollowScreen} options={{headerShown: false}}/>
-      <Stack.Screen name="TabContacts" component={TabContactScreen} options={{headerShown: false}}/>
-      <Stack.Screen name="TabSettings" component={TabSettingsScreen} options={{headerShown: false}}/>
-      <Stack.Screen name="Chat" component={ChatScreen} options={{headerShown: false}}/>
-      <Stack.Screen name="Danger" component={DangerScreen} options={{headerShown: false}}/>
-      <Stack.Screen name="AddContact" component={AddContactScreen} options={{headerShown: false}}/>
+      <Stack.Screen name="TabFollow" component={TabFollowScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="TabContacts" component={TabContactScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="TabSettings" component={TabSettingsScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="Chat" component={ChatScreen} options={{ headerShown: false }} />
+      <Stack.Screen
+        name="Danger"
+        component={DangerScreen}
+        options={{ headerShown: false }}
+        initialParams={{ isLocationEnabled: false }}
+      />
+      <Stack.Screen name="AddContact" component={AddContactScreen} options={{ headerShown: false }} />
       <Stack.Group screenOptions={{ presentation: "modal" }}>
         <Stack.Screen name="Modal" component={ModalScreen} />
         <Stack.Screen name="ChangeContactModal" component={ChangeConatctModalScreen} />
         <Stack.Screen name="PersonalDataModal" component={PersonalDataModalScreen} />
-        <Stack.Screen name="SafetyFeaturesModal" component={SafetyFeaturesModalScreen}/>
-        <Stack.Screen name="NotificationsModal" component={NotificationsModalScreen}/>
-        <Stack.Screen name="TermsModal" component={TermdModalScreen}/>
+        <Stack.Screen name="SafetyFeaturesModal" component={SafetyFeaturesModalScreen} />
+        <Stack.Screen name="NotificationsModal" component={NotificationsModalScreen} />
+        <Stack.Screen name="TermsModal" component={TermdModalScreen} />
       </Stack.Group>
     </Stack.Navigator>
   );
@@ -103,7 +107,14 @@ function BottomTabNavigator() {
         options={({ navigation }: RootTabScreenProps<"TabFollow">) => ({
           title: "Követés",
           headerShown: false,
-          tabBarIcon: () => <FontAwesome5 name="shoe-prints" color={Colors.danger} size={25} />,
+          tabBarIcon: () => (
+            <FontAwesome5
+              name="shoe-prints"
+              color={Colors.danger}
+              size={25}
+              style={{ transform: [{ rotate: "269deg" }] }}
+            />
+          ),
           headerRight: () => (
             <Pressable
               onPress={() => navigation.navigate("Modal")}

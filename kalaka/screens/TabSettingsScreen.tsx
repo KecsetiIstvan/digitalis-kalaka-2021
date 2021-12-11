@@ -62,9 +62,9 @@ export default function TabFollowScreen({ navigation }: RootTabScreenProps<"TabS
   const getNameInitials = (firstName: string, lastName: string) =>
     firstName && lastName ? `${firstName.charAt(0).toUpperCase()}${lastName.charAt(0).toUpperCase()}` : "";
 
-  function isObject(obj: any) {
-    return obj != null && obj.constructor.name === "Object";
-  }
+    function isObject(obj: any) {
+      return obj != null && obj.constructor.name === "Object";
+    }
 
   return (
     <SafeAreaView >
@@ -74,8 +74,7 @@ export default function TabFollowScreen({ navigation }: RootTabScreenProps<"TabS
       <Box w="100%">
           <List.Item marginBottom={8} marginLeft={2} marginTop={4} display={"flex"}>
             <TouchableOpacity onPress={() => handleImageUpload()}>
-              {console.log(meData)}
-              {meData?.profileImageUrl && !isObject(meData?.profileImageUrl) ? (
+              {meData?.profileImageUrl && !isObject(meData?.profileImageUrl) && !isLoadingImage ? (
                 <Image
                   style={{
                     width: 60,

@@ -1,6 +1,6 @@
 import * as mongoose from 'mongoose';
 import * as argon2 from 'argon2';
-import { CurrentLocation } from '@types';
+import { CurrentLocation, Status } from '@types';
 import { LocationSchema } from './location.schema';
 import { EmergencyContactSchema } from './emergencyContact.schema';
 
@@ -19,6 +19,13 @@ export const UserSchema = new mongoose.Schema({
     },
   ],
   profileImageUrl: { types: String, required: false, unique: false },
+  status: {
+    type: String,
+    enum: Object.values(Status),
+    default: Status.IDLE,
+    required: false,
+  },
+  isLocationShared: { types: Boolean, required: false, unique: false },
 });
 
 UserSchema.pre('save', async function (next) {
