@@ -10,6 +10,5 @@ export default {
                 margin: '1.5',
               }),
         },
-        
     },
 }
