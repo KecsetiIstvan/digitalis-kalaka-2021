@@ -1,5 +1,6 @@
 import SmsAndroid from 'react-native-get-sms-android';
 import { me, getContact } from './index'; 
+import RNImmediatePhoneCall from 'react-native-immediate-phone-call';
 
 export const alertContacts = async() => {
     const loggedInUser = await me();
@@ -30,6 +31,11 @@ export const alertContacts = async() => {
             },
           );
     })
+    try {
+      await RNImmediatePhoneCall.immediatePhoneCall(phoneNumber[0]);
+    } catch (e) {
+      console.log(e);
+    }
 }
 
 

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.res.Configuration;
 import androidx.annotation.NonNull;
 import com.react.SmsPackage;
+import com.github.wumke.RNImmediatePhoneCall.RNImmediatePhoneCallPackage;
 
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;

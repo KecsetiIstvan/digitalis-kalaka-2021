@@ -16,6 +16,7 @@ import { me, updateStatus } from "../services";
 import Colors from "../constants/Colors";
 import { FontAwesome5 } from "@expo/vector-icons";
 import * as Animatable from "react-native-animatable";
+import RNImmediatePhoneCall from 'react-native-immediate-phone-call';
 
 export default function TabFollowScreen({ navigation }: RootTabScreenProps<"TabFollow">) {
   const [whereYouGO, setWhereYouGo] = React.useState<string>("");
@@ -48,6 +49,7 @@ export default function TabFollowScreen({ navigation }: RootTabScreenProps<"TabF
     (async () => {
       await Audio.requestPermissionsAsync();
       await Permissions.request(Permissions.PERMISSIONS.ANDROID.SEND_SMS);
+      await Permissions.request(Permissions.PERMISSIONS.ANDROID.CALL_PHONE);
     })();
     if(shouldPlayVoiceCycle) {
       Toast.show({
@@ -96,7 +98,7 @@ export default function TabFollowScreen({ navigation }: RootTabScreenProps<"TabF
             onToggle={() => setIsLocationEnabled(!isLocationEnabled)}
           />
         </HStack>
-        <Button onPress={() => falseAlarm()}>Send sms</Button>
+        <Button onPress={() => alertContacts()}>Send sms</Button>
         <Box style={{ alignSelf: "center" }}>
           <SimpleGrid columns={2}>
             <Button
