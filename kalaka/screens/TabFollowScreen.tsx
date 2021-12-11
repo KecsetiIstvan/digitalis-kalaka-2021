@@ -10,7 +10,7 @@ import { useEffect } from "react";
 import Toast from "react-native-toast-message";
 import Voice from '@react-native-voice/voice';
 import { Audio } from 'expo-av';
-import { alertContacts } from "../services/alertService";
+import { alertContacts, falseAlarm } from "../services/alertService";
 import Permissions from 'react-native-permissions';
 import { me, updateStatus } from "../services";
 import Colors from "../constants/Colors";
@@ -96,7 +96,7 @@ export default function TabFollowScreen({ navigation }: RootTabScreenProps<"TabF
             onToggle={() => setIsLocationEnabled(!isLocationEnabled)}
           />
         </HStack>
-
+        <Button onPress={() => falseAlarm()}>Send sms</Button>
         <Box style={{ alignSelf: "center" }}>
           <SimpleGrid columns={2}>
             <Button
