@@ -1,6 +1,6 @@
 import * as React from "react";
 import { StyleSheet, Image, TouchableOpacity, View } from "react-native";
-import { Box, List, Text, Spinner, Button } from "native-base";
+import { Box, List, Text, Spinner, Button, HStack } from "native-base";
 import { RootTabScreenProps } from "../types";
 import { deleteToken } from "../repository";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -109,24 +109,40 @@ export default function TabFollowScreen({ navigation }: RootTabScreenProps<"TabS
             <Text style={styles.name}>{`${meData?.firstName} ${meData?.lastName}`}</Text>
           </List.Item>
             <Button variant="outline" onPress={() => navigation.navigate("PersonalDataModal")}>
-              Személyes adatok modósítása
-              <FontAwesome5 style={{color: Colors.primary}} name="chevron-right"/>
+              <HStack alignItems="center" width={"100%"}>
+                <Text style={{ marginRight: "auto" }}>Személyes adatok modósítása</Text>
+                <FontAwesome5 style={{color: Colors.primary}} name="chevron-right"/>
+              </HStack>
             </Button>
             <Button display='flex' flexDirection='row' variant="outline" onPress={() => navigation.navigate("SafetyFeaturesModal")}>
-              <Text style={{marginRight: 'auto'}}>Biztonsági beállítások</Text>
-              <FontAwesome5 style={{color: Colors.primary}} name="chevron-right"/>
+              <HStack alignItems="center" width={"100%"}>
+                  <Text style={{ marginRight: "auto" }}>Biztonsági beállítások</Text>
+                  <FontAwesome5 style={{color: Colors.primary}} name="chevron-right"/>
+              </HStack>
             </Button>
             <Button variant="outline" onPress={() => navigation.navigate("NotificationsModal")}>
-              Értesítések
-              <FontAwesome5 style={{color: Colors.primary}} name="chevron-right"/>
+              <HStack alignItems="center" width={"100%"}>
+                  <Text style={{ marginRight: "auto" }}>Értesítések</Text>
+                  <FontAwesome5 style={{color: Colors.primary}} name="chevron-right"/>
+              </HStack>
             </Button>
             <Button variant="outline" onPress={() => navigation.navigate("TermsModal")}>
-              Felhasználói feltételek
-              <FontAwesome5 style={{color: Colors.primary}} name="chevron-right"/>
+              <HStack alignItems="center" width={"100%"}>
+                  <Text style={{ marginRight: "auto" }}>Felhasználói feltételek</Text>
+                  <FontAwesome5 style={{color: Colors.primary}} name="chevron-right"/>
+              </HStack>
+            </Button>
+            <Button variant="outline" onPress={() => navigation.navigate("FeedbackModal")}>
+              <HStack alignItems="center" width={"100%"}>
+                  <Text style={{ marginRight: "auto" }}>Visszajelzés a fejlesztőknek</Text>
+                  <FontAwesome5 style={{color: Colors.primary}} name="chevron-right"/>
+              </HStack>
             </Button>
             <Button variant="logout" onPress={handleLogOut}>
-              Kijelentkezés
-              <FontAwesome5 style={{color: Colors.danger}} name="chevron-right"/>
+            <HStack alignItems="center" width={"100%"}>
+                  <Text style={{ marginRight: "auto" }}>Kijelentkezés</Text>
+                  <FontAwesome5 style={{color: Colors.danger}} name="chevron-right"/>
+              </HStack>
             </Button>
       </Box>
     </SafeAreaView>
