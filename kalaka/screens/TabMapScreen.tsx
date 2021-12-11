@@ -10,6 +10,7 @@ import { getMap, updateLocation } from "../services";
 import { Box, Button } from "native-base";
 import * as Animatable from "react-native-animatable";
 import Colors from "../constants/Colors";
+import Permissions from 'react-native-permissions';
 
 export default function TabMapScreen() {
   const [region, setRegion] = useState<any>({
