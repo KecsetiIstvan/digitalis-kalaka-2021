@@ -18,6 +18,7 @@ export const UserSchema = new mongoose.Schema({
       unique: false,
     },
   ],
+  profileImageUrl: { types: String, required: false, unique: false },
 });
 
 UserSchema.pre('save', async function (next) {

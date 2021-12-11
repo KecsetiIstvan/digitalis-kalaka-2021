@@ -17,6 +17,7 @@ import { CurrentUser } from '@decorators';
 import { EmergencyContact, User } from '@types';
 import { AddContactDto } from './dto/add-contact.dto';
 import { AddEmergencyContactDto } from './dto/add-emergency-contact-dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Controller('users')
 export class UserController {
@@ -104,14 +105,12 @@ export class UserController {
     );
   }
 
-  /*
-  @Patch(':id')
-  update(
-    @Param('id', ParseIntPipe) id: number,
-    @Body() updateUserDto: UpdateUserDto,
-  ) {
-    return this.usersService.update(id, updateUserDto);
+  @UseGuards(AuthGuard())
+  @Patch('me')
+  updateMe(@CurrentUser() user: User, @Body() updateUserDto: UpdateUserDto) {
+    return this.userService.update(user._id, updateUserDto);
   }
+  /*
 
   @Delete(':id')
   remove(@Param('id', ParseIntPipe) id: number) {

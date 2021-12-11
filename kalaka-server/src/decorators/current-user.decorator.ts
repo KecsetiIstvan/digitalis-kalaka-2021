@@ -18,6 +18,7 @@ export const CurrentUser = createParamDecorator(
       location: userData.location,
       emergencyContacts: userData.emergencyContacts,
       phone: userData.phone,
+      profileImageUrl: userData.profileImageUrl,
     };
   },
 );
