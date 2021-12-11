@@ -11,11 +11,13 @@ export const UserSchema = new mongoose.Schema({
   lastName: { type: String, required: true, unique: false },
   location: { type: LocationSchema, required: false, unique: false },
   contacts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
-  emergencyContacts: {
-    type: EmergencyContactSchema,
-    required: false,
-    unique: false,
-  },
+  emergencyContacts: [
+    {
+      type: EmergencyContactSchema,
+      required: false,
+      unique: false,
+    },
+  ],
 });
 
 UserSchema.pre('save', async function (next) {

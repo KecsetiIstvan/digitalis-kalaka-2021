@@ -101,6 +101,8 @@ function BottomTabNavigator() {
         component={TabMapScreen}
         options={{
           title: "Térkép",
+          headerShown: false,
+          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
         }}
       />
       <BottomTab.Screen
@@ -108,6 +110,7 @@ function BottomTabNavigator() {
         component={TabFollowScreen}
         options={({ navigation }: RootTabScreenProps<"TabFollow">) => ({
           title: "Követés",
+          headerShown: false,
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
           headerRight: () => (
             <Pressable
@@ -126,6 +129,7 @@ function BottomTabNavigator() {
         component={TabContactScreen}
         options={{
           title: "Kontaktok",
+          headerShown: false,
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
         }}
       />
@@ -134,6 +138,7 @@ function BottomTabNavigator() {
         component={TabSettingsScreen}
         options={{
           title: "Beállítások",
+          headerShown: false,
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
         }}
       />

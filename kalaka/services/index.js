@@ -1,6 +1,6 @@
-import axios from 'axios';
-import { getToken, setToken } from '../repository';
-import Toast from 'react-native-toast-message';
+import axios from "axios";
+import { getToken, setToken } from "../repository";
+import Toast from "react-native-toast-message";
 
 const apiClient = axios.create({
     baseURL: 'http://192.168.1.249:3000/api'
@@ -15,78 +15,100 @@ apiClient.interceptors.request.use(async(request) => {
 });
 
 export const auth = async (email, password) => {
-    const resp = await apiClient.post('/auth/login', { email: email, password: password}).catch(err => {showToast(err); return})
-    if(resp) {
-        return resp.data;
-    }
-    return undefined;
-}
+  const resp = await apiClient.post("/auth/login", { email: email, password: password }).catch((err) => {
+    showToast(err);
+    return;
+  });
+  if (resp) {
+    return resp.data;
+  }
+  return undefined;
+};
 
 export const register = async (email, password, firstName, lastName) => {
-    const resp = await apiClient.post('/auth/register', { 
-        email: email, 
-        password: password,
-        firstName: firstName,
-        lastName: lastName
-    }).catch(err => {showToast(err); return})
-    if(resp) {
-        return resp.data;
-    }
-    return undefined;
-}
+  const resp = await apiClient
+    .post("/auth/register", {
+      email: email,
+      password: password,
+      firstName: firstName,
+      lastName: lastName,
+    })
+    .catch((err) => {
+      showToast(err);
+      return;
+    });
+  if (resp) {
+    return resp.data;
+  }
+  return undefined;
+};
 
 export const me = async () => {
-    const answer = await axios.get('/me');
-    if (answer) {
-        return ('asd');
-    } else {
-        return 'aaa';
-    }
-}
+  const answer = await axios.get("/me");
+  if (answer) {
+    return "asd";
+  } else {
+    return "aaa";
+  }
+};
 export const updateSettings = () => {
-    return ('asd');
-}
+  return "asd";
+};
 
-export const updateLocation = () => {
-    return ('asd');
-}
+export const updateLocation = async (longitude, latitude) => {
+  const resp = await apiClient.patch("/map/my-location", { longitude, latitude }).catch((err) => {
+    showToast(err);
+    return;
+  });
+  if (resp) {
+    return resp.data;
+  }
+  return undefined;
+};
 
-export const getMap = () => {
-    return ('asd');
-}
+export const getMap = async () => {
+  const resp = await apiClient.get("/map").catch((err) => {
+    showToast(err);
+    return;
+  });
+  if (resp) {
+    return resp.data;
+  }
+  return undefined;
+};
 
 export const getFriends = () => {
-    return ('asd');
-}
+  return "asd";
+};
 
 export const addFriend = () => {
-    return ('asd');
-}
+  return "asd";
+};
 
 export const addContact = () => {
-    return ('asd');
-}
+  return "asd";
+};
 
 export const updateFriend = () => {
-    return ('asd');
-}
+  return "asd";
+};
 
 export const updateContact = () => {
-    return ('asd');
-}
+  return "asd";
+};
 
 export const deleteFriend = () => {
-    return ('asd');
-}
+  return "asd";
+};
 
 export const deleteContact = () => {
-    return ('asd');
-}
+  return "asd";
+};
 
 function showToast(error) {
-  console.log(error.response.data.message);
+  //console.log(error.response.data.message);
   Toast.show({
-    type: 'error',
-    text1: error.response.data.message
+    type: "error",
+    text1: error?.response?.data.message,
   });
 }

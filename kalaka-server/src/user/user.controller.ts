@@ -1,9 +1,20 @@
-import { Controller, Post, Body, Get, UseGuards, Patch, Param, HttpStatus, HttpException } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  Get,
+  UseGuards,
+  Patch,
+  Param,
+  HttpStatus,
+  HttpException,
+  Delete,
+} from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { CurrentUser } from '@decorators';
-import { User } from '@types';
+import { EmergencyContact, User } from '@types';
 import { AddContactDto } from './dto/add-contact.dto';
 import { AddEmergencyContactDto } from './dto/add-emergency-contact-dto';
 
@@ -50,10 +61,42 @@ export class UserController {
   }
 
   @UseGuards(AuthGuard())
-  @Get(':id')
+  @Delete('contacts/:id')
   deleteContact(@CurrentUser() user: User, @Param('id') id: string) {
-    if (user.contacts.filter((contact) => contact._id === id).length > 0) {
+    if (user.contacts.includes(id as unknown as User)) {
       return this.userService.deleteContact(user, id);
+    }
+    return new HttpException(
+      'A kért felhasználó nem az ismerősöd',
+      HttpStatus.UNAUTHORIZED,
+    );
+  }
+
+  @UseGuards(AuthGuard())
+  @Get('emergency-contacts/:id')
+  findOneEmergencyContact(@CurrentUser() user: User, @Param('id') id: string) {
+    if (
+      user.emergencyContacts.filter(
+        (emergencyContact) => emergencyContact._id.toString() === id,
+      ).length > 0
+    ) {
+      return this.userService.getEmergencyContact(user, id);
+    }
+    return new HttpException(
+      'A kért felhasználó nem az ismerősöd',
+      HttpStatus.UNAUTHORIZED,
+    );
+  }
+
+  @UseGuards(AuthGuard())
+  @Delete('emergency-contacts/:id')
+  deleteEmergencyContact(@CurrentUser() user: User, @Param('id') id: string) {
+    if (
+      user.emergencyContacts.filter(
+        (emergencyContact) => emergencyContact._id.toString() === id,
+      ).length > 0
+    ) {
+      return this.userService.deleteEmergencyContact(user, id);
     }
     return new HttpException(
       'A kért felhasználó nem az ismerősöd',

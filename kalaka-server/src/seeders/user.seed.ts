@@ -21,6 +21,7 @@ export class UserSeed {
         firstName: faker.name.firstName(),
         lastName: faker.name.lastName(),
         password: '1234' as unknown as Schema.Types.String,
+        phone: '123123' as unknown as Schema.Types.String,
       });
     });
   }
