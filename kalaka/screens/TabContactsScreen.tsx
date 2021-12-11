@@ -18,9 +18,11 @@ function ContactListItem(params: {imageUrl: string, lastName: string, active: bo
 }
 
 export default function TabContactScreen({ navigation }: RootTabScreenProps<'TabContacts'>) {
-  const contacts = useQuery('contacts', () => {
-    
-  });
+
+
+  const [emergencyContacts, setEmergencyContacts] = React.useState<Array<Object>>([]);
+
+
 
   return (
     <SafeAreaView style={{flex: 1, paddingBottom: 50}}>
@@ -41,7 +43,7 @@ export default function TabContactScreen({ navigation }: RootTabScreenProps<'Tab
         <ContactListItem imageUrl='https://wallpaperaccess.com/full/317501.jpg' lastName='Laura' active={true}></ContactListItem>
 
         <View style={{...styles.subHeaderTextContainer, ...{marginBottom: 15}}}>
-          <Text style={styles.subHeaderText}>Ismerőseid az app-ban</Text>
+          <Text style={styles.subHeaderText}>Biztonsági kontaktok</Text>
         </View>
 
         <Button style={styles.activeBadge}>Édesanyám</Button>

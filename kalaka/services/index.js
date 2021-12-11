@@ -90,16 +90,28 @@ export const getMap = async () => {
   return undefined;
 };
 
-export const getContacts = () => {
-  return "asd";
-};
+export const getContacts = async () => {
+  const answer = await apiClient.get("/users/me").catch((err) => {
+    showToast(err);
+    return;
+  });
+  if (answer) {
+    return answer.data.contacts;
+  }
+}
 
 export const getContact = async () => {
 
 }
 
 export const getEmergencyContacts = async () => {
-
+  const answer = await apiClient.get("/users/me").catch((err) => {
+    showToast(err);
+    return;
+  });
+  if (answer) {
+    return answer.data.emergencyContacts;
+  }
 }
 
 export const getEmergencyContact = async () => {
