@@ -248,8 +248,6 @@ PODS:
     - React-jsi (= 0.64.3)
     - React-perflogger (= 0.64.3)
   - React-jsinspector (0.64.3)
-  - react-native-immediate-phone-call (2.0.0):
-    - React
   - react-native-maps (0.28.1):
     - React-Core
   - react-native-safe-area-context (3.3.2):
@@ -320,7 +318,7 @@ PODS:
     - React-cxxreact (= 0.64.3)
     - React-jsi (= 0.64.3)
     - React-perflogger (= 0.64.3)
-  - RNCAsyncStorage (1.15.14):
+  - RNCAsyncStorage (1.12.1):
     - React-Core
   - RNGestureHandler (1.10.3):
     - React-Core
@@ -359,6 +357,8 @@ PODS:
     - React-Core
     - React-RCTImage
   - RNSVG (12.1.1):
+    - React
+  - TouchID (4.4.1):
     - React
   - UMTaskManagerInterface (7.0.3):
     - ExpoModulesCore
@@ -403,7 +403,6 @@ DEPENDENCIES:
   - React-jsi (from `../node_modules/react-native/ReactCommon/jsi`)
   - React-jsiexecutor (from `../node_modules/react-native/ReactCommon/jsiexecutor`)
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
-  - react-native-immediate-phone-call (from `../node_modules/react-native-immediate-phone-call`)
   - react-native-maps (from `../node_modules/react-native-maps`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - "react-native-voice (from `../node_modules/@react-native-voice/voice`)"
@@ -419,12 +418,13 @@ DEPENDENCIES:
   - React-RCTVibration (from `../node_modules/react-native/Libraries/Vibration`)
   - React-runtimeexecutor (from `../node_modules/react-native/ReactCommon/runtimeexecutor`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
-  - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
+  - "RNCAsyncStorage (from `../node_modules/@react-native-community/async-storage`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNPermissions (from `../node_modules/react-native-permissions`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNSVG (from `../node_modules/react-native-svg`)
+  - TouchID (from `../node_modules/react-native-touch-id`)
   - UMTaskManagerInterface (from `../node_modules/unimodules-task-manager-interface/ios`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
@@ -505,8 +505,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/jsiexecutor"
   React-jsinspector:
     :path: "../node_modules/react-native/ReactCommon/jsinspector"
-  react-native-immediate-phone-call:
-    :path: "../node_modules/react-native-immediate-phone-call"
   react-native-maps:
     :path: "../node_modules/react-native-maps"
   react-native-safe-area-context:
@@ -538,7 +536,7 @@ EXTERNAL SOURCES:
   ReactCommon:
     :path: "../node_modules/react-native/ReactCommon"
   RNCAsyncStorage:
-    :path: "../node_modules/@react-native-async-storage/async-storage"
+    :path: "../node_modules/@react-native-community/async-storage"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
   RNPermissions:
@@ -549,6 +547,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-screens"
   RNSVG:
     :path: "../node_modules/react-native-svg"
+  TouchID:
+    :path: "../node_modules/react-native-touch-id"
   UMTaskManagerInterface:
     :path: "../node_modules/unimodules-task-manager-interface/ios"
   Yoga:
@@ -592,7 +592,6 @@ SPEC CHECKSUMS:
   React-jsi: a8b09c29521c798f1783348b37b511ba7b3dbeb3
   React-jsiexecutor: df6abc9fafbecb8e5b7a5fbc5e6d4bd017d594d5
   React-jsinspector: 34e23860273a23695342f58eed3ffd3ba10c31e0
-  react-native-immediate-phone-call: eb8a86325478db6c066eac6ecf8fa9ba3fbf66c5
   react-native-maps: 60a75aa547d576fdb91be1f95113665215b59461
   react-native-safe-area-context: 584dc04881deb49474363f3be89e4ca0e854c057
   react-native-voice: 634b2749a0f67676a999e97df4d8220ce59ac738
@@ -608,12 +607,13 @@ SPEC CHECKSUMS:
   React-RCTVibration: c7f845861e79eae13dc1e8217a3cf47a3945b504
   React-runtimeexecutor: 493d9abb8b23c3f84e19ae221eeba92cadcb70dc
   ReactCommon: 8fea6422328e2fc093e25c9fac67adbcf0f04fb4
-  RNCAsyncStorage: ea6b5c280997b2b32a587793163b1f10e580c4f7
+  RNCAsyncStorage: b03032fdbdb725bea0bd9e5ec5a7272865ae7398
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
   RNPermissions: f7ebe52db07c00901127966ca080b4ec6a6ceb0a
   RNReanimated: 024eff8202342abf4b24e11575a16afc441dabfe
   RNScreens: 6e1ea5787989f92b0671049b808aef64fa1ef98c
   RNSVG: 551acb6562324b1d52a4e0758f7ca0ec234e278f
+  TouchID: ba4c656d849cceabc2e4eef722dea5e55959ecf4
   UMTaskManagerInterface: 5654c50e68af11b19b9d05452bacf23d19b3f30f
   Yoga: e6ecf3fa25af9d4c87e94ad7d5d292eedef49749
 
