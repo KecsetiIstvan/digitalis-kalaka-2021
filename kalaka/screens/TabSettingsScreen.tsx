@@ -1,6 +1,6 @@
 import * as React from "react";
 import { StyleSheet, Image, TouchableOpacity, View } from "react-native";
-import { Box, List, Text, Spinner, Button, HStack } from "native-base";
+import { Box, List, Text, Icon, Spinner, HStack, Button} from "native-base";
 import { RootTabScreenProps } from "../types";
 import { deleteToken } from "../repository";
 import { SafeAreaView } from "react-native-safe-area-context";

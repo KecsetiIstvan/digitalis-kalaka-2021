@@ -28,6 +28,11 @@ export class UserController {
     return this.userService.create(createUserDto);
   }
 
+  @Get()
+  getAll() {
+    return this.userService.getAll();
+  }
+
   @UseGuards(AuthGuard())
   @Get('me')
   me(@CurrentUser() user: User) {

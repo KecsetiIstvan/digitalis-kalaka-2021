@@ -110,6 +110,28 @@ export const getContacts = async () => {
     return answer.data.contacts;
   }
 }
+export const getAll = async () => {
+  const resp = await apiClient.get("/users").catch((err) => {
+    showToast(err);
+    return;
+  });
+  if (resp) {
+    return resp.data;
+  }
+  return undefined;
+};
+
+export const frient = async (_id) => {
+  await apiClient.post("/users/me/add-contact", { _id });
+};
+
+export const unfrient = async (_id) => {
+  await apiClient.delete(`/users/contacts/${_id}`);
+};
+
+export const getFriends = () => {
+  return "asd";
+};
 
 export const getContact = async (id) => {
   const answer = await apiClient.get(`/users/${id}`).catch((err) => {showToast(err);})

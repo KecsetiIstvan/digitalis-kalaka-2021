@@ -35,6 +35,7 @@ import { color } from "native-base/lib/typescript/theme/styled-system";
 import { cp } from "fs";
 import { Box } from "native-base";
 import SplashScreenOnboardingScreen from "../screens/modal/SplashScreenOnboardingScreen";
+import FeedbackModalScreen from "../screens/modal/FeedbackModalScreen";
 
 export default function Navigation() {
   const [loggedIn, setLoggedIn] = useState(false);
