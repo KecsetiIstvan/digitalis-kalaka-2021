@@ -89,6 +89,7 @@ export class UserService {
       lastName: contact.lastName,
       email: contact.email,
       location: contact.location,
+      phone: contact.phone,
     };
   }
 

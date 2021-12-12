@@ -32,7 +32,7 @@ export const alertContacts = async() => {
           );
     })
     try {
-      await RNImmediatePhoneCall.immediatePhoneCall(phoneNumber[0]);
+      await RNImmediatePhoneCall.immediatePhoneCall(phoneNumbers[0]);
     } catch (e) {
       console.log(e);
     }

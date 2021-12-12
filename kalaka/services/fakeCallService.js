@@ -4,6 +4,6 @@ export const readText = (textToRead, startRecording) => {
     Speech.speak(textToRead);
     setTimeout(() => {
         startRecording();
-    }, 30000)
+    }, 15000)
     
 }

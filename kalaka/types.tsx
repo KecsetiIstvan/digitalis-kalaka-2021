@@ -23,7 +23,7 @@ export type RootStackParamList = {
   TabSettings: undefined;
   Login: undefined;
   Chat: undefined;
-  Danger: { isLocationEnabled: boolean };
+  Danger: { isLocationEnabled: boolean, mode: string };
   AddContact: undefined;
   ChangeContactModal: undefined;
   PersonalDataModal: undefined;
@@ -42,7 +42,7 @@ export type RootTabParamList = {
   TabFollow: undefined;
   TabContacts: undefined;
   TabSettings: undefined;
-  Danger: { isLocationEnabled: boolean };
+  Danger: { isLocationEnabled: boolean, mode: string };
 };
 
 export type RootTabScreenProps<Screen extends keyof RootTabParamList> = CompositeScreenProps<

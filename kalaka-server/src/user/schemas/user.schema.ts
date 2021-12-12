@@ -25,6 +25,7 @@ export const UserSchema = new mongoose.Schema({
     default: Status.IDLE,
     required: false,
   },
+  phone: { type: String, required: true, unique: false },
   isLocationShared: { types: Boolean, required: false, unique: false },
 });
 

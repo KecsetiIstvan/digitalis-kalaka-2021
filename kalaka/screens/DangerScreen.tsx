@@ -4,9 +4,70 @@ import { FormControl, Image, View, Text, Button } from "native-base";
 import * as Location from "expo-location";
 import { updateLocation, updateStatus } from "../services";
 import { RootTabScreenProps } from "../types";
+import { useEffect } from "react";
+import Toast from "react-native-toast-message";
+import Voice from '@react-native-voice/voice';
+import { Audio } from 'expo-av';
+import Permissions from 'react-native-permissions';
+import { readText } from '../services/fakeCallService';
+import randomWords from 'random-words';
+import { alertContacts, falseAlarm } from "../services/alertService";
 
 export default function DangerScreen({ route }: RootTabScreenProps<"Danger">) {
-  const { isLocationEnabled } = route.params;
+  /*
+    Mode can be: 
+      watchme - voice
+      comewithme - map follow
+      holdme - periodic monitoring
+  */
+  const { isLocationEnabled, mode } = route.params;
+  const [shouldPlayVoiceCycle, setShouldPlayVoiceCycle] = React.useState<boolean>(mode === 'watchme');
+  const [didHearSomething, setDidHearSomething] = React.useState<boolean>(false)
+
+  Voice.onSpeechStart = (e) => { console.log('Speech start') };
+  Voice.onSpeechError =(e) => { if(e.error) { 
+    setShouldPlayVoiceCycle(false);
+    handleDanger();
+    alertContacts();
+   }}
+  Voice.onSpeechResults = (e) => {
+    if(e.value?.includes('apple')) {
+      setShouldPlayVoiceCycle(false);
+      handleDanger();
+      alertContacts();
+    } else {
+      setDidHearSomething(true);
+      voiceCycleCallback()
+    }
+  };
+  
+  const voiceCycleCallback = () => {
+    setDidHearSomething(false);
+    readText(randomWords({exactly:30, join: ' '}), startVoice)
+  }
+
+  const startVoice = () => {
+    Voice.start('en-US');
+  }
+
+  useEffect(() => {
+    if(mode === 'watchme') {
+      (async () => {
+        await Audio.requestPermissionsAsync();
+        await Permissions.request(Permissions.PERMISSIONS.ANDROID.SEND_SMS);
+        await Permissions.request(Permissions.PERMISSIONS.ANDROID.CALL_PHONE);
+      })();
+      if(shouldPlayVoiceCycle) {
+        Toast.show({
+          type: 'info',
+          text1: 'Apple',
+          text2: 'A biztonsági szavad'
+        })
+        voiceCycleCallback();
+      }
+    }
+  
+  }, [shouldPlayVoiceCycle]);
 
   const handleLocationUpdate = async () => {
     let currentLocation = await Location.getCurrentPositionAsync({});

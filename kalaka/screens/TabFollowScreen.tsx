@@ -4,19 +4,10 @@ import { Box, Button, FormControl, HStack, Input, SimpleGrid, Switch } from "nat
 import { Text, View } from "../components/Themed";
 import { RootTabScreenProps } from "../types";
 import { useQuery } from "react-query";
-import { readText } from '../services/fakeCallService';
-import randomWords from 'random-words';
-import { useEffect } from "react";
-import Toast from "react-native-toast-message";
-import Voice from '@react-native-voice/voice';
-import { Audio } from 'expo-av';
-import { alertContacts, falseAlarm } from "../services/alertService";
-import Permissions from 'react-native-permissions';
 import { me, updateStatus } from "../services";
 import Colors from "../constants/Colors";
 import { FontAwesome5 } from "@expo/vector-icons";
 import * as Animatable from "react-native-animatable";
-import RNImmediatePhoneCall from 'react-native-immediate-phone-call';
 
 export default function TabFollowScreen({ navigation }: RootTabScreenProps<"TabFollow">) {
   const [whereYouGO, setWhereYouGo] = React.useState<string>("");
@@ -25,50 +16,13 @@ export default function TabFollowScreen({ navigation }: RootTabScreenProps<"TabF
 
   const [error, setError] = React.useState(false);
 
-  const [shouldPlayVoiceCycle, setShouldPlayVoiceCycle] = React.useState<boolean>(false);
-
-  Voice.onSpeechStart = (e) => {console.log('Speech start')};
-  Voice.onSpeechEnd = (e) => { console.log(e)};
-  Voice.onSpeechResults = (e) => {
-    console.log(e)
-    if(e.value?.includes('apple')) {
-      setShouldPlayVoiceCycle(false)
-    }
-  };
-  
-  const voiceCycleCallback = () => {
-    readText(randomWords({exactly:60, join: ' '}), startVoice)
-  }
-
-  const startVoice = () => {
-    Voice.start('en-US'); 
-    setTimeout(() => { shouldPlayVoiceCycle ? voiceCycleCallback() : () => {} }, 5000)
-  }
-
-  useEffect(() => {
-    (async () => {
-      await Audio.requestPermissionsAsync();
-      await Permissions.request(Permissions.PERMISSIONS.ANDROID.SEND_SMS);
-      await Permissions.request(Permissions.PERMISSIONS.ANDROID.CALL_PHONE);
-    })();
-    if(shouldPlayVoiceCycle) {
-      Toast.show({
-        type: 'info',
-        text1: 'Apple',
-        text2: 'A biztonsági szavad'
-      })
-      voiceCycleCallback();
-    }
-  }, [shouldPlayVoiceCycle]);
-
-
   const handleStart = async () => {
     if (selectedOption === "none") {
       setError(true);
       setTimeout(() => setError(false), 500);
     } else {
       await handleOnTripBegin();
-      navigation.navigate("Danger", { isLocationEnabled });
+      navigation.navigate("Danger", { isLocationEnabled, mode: selectedOption });
     }
   };
 
@@ -98,7 +52,7 @@ export default function TabFollowScreen({ navigation }: RootTabScreenProps<"TabF
             onToggle={() => setIsLocationEnabled(!isLocationEnabled)}
           />
         </HStack>
-        <Button onPress={() => alertContacts()}>Send sms</Button>
+
         <Box style={{ alignSelf: "center" }}>
           <SimpleGrid columns={2}>
             <Button
