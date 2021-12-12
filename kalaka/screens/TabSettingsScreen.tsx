@@ -1,13 +1,14 @@
 import * as React from "react";
-import { StyleSheet, Image, TouchableOpacity } from "react-native";
-import { Box, List, Text, Icon, Spinner } from "native-base";
+import { StyleSheet, Image, TouchableOpacity, View } from "react-native";
+import { Box, List, Text, Spinner, Button, HStack } from "native-base";
 import { RootTabScreenProps } from "../types";
 import { deleteToken } from "../repository";
 import { SafeAreaView } from "react-native-safe-area-context";
+import Colors from '../constants/Colors';
 import { useQuery } from "react-query";
 import { me, updateMe, uploadImage } from "../services";
 import * as ImagePicker from "expo-image-picker";
-import Colors from "../constants/Colors";
+import { FontAwesome5 } from "@expo/vector-icons";
 
 export default function TabFollowScreen({ navigation }: RootTabScreenProps<"TabSettings">) {
   const { data: meData, refetch } = useQuery("me", () => me());
@@ -61,13 +62,19 @@ export default function TabFollowScreen({ navigation }: RootTabScreenProps<"TabS
   const getNameInitials = (firstName: string, lastName: string) =>
     firstName && lastName ? `${firstName.charAt(0).toUpperCase()}${lastName.charAt(0).toUpperCase()}` : "";
 
+    function isObject(obj: any) {
+      return obj != null && obj.constructor.name === "Object";
+    }
+
   return (
-    <SafeAreaView>
+    <SafeAreaView >
+      <View style={styles.headerContainer}>
+        <Text style={styles.headerText}>Beállítások</Text>
+      </View>
       <Box w="100%">
-        <List width="100%" borderBottomWidth="0">
-          <List.Item marginBottom={16} marginLeft={2} marginTop={4} display={"flex"}>
+          <List.Item marginBottom={8} marginLeft={2} marginTop={4} display={"flex"}>
             <TouchableOpacity onPress={() => handleImageUpload()}>
-              {meData?.profileImageUrl && !isLoadingImage ? (
+              {meData?.profileImageUrl && !isObject(meData?.profileImageUrl) && !isLoadingImage ? (
                 <Image
                   style={{
                     width: 60,
@@ -99,26 +106,44 @@ export default function TabFollowScreen({ navigation }: RootTabScreenProps<"TabS
                 </Box>
               )}
             </TouchableOpacity>
-            <Text style={styles.text}>{`${meData?.firstName} ${meData?.lastName}`}</Text>
+            <Text style={styles.name}>{`${meData?.firstName} ${meData?.lastName}`}</Text>
           </List.Item>
-          <List.Item onPress={() => navigation.navigate("PersonalDataModal")}>
-            <Text style={styles.text}>Személyes adatok modósítása</Text>
-          </List.Item>
-          <List.Item onPress={() => navigation.navigate("SafetyFeaturesModal")}>
-            <Text style={styles.text}>Biztonsági beállítások</Text>
-          </List.Item>
-          <List.Item onPress={() => navigation.navigate("NotificationsModal")}>
-            <Text style={styles.text}>Értesítések</Text>
-          </List.Item>
-          <List.Item onPress={() => navigation.navigate("TermsModal")}>
-            <Text style={styles.text}>Felhasználói feltételek</Text>
-          </List.Item>
-          <List.Item onPress={handleLogOut}>
-            <Text style={styles.text} color="red.500">
-              Kijelentkezés
-            </Text>
-          </List.Item>
-        </List>
+            <Button variant="outline" onPress={() => navigation.navigate("PersonalDataModal")}>
+              <HStack alignItems="center" width={"100%"}>
+                <Text style={{ marginRight: "auto" }}>Személyes adatok modósítása</Text>
+                <FontAwesome5 style={{color: Colors.primary}} name="chevron-right"/>
+              </HStack>
+            </Button>
+            <Button display='flex' flexDirection='row' variant="outline" onPress={() => navigation.navigate("SafetyFeaturesModal")}>
+              <HStack alignItems="center" width={"100%"}>
+                  <Text style={{ marginRight: "auto" }}>Biztonsági beállítások</Text>
+                  <FontAwesome5 style={{color: Colors.primary}} name="chevron-right"/>
+              </HStack>
+            </Button>
+            <Button variant="outline" onPress={() => navigation.navigate("NotificationsModal")}>
+              <HStack alignItems="center" width={"100%"}>
+                  <Text style={{ marginRight: "auto" }}>Értesítések</Text>
+                  <FontAwesome5 style={{color: Colors.primary}} name="chevron-right"/>
+              </HStack>
+            </Button>
+            <Button variant="outline" onPress={() => navigation.navigate("TermsModal")}>
+              <HStack alignItems="center" width={"100%"}>
+                  <Text style={{ marginRight: "auto" }}>Felhasználói feltételek</Text>
+                  <FontAwesome5 style={{color: Colors.primary}} name="chevron-right"/>
+              </HStack>
+            </Button>
+            <Button variant="outline" onPress={() => navigation.navigate("FeedbackModal")}>
+              <HStack alignItems="center" width={"100%"}>
+                  <Text style={{ marginRight: "auto" }}>Visszajelzés a fejlesztőknek</Text>
+                  <FontAwesome5 style={{color: Colors.primary}} name="chevron-right"/>
+              </HStack>
+            </Button>
+            <Button variant="logout" onPress={handleLogOut}>
+            <HStack alignItems="center" width={"100%"}>
+                  <Text style={{ marginRight: "auto" }}>Kijelentkezés</Text>
+                  <FontAwesome5 style={{color: Colors.danger}} name="chevron-right"/>
+              </HStack>
+            </Button>
       </Box>
     </SafeAreaView>
   );
@@ -129,14 +154,40 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
   },
+  name: {
+    padding: 15,
+    fontSize: 16,
+  },
   text: {
     padding: 15,
-    fontSize: 15,
+    fontSize: 14,
   },
   initial: {
     fontSize: 26,
     lineHeight: 72,
     color: "#ffffff",
     textAlign: "center",
+  },
+  headerContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    alignSelf: 'flex-start',
+    backgroundColor: Colors.secondaryTransparent, 
+    height: 60,
+    width: '50%',
+    borderBottomRightRadius: 25,
+  },
+  headerText: {
+    color: Colors.text,
+    fontWeight: 'bold',
+    fontSize:20,
+  },
+  listItem: {
+    alignSelf: 'center',
+    borderColor: Colors.primary,
+    borderWidth: 1,
+    borderRadius: 100,
+    width: "90%",
+    marginTop: 15,
   },
 });

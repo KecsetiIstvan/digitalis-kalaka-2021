@@ -4,6 +4,14 @@ import { Box, Button, FormControl, HStack, Input, SimpleGrid, Switch } from "nat
 import { Text, View } from "../components/Themed";
 import { RootTabScreenProps } from "../types";
 import { useQuery } from "react-query";
+import { readText } from '../services/fakeCallService';
+import randomWords from 'random-words';
+import { useEffect } from "react";
+import Toast from "react-native-toast-message";
+import Voice from '@react-native-voice/voice';
+import { Audio } from 'expo-av';
+import { alertContacts, falseAlarm } from "../services/alertService";
+import Permissions from 'react-native-permissions';
 import { me, updateStatus } from "../services";
 import Colors from "../constants/Colors";
 import { FontAwesome5 } from "@expo/vector-icons";
@@ -15,6 +23,42 @@ export default function TabFollowScreen({ navigation }: RootTabScreenProps<"TabF
   const [isLocationEnabled, setIsLocationEnabled] = React.useState<boolean>(false);
 
   const [error, setError] = React.useState(false);
+
+  const [shouldPlayVoiceCycle, setShouldPlayVoiceCycle] = React.useState<boolean>(false);
+
+  Voice.onSpeechStart = (e) => {console.log('Speech start')};
+  Voice.onSpeechEnd = (e) => { console.log(e)};
+  Voice.onSpeechResults = (e) => {
+    console.log(e)
+    if(e.value?.includes('apple')) {
+      setShouldPlayVoiceCycle(false)
+    }
+  };
+  
+  const voiceCycleCallback = () => {
+    readText(randomWords({exactly:60, join: ' '}), startVoice)
+  }
+
+  const startVoice = () => {
+    Voice.start('en-US'); 
+    setTimeout(() => { shouldPlayVoiceCycle ? voiceCycleCallback() : () => {} }, 5000)
+  }
+
+  useEffect(() => {
+    (async () => {
+      await Audio.requestPermissionsAsync();
+      await Permissions.request(Permissions.PERMISSIONS.ANDROID.SEND_SMS);
+    })();
+    if(shouldPlayVoiceCycle) {
+      Toast.show({
+        type: 'info',
+        text1: 'Apple',
+        text2: 'A biztonsági szavad'
+      })
+      voiceCycleCallback();
+    }
+  }, [shouldPlayVoiceCycle]);
+
 
   const handleStart = async () => {
     if (selectedOption === "none") {
@@ -52,15 +96,17 @@ export default function TabFollowScreen({ navigation }: RootTabScreenProps<"TabF
             onToggle={() => setIsLocationEnabled(!isLocationEnabled)}
           />
         </HStack>
-
-        <Box style={{ alignSelf: "center" }}>
+        <Button alignSelf={'center'} onPress={() => falseAlarm()}>Send sms</Button>
+        <Box style={{ alignSelf: "center", alignItems:"center" }}>
           <SimpleGrid columns={2}>
             <Button
               onPress={() => (selectedOption !== "watchme" ? setSelectedOption("watchme") : setSelectedOption("none"))}
               backgroundColor={Colors.textTransparent}
-              h={140}
-              w={140}
-              style={{
+              size={140}
+              marginTop={0}
+              marginBottom={2}
+              marginRight={2}
+              style={{ 
                 borderTopLeftRadius: 1000,
                 borderTopRightRadius: 0,
                 borderBottomRightRadius: 0,
@@ -82,8 +128,8 @@ export default function TabFollowScreen({ navigation }: RootTabScreenProps<"TabF
                 selectedOption !== "comewithme" ? setSelectedOption("comewithme") : setSelectedOption("none")
               }
               backgroundColor={Colors.locationButton}
-              h={140}
-              w={140}
+              size={140}
+              marginTop={0}
               style={{
                 borderTopLeftRadius: 0,
                 borderTopRightRadius: 1000,
@@ -113,8 +159,8 @@ export default function TabFollowScreen({ navigation }: RootTabScreenProps<"TabF
             <Button
               onPress={() => (selectedOption !== "holdme" ? setSelectedOption("holdme") : setSelectedOption("none"))}
               backgroundColor={Colors.primary}
-              h={137}
-              w={140}
+              size={140}
+              marginTop={0}
               style={{
                 borderTopLeftRadius: 0,
                 borderTopRightRadius: 0,
@@ -133,35 +179,32 @@ export default function TabFollowScreen({ navigation }: RootTabScreenProps<"TabF
                 />
               </Animatable.Text>
             </Button>
-            <Box marginTop={1}>
-              <Button
-                onPress={() => handleStart()}
-                backgroundColor={Colors.dangerTransparet}
-                h={79}
-                w={140}
-                marginTop={60}
-                style={{
-                  borderTopLeftRadius: 0,
-                  borderTopRightRadius: 8,
-                  borderBottomRightRadius: 8,
-                  borderBottomLeftRadius: 0,
-                }}
-              >
-                <Text style={{ color: Colors.background, fontSize: 20, fontWeight: "bold" }}>Indulhatunk!</Text>
-              </Button>
-            </Box>
+            <Button
+              onPress={() => handleStart()}
+              backgroundColor={Colors.dangerTransparet}
+              marginBottom={0}
+              marginTop={65}
+              marginLeft={2}
+              h={75}
+              w={140}
+              style={{
+                borderTopLeftRadius: 0,
+                borderTopRightRadius: 8,
+                borderBottomRightRadius: 8,
+                borderBottomLeftRadius: 0,
+              }}
+            >
+              <Text style={{ color: Colors.background, fontSize: 20, fontWeight: "bold" }}>Indulhatunk!</Text>
+            </Button>
           </SimpleGrid>
 
           <Box
-            width={140}
-            height={138}
-            backgroundColor={"#fff"}
+            size={140}
+            backgroundColor={Colors.background}
             style={{
+              alignSelf: "center",
               position: "absolute",
-              left: "50%",
-              marginLeft: -74,
-              top: "50%",
-              marginTop: -73,
+              top: "25%",
               borderRadius: 100000,
               display: "flex",
               alignItems: "center",

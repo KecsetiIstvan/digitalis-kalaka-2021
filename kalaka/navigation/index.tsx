@@ -4,12 +4,11 @@
  *
  */
 import { FontAwesome, FontAwesome5 } from "@expo/vector-icons";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { NavigationContainer, DefaultTheme, DarkTheme } from "@react-navigation/native";
+import { BottomTabBar, createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { NavigationContainer} from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as React from "react";
 import { Pressable } from "react-native";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import Colors from "../constants/Colors";
 import ModalScreen from "../screens/modal/ModalScreen";
@@ -31,6 +30,7 @@ import PersonalDataModalScreen from "../screens/modal/PersonalDataModalScreen";
 import SafetyFeaturesModalScreen from "../screens/modal/SafetyFeaturesModalScreen";
 import NotificationsModalScreen from "../screens/modal/NotificationsModalScreen";
 import TermdModalScreen from "../screens/modal/TermsModalScreen";
+import FeedbackModalScreen from "../screens/modal/FeebackModalScreen";
 import { Box } from "native-base";
 import SplashScreenOnboardingScreen from "../screens/modal/SplashScreenOnboardingScreen";
 
@@ -88,6 +88,7 @@ function RootNavigator() {
         />
         <Stack.Screen name="NotificationsModal" component={NotificationsModalScreen} />
         <Stack.Screen name="TermsModal" component={TermdModalScreen} />
+        <Stack.Screen name="FeedbackModal" component={FeedbackModalScreen} />
       </Stack.Group>
     </Stack.Navigator>
   );
@@ -97,30 +98,37 @@ function RootNavigator() {
  * A bottom tab navigator displays tab buttons on the bottom of the display to switch screens.
  * https://reactnavigation.org/docs/bottom-tab-navigator
  */
+
+
 const BottomTab = createBottomTabNavigator<RootTabParamList>();
 
 function BottomTabNavigator() {
   return (
     <BottomTab.Navigator
+      sceneContainerStyle={{backgroundColor: Colors.background}}
       initialRouteName="TabFollow"
       screenOptions={{
-        tabBarActiveTintColor: Colors.primary,
+        tabBarStyle: {backgroundColor: Colors.secondaryTransparent},
       }}
     >
       <BottomTab.Screen
         name="TabFollow"
         component={TabFollowScreen}
         options={({ navigation }: RootTabScreenProps<"TabFollow">) => ({
-          title: "Követés",
+          tabBarLabel: () => {return null},
           headerShown: false,
-          tabBarIcon: () => (
-            <FontAwesome5
-              name="shoe-prints"
-              color={Colors.danger}
-              size={25}
-              style={{ transform: [{ rotate: "269deg" }] }}
-            />
-          ),
+          tabBarIcon: ({focused}) => {
+            let color;
+            color = focused ? Colors.danger : Colors.primary
+            return  <FontAwesome5
+                      name="shoe-prints"
+                      color={color}
+                      size={25}
+                      style={{ transform: [{ rotate: "269deg" }] }}
+                    />
+          },
+
+         
           headerRight: () => (
             <Pressable
               onPress={() => navigation.navigate("Modal")}
@@ -137,27 +145,39 @@ function BottomTabNavigator() {
         name="TabMap"
         component={TabMapScreen}
         options={{
-          title: "Térkép",
+          tabBarLabel: () => {return null},
           headerShown: false,
-          tabBarIcon: () => <FontAwesome5 name="map-marked-alt" color={Colors.secondary} size={25} />,
+          tabBarIcon: ({focused}) => {
+            let color;
+            color = focused ? Colors.danger : Colors.primary
+            return <FontAwesome5 name="map-marked-alt" color={color} size={25} />
+          },
         }}
       />
       <BottomTab.Screen
         name="TabContacts"
         component={TabContactScreen}
         options={{
-          title: "Kontaktok",
+          tabBarLabel: () => {return null},
           headerShown: false,
-          tabBarIcon: () => <FontAwesome5 name="address-book" color={Colors.secondary} size={25} />,
+          tabBarIcon: ({focused}) => {
+            let color;
+            color = focused ? Colors.danger : Colors.primary
+            return <FontAwesome5 name="address-book" color={color} size={25} />
+          },
         }}
       />
       <BottomTab.Screen
         name="TabSettings"
         component={TabSettingsScreen}
         options={{
-          title: "Beállítások",
+          tabBarLabel: () => {return null},
           headerShown: false,
-          tabBarIcon: () => <FontAwesome5 name="cog" color={Colors.secondary} size={25} />,
+          tabBarIcon: ({focused}) => {
+            let color;
+            color = focused ? Colors.danger : Colors.primary
+            return <FontAwesome5 name="cog" color={color} size={25} />
+          }, 
         }}
       />
     </BottomTab.Navigator>

@@ -1,9 +1,11 @@
 import * as React from 'react';
 import { StyleSheet } from 'react-native';
-import { FormControl, Image, View, Button, Input, WarningOutlineIcon} from 'native-base';
+import { FormControl, Image, View, Button, Input, WarningOutlineIcon, Text, Divider, ScrollView} from 'native-base';
 import Toast from 'react-native-toast-message';
 import { auth, register } from '../services';
 import { setToken } from '../repository';
+import Colors from '../constants/Colors';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 
 export default function LoginScreen(props: any) {
@@ -16,6 +18,7 @@ export default function LoginScreen(props: any) {
   const [registrationEmail, setRegistrationEmail] = React.useState<string>('');
   const [firstName, setFirstName] = React.useState<string>('');
   const [lastName, setLastName] = React.useState<string>('');
+  const [phone, setTelephonNumber] = React.useState<string>('');
 
   const handleEmailChange = (event: any) => {
     setEmail(event)
@@ -47,7 +50,7 @@ export default function LoginScreen(props: any) {
       return;
     }
 
-    const authenticationResponse = await register(registrationEmail, registrationPassword, firstName, lastName);
+    const authenticationResponse = await register(registrationEmail, registrationPassword, firstName, lastName, phone);
 
     if(!authenticationResponse) {
       setRegistrationEmail('');
@@ -82,54 +85,71 @@ export default function LoginScreen(props: any) {
 
 
   const loginScreen = (
-    <View style={styles.container}>
-      <Image source={{uri: "https://wallpaperaccess.com/full/317501.jpg",}} alt="Login page image" size="xl"/>
+    <SafeAreaView style={styles.container}>
+      <ScrollView _contentContainerStyle={{w: "100%", flexDirection: "row"}}>
+      <View style={{width: "100%", alignItems: 'center'}}>
+      <Image style={styles.image} source={require('../assets/images/icon.png')} alt="Login page image"/>
 
-      <FormControl isInvalid = {invalid} w={{ base: "75%", md: "25%",}}>
-        <FormControl.Label>Email cím</FormControl.Label>
-        <Input value={email} onChangeText={handleEmailChange} placeholder="Email cím" type="email"/>
+      <FormControl style={styles.containerForm} isInvalid = {invalid} w={{ base: "75%", md: "25%",}}>
+        <Input  value={email} onChangeText={handleEmailChange} placeholder="Email cím" type="email"/>
 
-        <FormControl.Label>Jelszó</FormControl.Label>
         <Input value={password} onChangeText={handlePasswordChange} placeholder="Jelszó" type="password"/>
 
         <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>Az email cím és a jelszó nem egyezik!</FormControl.ErrorMessage>
 
-        <Button onPress={handleLogin} disabled={!password || !email}>Bejelentkezés</Button>
+        <Button onPress={handleLogin} disabled={!password || !email} marginTop={10}>Bejelentkezés</Button>
         <Button onPress={() => props.callback(true)}>Bejelentkezés google használatával</Button>
+
+        <Divider thickness={3} marginTop={10}/>
+
+        <Text style={{color: Colors.primary, fontSize: 20}} marginTop={5}>Először vagy itt?</Text>
+
         <Button onPress={() => setFormState('registrant')}>Regisztráció</Button>
         
 
       </FormControl>
-    </View>
+      </View>
+      </ScrollView>
+    </SafeAreaView>
   ); 
 
   const registerScreen = (
-    <View style={styles.container}>
-      <Image source={{uri: "https://wallpaperaccess.com/full/317501.jpg",}} alt="Login page image" size="xl"/>
-
-      <FormControl isInvalid = {invalid} w={{ base: "75%", md: "25%",}}>
-        <FormControl.Label>Email cím</FormControl.Label>
-        <Input value={registrationEmail} onChangeText={(event) => setRegistrationEmail(event)} placeholder="Email cím" type="email"/>
-
-        <FormControl.Label>Jelszó</FormControl.Label>
-        <Input value={registrationPassword} onChangeText={(event) => setRegistrationPassword(event)} placeholder="Jelszó" type="password"/>
-
-        <FormControl.Label>Jelszó megerősítése</FormControl.Label>
-        <Input value={registrationPassword2} onChangeText={(event) => setRegistrationPassword2(event)} placeholder="Jelszó megerősítése" type="password"/>
-
-        <FormControl.Label>Vezetéknév</FormControl.Label>
+    <SafeAreaView style={styles.container}>
+      <View style={styles.headerContainer}>
+        <Image style={styles.image1} source={require('../assets/images/knigth.png')} alt="Register page image"/>
+      </View>
+      <ScrollView _contentContainerStyle={{w: "100%", flexDirection: "row"}}>
+      <View style={{width: "100%", alignItems: 'center'}}>
+      <FormControl style={styles.containerForm} isInvalid = {invalid} w={{ base: "75%", md: "25%",}}>
+        
         <Input value={firstName} onChangeText={(event) => setFirstName(event)} placeholder="Vezetéknév" type="text"/>
 
-        <FormControl.Label>Keresztnév</FormControl.Label>
         <Input value={lastName} onChangeText={(event) => setLastName(event)} placeholder="Keresztnév" type="text"/>
+
+        <Input value={phone} onChangeText={(event) => setTelephonNumber(event)} placeholder="Telefonszám" type="number"/>
+
+        <Input value={registrationEmail} onChangeText={(event) => setRegistrationEmail(event)} placeholder="Email cím" type="email"/>
+
+        <Input value={registrationPassword} onChangeText={(event) => setRegistrationPassword(event)} placeholder="Jelszó" type="password"/>
+
+        <Input value={registrationPassword2} onChangeText={(event) => setRegistrationPassword2(event)} placeholder="Jelszó megerősítése" type="password"/>
 
         <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>Nem sikerült a regisztráció!</FormControl.ErrorMessage>
 
-        <Button onPress={handleRegistration} disabled={!registrationPassword || !registrationPassword2 || !registrationEmail}>Regisztrálás</Button>
-        <Button onPress={() => setFormState('login')}>Van már felhasználód? Jelentkezz be!</Button>
+        <Button onPress={handleRegistration} disabled={!registrationPassword || !registrationPassword2 || !registrationEmail}>Regisztrálok</Button>
+        
+        <Button onPress={() => props.callback(true)}>Bejelentkezem Google-al</Button>
+
+        <Divider thickness={3} marginTop={10}/>
+
+        <Text style={{color: Colors.primary, fontSize: 20}} marginTop={5}>Van már felhasználód?</Text>
+        
+        <Button onPress={() => setFormState('login')}>Jelentkezz be!</Button>
 
       </FormControl>
-    </View>
+      </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 
   return (formState === 'login' ? loginScreen : registerScreen);
@@ -140,5 +160,33 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-  }
+  },
+  containerForm: {
+    marginTop: 70,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  image:{
+    width: 200,
+    height: 200,
+    marginBottom: 40,
+  },
+  image1:{ 
+    flex: 1,
+    aspectRatio: 2, 
+    resizeMode: 'contain',
+  },
+  headerContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    alignSelf: 'flex-start',
+    backgroundColor: Colors.secondaryTransparent,
+    height: 60,
+    width: '100%',
+  },
+  headerText: {
+    color: Colors.text,
+    fontWeight: 'bold',
+    fontSize:20
+  },
 });
