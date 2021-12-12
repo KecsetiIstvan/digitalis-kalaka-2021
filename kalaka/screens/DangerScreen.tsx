@@ -8,7 +8,6 @@ import Colors from "../constants/Colors";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import PINCode from "@haskkor/react-native-pincode";
 
 export default function DangerScreen({ route }: RootTabScreenProps<"Danger">) {
   const { isLocationEnabled } = route.params;
