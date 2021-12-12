@@ -1,13 +1,13 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from "@react-native-community/async-storage";
 
 export const setToken = async (token) => {
-    await AsyncStorage.setItem('@kalaka_jwt_token', token);
-} 
+  await AsyncStorage.setItem("@kalaka_jwt_token", token);
+};
 
 export const getToken = async () => {
-    return await AsyncStorage.getItem('@kalaka_jwt_token');
-}
+  return await AsyncStorage.getItem("@kalaka_jwt_token");
+};
 
 export const deleteToken = async () => {
-    return await AsyncStorage.removeItem('@kalaka_jwt_token');
-}
+  return await AsyncStorage.removeItem("@kalaka_jwt_token");
+};

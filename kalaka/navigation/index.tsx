@@ -32,6 +32,7 @@ import SafetyFeaturesModalScreen from "../screens/modal/SafetyFeaturesModalScree
 import NotificationsModalScreen from "../screens/modal/NotificationsModalScreen";
 import TermdModalScreen from "../screens/modal/TermsModalScreen";
 import { Box } from "native-base";
+import SplashScreenOnboardingScreen from "../screens/modal/SplashScreenOnboardingScreen";
 
 export default function Navigation() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -80,6 +81,11 @@ function RootNavigator() {
         <Stack.Screen name="ChangeContactModal" component={ChangeConatctModalScreen} />
         <Stack.Screen name="PersonalDataModal" component={PersonalDataModalScreen} />
         <Stack.Screen name="SafetyFeaturesModal" component={SafetyFeaturesModalScreen} />
+        <Stack.Screen
+          name="SplashScreenOnboardingModal"
+          options={{ title: "Hasznos tudnivalók" }}
+          component={SplashScreenOnboardingScreen}
+        />
         <Stack.Screen name="NotificationsModal" component={NotificationsModalScreen} />
         <Stack.Screen name="TermsModal" component={TermdModalScreen} />
       </Stack.Group>
