@@ -1,6 +1,6 @@
 import * as React from "react";
-import { StyleSheet, Image, TouchableOpacity } from "react-native";
-import { Box, List, Text, Icon, Spinner } from "native-base";
+import { StyleSheet, Image, TouchableOpacity, Button } from "react-native";
+import { Box, List, Text, Icon, Spinner, HStack } from "native-base";
 import { RootTabScreenProps } from "../types";
 import { deleteToken } from "../repository";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -8,6 +8,7 @@ import { useQuery } from "react-query";
 import { me, updateMe, uploadImage } from "../services";
 import * as ImagePicker from "expo-image-picker";
 import Colors from "../constants/Colors";
+import { FontAwesome5 } from "@expo/vector-icons";
 
 export default function TabFollowScreen({ navigation }: RootTabScreenProps<"TabSettings">) {
   const { data: meData, refetch } = useQuery("me", () => me());
@@ -113,6 +114,10 @@ export default function TabFollowScreen({ navigation }: RootTabScreenProps<"TabS
           <List.Item onPress={() => navigation.navigate("TermsModal")}>
             <Text style={styles.text}>Felhasználói feltételek</Text>
           </List.Item>
+          <List.Item onPress={() => navigation.navigate("FeedbackModal")}>
+            <Text style={styles.text}>Visszajelzés a fejlesztőknek</Text>
+          </List.Item>
+
           <List.Item onPress={handleLogOut}>
             <Text style={styles.text} color="red.500">
               Kijelentkezés

@@ -30,6 +30,7 @@ export type RootStackParamList = {
   SafetyFeaturesModal: undefined;
   NotificationsModal: undefined;
   TermsModal: undefined;
+  FeedbackModal: undefined;
   SplashScreenOnboardingModal: undefined;
 };
 

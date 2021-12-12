@@ -24,6 +24,7 @@ export interface EmergencyContact {
 
 export enum Status {
   IDLE = 'IDLE',
-  ACTIVE = 'ACTIVE',
+  WALKING = 'WALKING',
   DANGER = 'DANGER',
+  PAUSED = 'PAUSED',
 }

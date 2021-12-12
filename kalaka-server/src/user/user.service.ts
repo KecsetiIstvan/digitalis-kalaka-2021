@@ -92,6 +92,10 @@ export class UserService {
     };
   }
 
+  async getAll() {
+    return await this.userModel.find();
+  }
+
   async deleteContact(user: User, id: string) {
     const userToDelete = await this.userModel.findOne({ _id: id });
     const userToDeleteFrom = await this.userModel

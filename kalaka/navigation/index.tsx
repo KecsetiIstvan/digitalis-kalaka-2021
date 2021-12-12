@@ -33,6 +33,7 @@ import NotificationsModalScreen from "../screens/modal/NotificationsModalScreen"
 import TermdModalScreen from "../screens/modal/TermsModalScreen";
 import { Box } from "native-base";
 import SplashScreenOnboardingScreen from "../screens/modal/SplashScreenOnboardingScreen";
+import FeedbackModalScreen from "../screens/modal/FeedbackModalScreen";
 
 export default function Navigation() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -88,6 +89,7 @@ function RootNavigator() {
         />
         <Stack.Screen name="NotificationsModal" component={NotificationsModalScreen} />
         <Stack.Screen name="TermsModal" component={TermdModalScreen} />
+        <Stack.Screen name="FeedbackModal" component={FeedbackModalScreen} />
       </Stack.Group>
     </Stack.Navigator>
   );

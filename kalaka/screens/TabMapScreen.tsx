@@ -129,22 +129,35 @@ export default function TabMapScreen() {
                   {elRefMutants[index]?.info?.profileImageUrl &&
                   !isObject(elRefMutants[index]?.info?.profileImageUrl) ? (
                     <Animatable.View
-                      animation={elRefMutants[index]?.info.status === "DANGER" ? "flash" : ""}
+                      animation={
+                        elRefMutants[index]?.info.status === "DANGER"
+                          ? "flash"
+                          : elRefMutants[index]?.info.status === "PAUSED"
+                          ? "pulse"
+                          : ""
+                      }
                       duration={2000}
                       delay={1000}
                       iterationCount="infinite"
                     >
-                      <Image
-                        style={{
-                          width: 60,
-                          height: 60,
-                          borderColor: elRefMutants[index]?.info.status === "DANGER" ? Colors.danger : Colors.primary,
-                          borderWidth: 5,
-                          borderRadius: 75,
-                        }}
-                        source={{ uri: elRefMutants[index]?.info?.profileImageUrl }}
-                        resizeMode={"cover"}
-                      />
+                      <Animatable.View
+                        animation={elRefMutants[index]?.info.status === "PAUSED" ? "pulse" : ""}
+                        duration={2000}
+                        delay={1000}
+                        iterationCount="infinite"
+                      >
+                        <Image
+                          style={{
+                            width: 60,
+                            height: 60,
+                            borderColor: elRefMutants[index]?.info.status === "DANGER" ? Colors.danger : Colors.primary,
+                            borderWidth: 5,
+                            borderRadius: 75,
+                          }}
+                          source={{ uri: elRefMutants[index]?.info?.profileImageUrl }}
+                          resizeMode={"cover"}
+                        />
+                      </Animatable.View>
                     </Animatable.View>
                   ) : (
                     <Animatable.View
