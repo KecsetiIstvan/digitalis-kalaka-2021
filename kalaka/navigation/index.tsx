@@ -30,14 +30,11 @@ import PersonalDataModalScreen from "../screens/modal/PersonalDataModalScreen";
 import SafetyFeaturesModalScreen from "../screens/modal/SafetyFeaturesModalScreen";
 import NotificationsModalScreen from "../screens/modal/NotificationsModalScreen";
 import TermdModalScreen from "../screens/modal/TermsModalScreen";
-<<<<<<< HEAD
 import FeedbackModalScreen from "../screens/modal/FeebackModalScreen";
 import { color } from "native-base/lib/typescript/theme/styled-system";
 import { cp } from "fs";
-=======
 import { Box } from "native-base";
 import SplashScreenOnboardingScreen from "../screens/modal/SplashScreenOnboardingScreen";
->>>>>>> dev-miketm3
 
 export default function Navigation() {
   const [loggedIn, setLoggedIn] = useState(false);
