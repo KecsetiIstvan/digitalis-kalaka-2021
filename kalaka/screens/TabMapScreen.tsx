@@ -11,8 +11,9 @@ import { Box, Button } from "native-base";
 import * as Animatable from "react-native-animatable";
 import Colors from "../constants/Colors";
 import Permissions from 'react-native-permissions';
+import { RootTabScreenProps } from "../types";
 
-export default function TabMapScreen() {
+export default function TabMapScreen({ navigation }: RootTabScreenProps<"TabSettings">) {
   const [region, setRegion] = useState<any>({
     latitude: 0,
     longitude: 0,
@@ -122,6 +123,7 @@ export default function TabMapScreen() {
                 <Marker.Animated
                   ref={elRefMutants[index]?.ref}
                   key={elRefMutants[index]?.ref?.info?._id}
+                  onPress={() => navigation.navigate('Chat', {user: elRefMutants[index]?.info})}
                   coordinate={{
                     latitude: +elRefMutants[index]?.info.location.latitude,
                     longitude: +elRefMutants[index]?.info.location.longitude,

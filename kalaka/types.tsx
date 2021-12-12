@@ -22,7 +22,7 @@ export type RootStackParamList = {
   TabContacts: undefined;
   TabSettings: undefined;
   Login: undefined;
-  Chat: undefined;
+  Chat: {user: Object};
   Danger: { isLocationEnabled: boolean, mode: string };
   AddContact: undefined;
   ChangeContactModal: undefined;
@@ -30,6 +30,7 @@ export type RootStackParamList = {
   SafetyFeaturesModal: undefined;
   NotificationsModal: undefined;
   TermsModal: undefined;
+  MapScreen: undefined;
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> = NativeStackScreenProps<
@@ -42,7 +43,9 @@ export type RootTabParamList = {
   TabFollow: undefined;
   TabContacts: undefined;
   TabSettings: undefined;
+  MapScreen: undefined;
   Danger: { isLocationEnabled: boolean, mode: string };
+  Chat: {user: Object};
 };
 
 export type RootTabScreenProps<Screen extends keyof RootTabParamList> = CompositeScreenProps<

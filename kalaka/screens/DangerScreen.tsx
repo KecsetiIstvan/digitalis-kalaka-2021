@@ -22,7 +22,6 @@ export default function DangerScreen({ route }: RootTabScreenProps<"Danger">) {
   */
   const { isLocationEnabled, mode } = route.params;
   const [shouldPlayVoiceCycle, setShouldPlayVoiceCycle] = React.useState<boolean>(mode === 'watchme');
-  const [didHearSomething, setDidHearSomething] = React.useState<boolean>(false)
 
   Voice.onSpeechStart = (e) => { console.log('Speech start') };
   Voice.onSpeechError =(e) => { if(e.error) { 
@@ -36,13 +35,11 @@ export default function DangerScreen({ route }: RootTabScreenProps<"Danger">) {
       handleDanger();
       alertContacts();
     } else {
-      setDidHearSomething(true);
       voiceCycleCallback()
     }
   };
   
   const voiceCycleCallback = () => {
-    setDidHearSomething(false);
     readText(randomWords({exactly:30, join: ' '}), startVoice)
   }
 
