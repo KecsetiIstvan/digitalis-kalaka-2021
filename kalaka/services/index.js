@@ -4,7 +4,7 @@ import Toast from "react-native-toast-message";
 import FormFormData, { getHeaders } from "form-data";
 
 const apiClient = axios.create({
-  baseURL: "http://192.168.1.231:3000/api",
+  baseURL: "http://192.168.1.192:3000/api",
 });
 
 apiClient.interceptors.request.use(async (request) => {
@@ -26,13 +26,14 @@ export const auth = async (email, password) => {
   return undefined;
 };
 
-export const register = async (email, password, firstName, lastName) => {
+export const register = async (email, password, firstName, lastName, phone) => {
   const resp = await apiClient
     .post("/auth/register", {
       email: email,
       password: password,
       firstName: firstName,
       lastName: lastName,
+      phone: phone,
     })
     .catch((err) => {
       showToast(err);
@@ -50,6 +51,7 @@ export const me = async () => {
     return;
   });
   if (answer) {
+    console.log(answer.data);
     return answer.data;
   }
 };
@@ -99,31 +101,42 @@ export const getMap = async () => {
   return undefined;
 };
 
-export const getFriends = () => {
-  return "asd";
-};
+export const getContacts = async () => {
+  const answer = await apiClient.get("/users/me").catch((err) => {
+    showToast(err);
+    return;
+  });
+  if (answer) {
+    return answer.data.contacts;
+  }
+}
 
-export const addFriend = () => {
-  return "asd";
-};
+export const getContact = async (id) => {
+  const answer = await apiClient.get(`/users/${id}`).catch((err) => {showToast(err);})
+  if (answer) {
+    return answer.data;
+  }
+}
 
-export const addContact = () => {
-  return "asd";
-};
+export const getEmergencyContacts = async () => {
+  const answer = await apiClient.get("/users/me").catch((err) => {
+    showToast(err);
+    return;
+  });
+  if (answer) {
+    return answer.data.emergencyContacts;
+  }
+}
 
-export const updateFriend = () => {
-  return "asd";
-};
+export const getEmergencyContact = async () => {
 
-export const updateContact = () => {
-  return "asd";
-};
-
-export const deleteFriend = () => {
-  return "asd";
-};
+}
 
 export const deleteContact = () => {
+  return "asd";
+};
+
+export const deleteEmergencyContact = () => {
   return "asd";
 };
 

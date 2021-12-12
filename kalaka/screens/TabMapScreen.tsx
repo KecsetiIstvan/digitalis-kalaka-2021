@@ -4,12 +4,13 @@ import { StyleSheet, Image, Platform } from "react-native";
 import { Text, View } from "../components/Themed";
 import Dimensions from "../constants/Layout";
 import * as Location from "expo-location";
-import MapView, { Marker } from "react-native-maps";
+import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import { useQuery } from "react-query";
 import { getMap, updateLocation } from "../services";
 import { Box, Button, Spinner } from "native-base";
 import * as Animatable from "react-native-animatable";
 import Colors from "../constants/Colors";
+import Permissions from 'react-native-permissions';
 
 export default function TabMapScreen() {
   const [region, setRegion] = useState<any>({
@@ -112,7 +113,7 @@ export default function TabMapScreen() {
     <View style={styles.container}>
       {region.latitude !== 0 ? (
         <>
-          <MapView style={styles.map} initialRegion={region} showsCompass={false} loadingEnabled={true}>
+          <MapView style={styles.map} initialRegion={region} showsCompass={false} loadingEnabled={true} >
             {data?.map((markerData: any, index: number) =>
               elRefMutants[index]?.ref &&
               elRefMutants[index]?.info?.isLocationShared &&
