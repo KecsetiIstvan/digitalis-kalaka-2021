@@ -31,6 +31,7 @@ export type RootStackParamList = {
   NotificationsModal: undefined;
   TermsModal: undefined;
   MapScreen: undefined;
+  FeedbackModal: undefined;
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> = NativeStackScreenProps<

@@ -58,9 +58,11 @@ export default function TabFollowScreen({ navigation }: RootTabScreenProps<"TabF
             <Button
               onPress={() => (selectedOption !== "watchme" ? setSelectedOption("watchme") : setSelectedOption("none"))}
               backgroundColor={Colors.textTransparent}
-              h={140}
-              w={140}
-              style={{
+              size={140}
+              marginTop={0}
+              marginBottom={2}
+              marginRight={2}
+              style={{ 
                 borderTopLeftRadius: 1000,
                 borderTopRightRadius: 0,
                 borderBottomRightRadius: 0,
@@ -82,8 +84,8 @@ export default function TabFollowScreen({ navigation }: RootTabScreenProps<"TabF
                 selectedOption !== "comewithme" ? setSelectedOption("comewithme") : setSelectedOption("none")
               }
               backgroundColor={Colors.locationButton}
-              h={140}
-              w={140}
+              size={140}
+              marginTop={0}
               style={{
                 borderTopLeftRadius: 0,
                 borderTopRightRadius: 1000,
@@ -113,8 +115,8 @@ export default function TabFollowScreen({ navigation }: RootTabScreenProps<"TabF
             <Button
               onPress={() => (selectedOption !== "holdme" ? setSelectedOption("holdme") : setSelectedOption("none"))}
               backgroundColor={Colors.primary}
-              h={137}
-              w={140}
+              size={140}
+              marginTop={0}
               style={{
                 borderTopLeftRadius: 0,
                 borderTopRightRadius: 0,
@@ -133,41 +135,38 @@ export default function TabFollowScreen({ navigation }: RootTabScreenProps<"TabF
                 />
               </Animatable.Text>
             </Button>
-            <Box marginTop={1}>
-              <Button
-                onPress={() => handleStart()}
-                backgroundColor={Colors.dangerTransparet}
-                h={79}
-                w={140}
-                marginTop={60}
-                style={{
-                  borderTopLeftRadius: 0,
-                  borderTopRightRadius: 8,
-                  borderBottomRightRadius: 8,
-                  borderBottomLeftRadius: 0,
-                }}
-              >
-                <Text style={{ color: Colors.background, fontSize: 20, fontWeight: "bold" }}>Indulhatunk!</Text>
-              </Button>
-            </Box>
+            <Button
+              onPress={() => handleStart()}
+              backgroundColor={Colors.dangerTransparet}
+              marginBottom={0}
+              marginTop={65}
+              marginLeft={2}
+              h={75}
+              w={140}
+              style={{
+                borderTopLeftRadius: 0,
+                borderTopRightRadius: 8,
+                borderBottomRightRadius: 8,
+                borderBottomLeftRadius: 0,
+              }}
+            >
+              <Text style={{ color: Colors.background, fontSize: 20, fontWeight: "bold" }}>Indulhatunk!</Text>
+            </Button>
           </SimpleGrid>
           <Box
-            width={140}
-            height={138}
-            backgroundColor={"#fff"}
+            size={140}
+            backgroundColor={Colors.background}
             style={{
+              alignSelf: "center",
               position: "absolute",
-              left: "50%",
-              marginLeft: -74,
-              top: "50%",
-              marginTop: -73,
+              top: "25%",
               borderRadius: 100000,
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
             }}
           >
-            <Box marginTop="1">
+             <Box marginTop="1">
               <FontAwesome5 solid name="circle" size={40} color={Colors.text} />
               <FontAwesome5
                 style={{ position: "absolute", marginLeft: 16, marginTop: 8 }}

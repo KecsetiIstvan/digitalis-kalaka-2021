@@ -46,6 +46,7 @@ const linking: LinkingOptions<RootStackParamList> = {
       SafetyFeaturesModal: 'safetyFeaturesModal',
       NotificationsModal: 'notificationsModal',
       TermsModal: 'termsModal',
+      FeedbackModal: 'feedbackModal',
       NotFound: '*',
     },
   },
