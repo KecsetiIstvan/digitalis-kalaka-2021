@@ -8,6 +8,7 @@ import { me, updateStatus } from "../services";
 import Colors from "../constants/Colors";
 import { FontAwesome5 } from "@expo/vector-icons";
 import * as Animatable from "react-native-animatable";
+import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 
 export default function TabFollowScreen({ navigation }: RootTabScreenProps<"TabFollow">) {
   const [whereYouGO, setWhereYouGo] = React.useState<string>("");
@@ -35,7 +36,17 @@ export default function TabFollowScreen({ navigation }: RootTabScreenProps<"TabF
     <SafeAreaView flex={1}>
       <View style={styles.container}>
         <FormControl.Label color={Colors.text}>Hova kísérjünk?</FormControl.Label>
-        <Input value={whereYouGO} onChangeText={setWhereYouGo} placeholder="" type="text" marginBottom={4} />
+        <GooglePlacesAutocomplete
+ placeholder='Search'
+      onPress={(data, details = null) => {
+        // 'details' is provided when fetchDetails = true
+        console.log(data, details);
+      }}
+      query={{
+        key: 'AIzaSyC9X7nSZ-9FdcAm8plMeDPbsHRGEvigKR4',
+        language: 'en',
+      }}></GooglePlacesAutocomplete>
+       
 
         <HStack alignItems="center" marginBottom={48}>
           <Text
