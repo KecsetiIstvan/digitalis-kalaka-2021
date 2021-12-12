@@ -1,6 +1,6 @@
-import AsyncStorage from "@react-native-community/async-storage";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export const setToken = async (token) => {
+export const setToken = async (token: any) => {
   await AsyncStorage.setItem("@kalaka_jwt_token", token);
 };
 

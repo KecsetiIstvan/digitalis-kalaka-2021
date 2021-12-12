@@ -7,7 +7,7 @@ import * as Location from "expo-location";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import { useQuery } from "react-query";
 import { getMap, updateLocation } from "../services";
-import { Box, Button } from "native-base";
+import { Box, Button, Spinner } from "native-base";
 import * as Animatable from "react-native-animatable";
 import Colors from "../constants/Colors";
 import Permissions from 'react-native-permissions';
@@ -112,7 +112,7 @@ export default function TabMapScreen({ navigation }: RootTabScreenProps<"TabSett
 
   return (
     <View style={styles.container}>
-      {region.latitude !== 0 && (
+      {region.latitude !== 0 ? (
         <>
           <MapView style={styles.map} initialRegion={region} showsCompass={false} loadingEnabled={true} >
             {data?.map((markerData: any, index: number) =>
@@ -199,6 +199,10 @@ export default function TabMapScreen({ navigation }: RootTabScreenProps<"TabSett
             </Box>
           )}
         </>
+      ) : (
+        <Box display={"flex"} justifyContent={"center"} alignItems={"center"} width={"100%"} height="100%">
+          <Spinner color={Colors.primary} />
+        </Box>
       )}
     </View>
   );

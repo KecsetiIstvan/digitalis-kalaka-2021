@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Animated, SafeAreaView, StyleSheet } from "react-native";
+import { Animated, SafeAreaView, StyleSheet, TouchableOpacity } from "react-native";
 import { Box, Button, FormControl, HStack, Input, SimpleGrid, Switch } from "native-base";
 import { Text, View } from "../components/Themed";
 import { RootTabScreenProps } from "../types";
@@ -153,6 +153,7 @@ export default function TabFollowScreen({ navigation }: RootTabScreenProps<"TabF
               <Text style={{ color: Colors.background, fontSize: 20, fontWeight: "bold" }}>Indulhatunk!</Text>
             </Button>
           </SimpleGrid>
+
           <Box
             size={140}
             backgroundColor={Colors.background}
@@ -166,16 +167,18 @@ export default function TabFollowScreen({ navigation }: RootTabScreenProps<"TabF
               justifyContent: "center",
             }}
           >
-             <Box marginTop="1">
-              <FontAwesome5 solid name="circle" size={40} color={Colors.text} />
-              <FontAwesome5
-                style={{ position: "absolute", marginLeft: 16, marginTop: 8 }}
-                solid
-                name="info"
-                size={22}
-                color={Colors.background}
-              />
-            </Box>
+            <TouchableOpacity onPress={() => navigation.navigate("SplashScreenOnboardingModal")}>
+              <Box marginTop="1">
+                <FontAwesome5 solid name="circle" size={40} color={Colors.text} />
+                <FontAwesome5
+                  style={{ position: "absolute", marginLeft: 16, marginTop: 8 }}
+                  solid
+                  name="info"
+                  size={22}
+                  color={Colors.background}
+                />
+              </Box>
+            </TouchableOpacity>
           </Box>
         </Box>
       </View>
